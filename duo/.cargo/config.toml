@@ -1,0 +1,6 @@
+# Shared Rust output, resolved from the repository root even from packages/shell.
+[build]
+target-dir = ".cache/cargo"
+
+[alias]
+shell-check = "check --manifest-path packages/shell/desktop/Cargo.toml"

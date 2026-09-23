@@ -1,0 +1,42 @@
+{
+  "$comment": "Maintainer-controlled. Maps each published app id to its folder and the GitHub logins who may change its identity, transfer it or approve its releases. Ids starting with a reserved prefix are refused in community submissions.",
+  "reserved": ["labs.doan.ipduo.", "dev.example."],
+  "apps": {
+    "com.mnismt.duo.habitstreaks": {
+      "folder": "habit-streaks",
+      "maintainers": ["mnismt"]
+    },
+    "labs.doan.fold-compass": {
+      "folder": "fold-compass",
+      "maintainers": ["doan-labs"]
+    },
+    "com.mnismt.duo.pomodoro": {
+      "folder": "pomodoro-timer",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.2048": {
+      "folder": "2048",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.tictactoe": {
+      "folder": "tic-tac-toe",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.memorymatch": {
+      "folder": "memory-match",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.snake": {
+      "folder": "snake",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.wordlemini": {
+      "folder": "wordle-mini",
+      "maintainers": ["mnismt"]
+    },
+    "com.mnismt.duo.flappyduo": {
+      "folder": "flappy-duo",
+      "maintainers": ["mnismt"]
+    }
+  }
+}

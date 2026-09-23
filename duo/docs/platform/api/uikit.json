@@ -1,0 +1,144 @@
+{
+  "package": "@doan-labs/duo-uikit",
+  "version": "1.2.0",
+  "components": [
+    {
+      "name": "Button",
+      "description": "Native button: tinted capsule by default, filled with the link colour, or plain text. Icon-only buttons need aria-label.",
+      "props": "type ButtonProps = PrimitiveProps<'button'> & { variant?: 'filled' | 'tinted' | 'plain' }",
+      "source": "packages/uikit/button.tsx"
+    },
+    {
+      "name": "Checkbox",
+      "description": "Native checkbox drawn as macOS Calendar's tinted square: hollow at rest, filled\nwith a white tick when checked. `tint` is any CSS colour. Supply a visible\nlabel or aria-label.",
+      "props": "type CheckboxProps = Omit<PrimitiveProps<'input'>, 'type' | 'as'> & { tint?: string }",
+      "source": "packages/uikit/checkbox.tsx"
+    },
+    {
+      "name": "IconButton",
+      "description": "A toolbar button that is only a symbol: the plus, the chevrons, the sidebar\ntoggle. `plain` sits on the bar, `tinted` is a rounded square over `fill`,\n`round` is the small circle a stepper uses. The label is required because the\nglyph is decorative.",
+      "props": "type IconButtonProps = Omit<PrimitiveProps<'button'>, 'as' | 'children'> & {\n  name: SymProps['name']\n  size?: number\n  variant?: 'plain' | 'tinted' | 'round'\n  'aria-label': string\n}",
+      "source": "packages/uikit/icon-button.tsx"
+    },
+    {
+      "name": "Segmented",
+      "description": "Segmented control: one of a few views or filters, the selected segment raised\non `control`. A radio group to assistive tech; `onChange` gets the option.",
+      "props": "type SegmentedProps<T extends string> = Omit<PrimitiveProps<'div'>, 'as' | 'onChange' | 'children'> & {\n  options: readonly T[]\n  value: T\n  onChange: (value: T) => void\n}",
+      "source": "packages/uikit/segmented.tsx"
+    },
+    {
+      "name": "Select",
+      "description": "Native select drawn like `TextField`, so a form's pop-up and its fields line up. Children are `<option>`s.",
+      "props": "type SelectProps = Omit<PrimitiveProps<'select'>, 'as'>",
+      "source": "packages/uikit/select.tsx"
+    },
+    {
+      "name": "Sheet",
+      "description": "The backdrop's own fade. StyleX resolves keyframes per file, so it cannot come from styles.ts.",
+      "props": "type SheetProps = Omit<PrimitiveProps<'dialog'>, 'as' | 'open' | 'onClose'> & {\n  open: boolean\n  onClose: () => void\n}",
+      "source": "packages/uikit/sheet.tsx"
+    },
+    {
+      "name": "TextField",
+      "description": "Native text input over `fill`, the field in a form or a sheet. Any `type`\nworks, including `date`, `time` and `datetime-local`; `multiline` swaps in a\ntextarea. Supply a visible label or aria-label.",
+      "props": "type TextFieldProps = Omit<PrimitiveProps<'input'>, 'as'> & { multiline?: boolean }",
+      "source": "packages/uikit/text-field.tsx"
+    },
+    {
+      "name": "HStack",
+      "description": "A horizontal row of children, centred on the cross axis. The kit had no\nhorizontal primitive, so every app wrote its own flex block: reach for this\nbefore a `stylex.create`.",
+      "props": "type HStackProps<T extends ElementType = 'div'> = PrimitiveProps<T> & StackProps",
+      "source": "packages/uikit/h-stack.tsx"
+    },
+    {
+      "name": "LargeTitle",
+      "description": "The existing 34-point large app title. It wraps naturally at cover width.",
+      "props": "type LargeTitleProps<T extends ElementType = 'div'> = PrimitiveProps<T>",
+      "source": "packages/uikit/large-title.tsx"
+    },
+    {
+      "name": "List",
+      "description": "Semantic list. Use Row as=\"li\" for direct children, or place Sections inside list items.",
+      "props": "type ListProps<T extends ElementType = 'ul'> = PrimitiveProps<T>",
+      "source": "packages/uikit/list.tsx"
+    },
+    {
+      "name": "Menu",
+      "description": "The iOS pop-up menu: a sheet of actions that floats out of the control which\nopened it and sinks back once one is chosen. The caller keeps `open` and puts\n`aria-expanded` on that control; `onClose` runs after the chosen action.\n\nThe sheet carries no coordinates of its own, so `xstyle` both places it —\npinned to a corner, or stacked above a toolbar — and tints it: a menu over a\nmap wants a near-opaque white, one over a night sky wants the dark glass.\n`itemStyle` is the app's type step and padding for a row.\n\n`items` is the column of rows, with `'separator'` where iOS rules a line\nbetween groups. `footer` is the row of glyph-over-caption buttons some menus\nend in, Safari's Bookmarks and All Tabs.",
+      "props": "type MenuProps = Omit<PrimitiveProps<'div'>, 'children' | 'as'> & {\n  open: boolean\n  onClose: () => void\n  items: MenuEntry[]\n  footer?: MenuItem[]\n  /** Row glyph size; a menu set in a smaller type step wants a smaller one. */\n  size?: number\n  itemStyle?: KitStyle\n}",
+      "source": "packages/uikit/menu.tsx"
+    },
+    {
+      "name": "NavigationLink",
+      "description": "Keyboard-accessible push navigation. The destination renders inside a page with a back button.",
+      "props": "type NavigationLinkProps = Omit<ButtonProps, 'onClick' | 'ref'> & { title: string; destination: ReactNode }",
+      "source": "packages/uikit/navigation-link.tsx"
+    },
+    {
+      "name": "Placeholder",
+      "description": "Centred empty, unavailable or loading content harvested from five existing apps.",
+      "props": "type PlaceholderProps<T extends ElementType = 'div'> = PrimitiveProps<T>",
+      "source": "packages/uikit/placeholder.tsx"
+    },
+    {
+      "name": "Row",
+      "description": "Grouped row with an optional leading icon, a secondary line under the label\nand trailing detail. Use `as=\"button\"` for an action, `as=\"li\"` inside a\n`List`.",
+      "props": "type RowProps<T extends ElementType = 'div'> = PrimitiveProps<T> & {\n  label?: ReactNode\n  /** Second line under `label`, in the secondary colour. Most iOS rows have one. */\n  subtitle?: ReactNode\n  detail?: ReactNode\n  icon?: ReactNode\n  chevron?: boolean\n}",
+      "source": "packages/uikit/row.tsx"
+    },
+    {
+      "name": "Screen",
+      "description": "Scrolling app content. Exposes display metadata without opening a bridge or starting effects.",
+      "props": "type ScreenProps<T extends ElementType = 'div'> = PrimitiveProps<T>",
+      "source": "packages/uikit/screen.tsx"
+    },
+    {
+      "name": "Section",
+      "description": "Inset rounded group of rows, retaining the original grouped-list geometry.",
+      "props": "type SectionProps<T extends ElementType = 'div'> = PrimitiveProps<T>",
+      "source": "packages/uikit/section.tsx"
+    },
+    {
+      "name": "Sym",
+      "description": "An SF Symbol, tinted by the element's colour through a mask. Decorative by\ndefault: name the enclosing button when the symbol is its only content.",
+      "props": "type SymProps = { name: keyof typeof SYM; size?: number }",
+      "source": "packages/uikit/sym.tsx"
+    },
+    {
+      "name": "Text",
+      "description": "A step of the type ramp. `body` emits nothing, so it inherits.",
+      "props": "type TextProps<T extends ElementType = 'span'> = PrimitiveProps<T> & {\n  size?: Ramp | 'caption'\n  weight?: 'regular' | 'medium' | 'semibold' | 'bold'\n  color?: 'primary' | 'secondary' | 'tertiary' | 'accent'\n  value?: number\n  format?: Intl.NumberFormatOptions\n  suffix?: string\n}",
+      "source": "packages/uikit/text.tsx"
+    },
+    {
+      "name": "Title",
+      "description": "Fixed app header, or its compact trailing accessories. Use as=\"h1\" for a semantic heading.",
+      "props": "type TitleProps<T extends ElementType = 'div'> = PrimitiveProps<T> & { variant?: 'header' | 'accessory' }",
+      "source": "packages/uikit/title.tsx"
+    },
+    {
+      "name": "Toggle",
+      "description": "Native checkbox styled as the existing iOS switch. Supply a visible label or aria-label.",
+      "props": "type ToggleProps = Omit<PrimitiveProps<'input'>, 'type' | 'as'>",
+      "source": "packages/uikit/toggle.tsx"
+    },
+    {
+      "name": "VStack",
+      "description": "A shrinking vertical stack that fills its flex parent, including the cover display.",
+      "props": "type VStackProps<T extends ElementType = 'div'> = PrimitiveProps<T> & StackProps",
+      "source": "packages/uikit/v-stack.tsx"
+    },
+    {
+      "name": "Widget",
+      "description": "Host-rendered declarative snapshot. Refresh remains the app owner's responsibility.",
+      "props": "type WidgetProps = {\n  snapshot: WidgetSnapshot\n  updatedAt: number\n  onOpen: (element: HTMLElement, arg?: string) => void\n}",
+      "source": "packages/uikit/widget.tsx"
+    },
+    {
+      "name": "WidgetLabel",
+      "description": "Passive text label using existing widget typography; never fetches or schedules refreshes.",
+      "props": "type WidgetLabelProps<T extends ElementType = 'b'> = PrimitiveProps<T>",
+      "source": "packages/uikit/widget-label.tsx"
+    }
+  ]
+}
