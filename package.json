@@ -1,21 +1,12 @@
 {
-  "name": "my-api",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "duo-classroom",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.15.0",
-    "mongoose": "^8.13.2"
+    "install:duo": "cd duo && bun install",
+    "dev": "cd duo && bun run dev",
+    "web": "cd duo/packages/web && bun run dev",
+    "build": "cd duo && bun run build",
+    "build:web": "cd duo/packages/web && bun run build",
+    "typecheck": "cd duo && bun run typecheck"
   }
 }

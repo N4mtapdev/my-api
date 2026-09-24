@@ -1,2 +1,5 @@
 .env
+.env.local
 node_modules
+.vly-run
+.DS_Store
