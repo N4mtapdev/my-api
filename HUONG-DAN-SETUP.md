@@ -9,8 +9,9 @@
 ## 1. Dự án này là gì?
 
 - Repo: `https://github.com/N4mtapdev/my-api` (code nằm trong thư mục **`duo/`**)
-- **iPhone Duo** = mô phỏng iPhone gập bằng **Three.js** chạy ngay trên trình duyệt:
-  gập/mở máy, màn hình trong - ngoài, home screen, app Notes/Weather/Camera...
+- **iPhone Duo** gồm 2 phần:
+  - **Web giới thiệu** (`duo/packages/web`): landing page, docs, demo UI kit - có nhúng iPhone 3D tương tác được ngay trong trang
+  - **Simulator** (`duo/packages/shell`): mô phỏng iPhone gập bằng **Three.js** - gập/mở máy, màn hình trong - ngoài, home screen, app Notes/Weather/Camera...
 - Công nghệ của repo (đọc kỹ để code cho đúng):
   | Thành phần | Công nghệ |
   | --- | --- |
@@ -156,7 +157,25 @@ Kiểm tra thư mục `duo/public/model/` có các file:
 
 ## 6. Chạy dự án
 
-Vẫn trong thư mục `duo/`, mỗi lần ngồi máy chỉ cần:
+Dự án có **2 phần**: web giới thiệu (`duo/packages/web` - landing page có nhúng iPhone 3D, docs, /kit...) và **simulator** (mô phỏng iPhone 3D chạy riêng). Cả 2 đều chạy được:
+
+### Cách 1 - Xem web giới thiệu kèm simulator nhúng (chỉ cần xem)
+
+```powershell
+cd duo/packages/web
+bun run build
+bun run preview
+```
+
+Mở URL mà Vite in ra (mặc định `http://localhost:4173`):
+
+- Trang chủ giới thiệu có iPhone 3D bay vào theo cuộn chuột, bấm vào là xoay/gập được luôn (iframe nhúng simulator)
+- `/device/` = simulator full màn hình
+- `/docs/` = tài liệu dự án, `/kit/` = demo UI kit, `/build` = công cụ viết app ngay trên web
+
+### Cách 2 - Chạy simulator ở chế độ dev (khi sửa code)
+
+Vẫn trong thư mục `duo/`:
 
 ```powershell
 bun run dev
@@ -166,14 +185,17 @@ Mở trình duyệt (Chrome/Edge tốt nhất) vào: **http://localhost:3000**
 
 - Kéo chuột để **gập/mở** máy, vuốt màn hình, mở app như iPhone thật
 - Góc màn hình có slider gập + minimap
+- Muốn sửa web giới thiệu: mở terminal thứ 2 chạy `cd packages/web && bun run dev` → vào `localhost:3001` (nó tự nhúng simulator ở cổng 3000)
 
 ### Bảng lệnh thường dùng (chạy trong `duo/`)
 
 | Lệnh | Tác dụng |
 | --- | --- |
 | `bun run dev` | Chạy web simulator ở `localhost:3000` |
+| `cd packages/web && bun run dev` | Chạy web giới thiệu ở `localhost:3001` (nhúng simulator 3000) |
 | `bun run typecheck` | ⭐ Kiểm tra lỗi TypeScript (**chạy trước khi nói "xong"**) |
-| `bun run build` | Build production ra `dist/` |
+| `bun run build` | Build simulator production ra `dist/` |
+| `cd packages/web && bun run build` | Build cả website + simulator ra `packages/web/dist/client` (bản deploy Vercel) |
 | `bun run format:check` | Kiểm tra format Biome (đừng tự sửa tay, để extension lo) |
 | `bun run desktop` | Chạy app desktop Tauri (cần Rust, chính thức chỉ hỗ trợ macOS - bỏ qua trên Windows) |
 
@@ -216,6 +238,17 @@ python scripts/prepare-model.py
 
 Chạy lại rồi refresh trình duyệt (Ctrl+Shift+R). Kiểm tra `duo/public/model/iPhone_Duo_Render.usdc` có tồn tại.
 
+### ❌ Web giới thiệu (packages/web) báo thiếu `/device/` hoặc simulator trắng trong iframe
+
+Web build nhúng simulator qua thư mục `packages/web/public/device/`. Build lại cả cụm:
+
+```powershell
+cd duo/packages/web
+bun run build
+```
+
+Xem log có dòng `simulator: copied dist/ → public/device/` là thành công.
+
 ### ❌ Màn hình 3D đen, console báo WebGL
 
 Trình duyệt trường có thể tắt tăng tốc phần cứng → vào `edge://settings` / `chrome://settings` tìm "hardware acceleration" bật lên, hoặc thử Chrome mới nhất.
@@ -254,7 +287,8 @@ cd my-api/duo
 bun install
 pip install usd-core
 python scripts/prepare-model.py
-bun run dev          # → http://localhost:3000
+bun run dev                    # → http://localhost:3000 (simulator)
+cd packages/web && bun run build && bun run preview   # → web giới thiệu
 
 # NHỮNG LẦN SAU
 cd my-api/duo

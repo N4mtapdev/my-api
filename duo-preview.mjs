@@ -1,120 +1,60 @@
-// Single-process preview for the Duo simulator behind a hosted preview domain.
+// Static preview for the whole Duo product: the intro website with the
+// interactive simulator embedded in it.
 //
-// Why this exists: Bun's fullstack dev server (HTML-import routes) rejects
-// requests whose Host header does not match its bind hostname ("Blocked: Host
-// header does not match the dev server") as DNS-rebinding protection. Hosted
-// previews arrive with the preview domain in Host, so the public server cannot
-// serve the HTML route directly.
+// packages/web builds to dist/client: every route is prerendered (TanStack
+// Start), and scripts/simulator.ts copies the shell build under /device/
+// along with /model, /icons, /covers, /cdn and /catalog. The result is fully
+// static - the landing page drives the phone over postMessage from the same
+// origin - so one file server serves the website AND the 3D simulator.
 //
-// Design (one process, two servers — nothing can be orphaned):
-//   upstream : Bun.serve on 127.0.0.1:3999 — the real Duo dev server (HTML
-//              route + static files), bound to loopback so its Host check
-//              compares against 127.0.0.1 and passes for proxied requests.
-//   public   : Bun.serve on 0.0.0.0:$PORT — rewrites Host to the loopback
-//              upstream and forwards everything, bridging WebSockets for HMR.
-//
-// Run with cwd inside duo/ (see preview command) so duo's bunfig.toml with the
-// StyleX plugin applies to the HTML bundling.
+// For live code editing use the dev servers instead (see HUONG-DAN-SETUP.md):
+//   cd duo && bun run dev                    # shell on :3000
+//   cd duo/packages/web && bun run dev       # website on :3001, embeds :3000
 
-import duoIndex from "./duo/packages/shell/index.html";
+import { spawnSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
+import { resolve, sep } from 'node:path'
 
-const ROOT = import.meta.dir; // project root (this file lives there)
-const UPSTREAM_PORT = 3999;
-const UPSTREAM = `http://127.0.0.1:${UPSTREAM_PORT}`;
+const ROOT = import.meta.dir
+const MODEL = resolve(ROOT, 'duo', 'public', 'model', 'iPhone_Duo_Render.usdc')
+const CLIENT = resolve(ROOT, 'duo', 'packages', 'web', 'dist', 'client')
+const port = Number(process.env.PORT ?? 3000)
 
-// duo's build scripts resolve repo-relative paths from the CWD; run from duo/.
-process.chdir(`${ROOT}/duo`);
-const { buildPreinstalled } = await import("./duo/scripts/build-preinstalled.ts");
-await buildPreinstalled();
-
-// ---- upstream: the Duo dev server, loopback-only --------------------------
-
-Bun.serve({
-  port: UPSTREAM_PORT,
-  hostname: "127.0.0.1",
-  routes: { "/": duoIndex },
-  development: { hmr: true, console: true },
-  async fetch(req) {
-    const path = decodeURIComponent(new URL(req.url).pathname);
-    const base = path.startsWith("/cdn/") || path.startsWith("/preinstalled/")
-      ? `${ROOT}/duo/dist`
-      : `${ROOT}/duo/public`;
-    const file = Bun.file(`${base}${path}`);
-    if (!path.includes("..") && (await file.exists())) return new Response(file);
-    return new Response("Not found", { status: 404 });
-  },
-});
-
-// ---- public: host-rewriting proxy ----------------------------------------
-
-const HOP_BY_HOP = new Set([
-  "connection", "keep-alive", "transfer-encoding", "upgrade",
-  "proxy-authenticate", "proxy-authorization", "te", "trailer",
-]);
-
-function cleanHeaders(headers) {
-  const out = new Headers();
-  for (const [k, v] of headers) if (!HOP_BY_HOP.has(k.toLowerCase())) out.set(k, v);
-  return out;
+// Cold start self-heal: a fresh workspace has neither the Apple model (gitignored)
+// nor the build output. Prepare both so the preview serves the full site.
+if (!existsSync(MODEL)) {
+  const python = ['python3', 'python'].find((bin) => spawnSync(bin, ['--version'], { stdio: 'ignore' }).status === 0)
+  if (python) {
+    spawnSync(python, ['-m', 'pip', 'install', 'usd-core'], { cwd: ROOT, stdio: 'inherit' })
+    spawnSync(python, ['scripts/prepare-model.py'], { cwd: resolve(ROOT, 'duo'), stdio: 'inherit' })
+  } else {
+    console.warn('[duo-preview] no python found; run scripts/prepare-model.py manually')
+  }
+}
+if (!existsSync(resolve(CLIENT, 'index.html'))) {
+  // The web build copies the freshly built shell under /device/ itself.
+  spawnSync('bun', ['run', 'build'], { cwd: resolve(ROOT, 'duo', 'packages', 'web'), stdio: 'inherit' })
 }
 
-const server = Bun.serve({
-  port: Number(process.env.PORT ?? 3000),
-  hostname: "0.0.0.0",
-  async fetch(req, srv) {
-    const url = new URL(req.url);
+Bun.serve({
+  port,
+  hostname: '0.0.0.0',
+  async fetch(req) {
+    const path = decodeURIComponent(new URL(req.url).pathname)
+    if (path.includes('..')) return new Response('Not found', { status: 404 })
 
-    if ((req.headers.get("upgrade") ?? "").toLowerCase() === "websocket") {
-      const upgraded = srv.upgrade(req, { data: { path: url.pathname + url.search, upstream: null } });
-      if (upgraded) return;
-      return new Response("WebSocket upgrade failed", { status: 400 });
+    // Directory URLs and extensionless routes map to their prerendered index.
+    const candidates = path.endsWith('/')
+      ? [resolve(CLIENT, `.${path}`, 'index.html')]
+      : [resolve(CLIENT, `.${path}`), resolve(CLIENT, `.${path}.html`), resolve(CLIENT, `.${path}`, 'index.html')]
+
+    for (const file of candidates) {
+      if (file !== CLIENT && !file.startsWith(CLIENT + sep)) continue
+      const asset = Bun.file(file)
+      if (await asset.exists()) return new Response(asset)
     }
-
-    const headers = cleanHeaders(req.headers);
-    headers.set("host", `127.0.0.1:${UPSTREAM_PORT}`);
-    headers.delete("content-length");
-
-    let upstream = null;
-    for (let attempt = 0; attempt < 120; attempt++) {
-      try {
-        upstream = await fetch(`${UPSTREAM}${url.pathname}${url.search}`, {
-          method: req.method,
-          headers,
-          body: req.method === "GET" || req.method === "HEAD" ? undefined : req.body,
-          redirect: "manual",
-        });
-        break;
-      } catch (err) {
-        if (attempt === 119) return new Response(`Duo dev server unreachable: ${err}`, { status: 502 });
-        await Bun.sleep(250);
-      }
-    }
-
-    const resHeaders = cleanHeaders(upstream.headers);
-    // Bun's fetch may transparently decompress the body; drop stale framing headers.
-    resHeaders.delete("content-length");
-    resHeaders.delete("content-encoding");
-    return new Response(upstream.body, { status: upstream.status, headers: resHeaders });
+    return new Response('Not found', { status: 404 })
   },
-  websocket: {
-    open(ws) {
-      const upstream = new WebSocket(`ws://127.0.0.1:${UPSTREAM_PORT}${ws.data.path}`);
-      ws.data.upstream = upstream;
-      upstream.addEventListener("message", event => {
-        if (ws.readyState === 1) ws.send(event.data);
-      });
-      upstream.addEventListener("close", () => {
-        try { ws.close(); } catch {}
-      });
-    },
-    message(ws, message) {
-      const upstream = ws.data?.upstream;
-      if (upstream && upstream.readyState === WebSocket.OPEN) upstream.send(message);
-    },
-    close(ws) {
-      try { ws.data?.upstream?.close(); } catch {}
-    },
-  },
-});
+})
 
-console.log(`[duo-preview] public :${server.port} -> upstream 127.0.0.1:${UPSTREAM_PORT}`);
+console.log(`[duo-preview] website + simulator on :${port} from duo/packages/web/dist/client`)
