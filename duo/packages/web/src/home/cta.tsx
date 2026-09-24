@@ -6,9 +6,9 @@ import { color } from '../tokens.stylex'
 import { Block, Headline, Rise, Stagger } from './parts'
 
 const ACTIONS = [
-  { to: '/simulator', label: 'Try Duo' },
-  { to: '/docs', label: 'Read the docs', outline: true },
-  { href: REPO, label: 'View on GitHub', outline: true }
+  { to: '/simulator', label: 'Dùng thử Duo' },
+  { to: '/docs', label: 'Đọc tài liệu', outline: true },
+  { href: REPO, label: 'Xem trên GitHub', outline: true }
 ]
 
 export function Cta() {
@@ -16,7 +16,7 @@ export function Cta() {
     <Block labelledBy="cta-title">
       <Stagger gap={0.08} amount={0.4} styles={styles.centre}>
         <Rise>
-          <Headline id="cta-title" lines={['Build something strange', 'for a phone that folds.']} />
+          <Headline id="cta-title" lines={['Hãy xây thử thứ gì đó lạ lạ', 'cho chiếc máy biết gập.']} />
         </Rise>
         {/* A plain row, not a second `Stagger`: motion carries the variant down
             through the DOM, so the three buttons are beats of the same sequence
@@ -31,7 +31,7 @@ export function Cta() {
           ))}
         </div>
         <Rise>
-          <p {...stylex.props(styles.line)}>Duo is an open experiment in what foldable software could become.</p>
+          <p {...stylex.props(styles.line)}>Duo là một thí nghiệm mở về phần mềm màn hình gập có thể trở thành gì.</p>
         </Rise>
       </Stagger>
     </Block>

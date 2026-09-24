@@ -12,12 +12,12 @@ import { Block, Cap, Columns, Headline, Lede } from './parts'
 const SMALL = '@media (max-width: 734px)'
 
 type Posture = { deg: number; name: string; display: 'inner' | 'cover'; size: string; runs: number }
-const OPEN: Posture = { deg: 180, name: 'Fully open', display: 'inner', size: '790 × 850', runs: 4 }
+const OPEN: Posture = { deg: 180, name: 'Mở hết cỡ', display: 'inner', size: '790 × 850', runs: 4 }
 const STATES: Posture[] = [
   OPEN,
-  { deg: 120, name: 'Partially folded', display: 'inner', size: '790 × 850', runs: 3 },
-  { deg: 90, name: 'Desk', display: 'inner', size: '790 × 850', runs: 3 },
-  { deg: 0, name: 'Closed', display: 'cover', size: '387 × 850', runs: 2 }
+  { deg: 120, name: 'Gập một phần', display: 'inner', size: '790 × 850', runs: 3 },
+  { deg: 90, name: 'Đặt bàn', display: 'inner', size: '790 × 850', runs: 3 },
+  { deg: 0, name: 'Gập kín', display: 'cover', size: '387 × 850', runs: 2 }
 ]
 
 // What `useDisplay()` really returns: display, placement, size and the hinge
@@ -37,11 +37,11 @@ export function Fold() {
 
   return (
     <Block cinema labelledBy="fold-title">
-      <Cap>04 · The core idea</Cap>
-      <Headline id="fold-title" lines={['The fold is not a breakpoint.', 'It is input.']} />
+      <Cap>04 · Ý tưởng cốt lõi</Cap>
+      <Headline id="fold-title" lines={['Độ gập không phải breakpoint.', 'Nó là dữ liệu đầu vào.']} />
       <Lede>
-        Most responsive software asks one question: how wide is the screen? Duo also asks what shape the device is in
-        right now, and tells your app every time that changes.
+        Phần mềm responsive thường chỉ hỏi: màn hình rộng bao nhiêu? Duo còn hỏi máy đang ở dáng nào, và báo cho app
+        của bạn mỗi khi điều đó thay đổi.
       </Lede>
 
       <div {...stylex.props(styles.scene)}>
@@ -49,7 +49,7 @@ export function Fold() {
           <div>
             <Segmented
               id="fold-posture"
-              label="Posture"
+              label="Tư thế"
               value={deg}
               onChange={(d) => setDeg(d)}
               options={STATES.map((st) => ({ value: st.deg, label: st.name }))}
@@ -76,8 +76,8 @@ export function Fold() {
               <Field k="width × height" v={s.size} />
             </dl>
             <p {...stylex.props(styles.list)}>
-              Apps hear about the display in use, their placement on it, its size and the hinge angle, every time one
-              changes. Nothing else; the fold is the API.
+              App được thông báo màn hình đang dùng, vị trí của mình trên đó, kích thước và góc bản lề, mỗi khi một
+              giá trị thay đổi. Không gì khác; độ gập chính là API.
             </p>
           </div>
           <div {...stylex.props(styles.device)}>

@@ -33,17 +33,17 @@ export function Hero() {
       <div {...stylex.props(styles.inner)}>
         <div {...stylex.props(styles.copy)}>
           <motion.h1 id="hero-title" {...stylex.props(styles.title)} {...rise(1)}>
-            Apple’s folding iPhone, simulated.
+            iPhone gập của Apple, mô phỏng thật.
             <br />
-            Build apps for it.
+            Xây app cho nó luôn.
           </motion.h1>
           <motion.p {...stylex.props(styles.sub)} {...rise(2)}>
-            Hold it. Fold it. Build for it.
+            Cầm lên. Gập lại. Code cho nó.
           </motion.p>
           <motion.div {...stylex.props(styles.actions)} {...rise(3)}>
-            <Button to="/simulator">Try Duo</Button>
+            <Button to="/simulator">Dùng thử Duo</Button>
             <Button to="/get-started" outline>
-              Build an app
+              Xây app riêng
             </Button>
             <a
               href="https://www.producthunt.com/products/duo-9?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-duo-536"
@@ -74,7 +74,7 @@ export function Hero() {
             animate={{ opacity: painted ? 1 : 0 }}
             transition={still ? NONE : { duration: 0.6, ease: CURVE }}
           >
-            Drag to turn. Use the slider to fold. Tap an icon to open an app.
+            Kéo để xoay máy. Dùng thanh trượt để gập. Bấm vào icon để mở app.
           </motion.p>
         </motion.div>
       </div>

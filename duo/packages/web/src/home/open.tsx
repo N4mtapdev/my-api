@@ -5,10 +5,10 @@ import { color, font } from '../tokens.stylex'
 import { Block, Cap, Columns, Headline, Lede, Rise, Stagger, TextLink } from './parts'
 
 const FACTS = [
-  'Apps live in the repository.',
-  'Every app is MIT licensed.',
-  'Contributions are pull requests.',
-  'No developer account. No payments. No gatekeeping.'
+  'App nằm ngay trong repository.',
+  'Mọi app đều giấy phép MIT.',
+  'Đóng góp bằng pull request.',
+  'Không tài khoản developer. Không thanh toán. Không rào cản.'
 ]
 
 const STEPS = ['fork', 'pull request', 'review', 'Duo Store']
@@ -19,15 +19,15 @@ export function Open() {
       <Columns align="start">
         <Stagger gap={0.09} amount={0.4}>
           <Rise>
-            <Cap>07 · Open</Cap>
+            <Cap>07 · Mở</Cap>
           </Rise>
           <Rise>
-            <Headline id="open-title" lines={['The platform is open.', 'So are the apps.']} />
+            <Headline id="open-title" lines={['Nền tảng mở.', 'App cũng mở theo.']} />
           </Rise>
           <Rise>
             <Lede>
-              Someone in Berlin can build a calculator, open a pull request, and after review it can appear in the Duo
-              Store for everyone.
+              Ai đó ở Berlin có thể viết một máy tính, mở pull request, và sau khi được review nó xuất hiện trên Duo
+              Store cho mọi người.
             </Lede>
           </Rise>
         </Stagger>
@@ -54,7 +54,7 @@ export function Open() {
             <Rise>
               <p {...stylex.props(styles.linkRow)}>
                 <TextLink href={REPO} lead>
-                  Read the source on GitHub
+                  Đọc mã nguồn trên GitHub
                 </TextLink>
               </p>
             </Rise>

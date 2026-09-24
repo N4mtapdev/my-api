@@ -33,27 +33,27 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Duo - Folding iPhone simulator for app builders' },
+      { title: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
       {
         name: 'description',
         content:
-          'A working simulator of Apple’s iPhone Duo: hold it, fold it, install apps, and build your own with the SDK.'
+          'Mô phỏng thật chiếc iPhone Duo của Apple: cầm lên, gập lại, cài app, và tự tay viết app cho nó với SDK.'
       },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: 'Duo' },
-      { property: 'og:title', content: 'Duo - Folding iPhone simulator for app builders' },
+      { property: 'og:title', content: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
       {
         property: 'og:description',
-        content: 'Hold it. Fold it. Build apps for a working browser simulator of Apple’s iPhone Duo.'
+        content: 'Cầm lên. Gập lại. Xây app cho chiếc iPhone Duo được mô phỏng thật trên trình duyệt.'
       },
       { property: 'og:image', content: OG_IMAGE },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Duo - Folding iPhone simulator for app builders' },
+      { name: 'twitter:title', content: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
       {
         name: 'twitter:description',
-        content: 'Hold it. Fold it. Build apps for a working browser simulator of Apple’s iPhone Duo.'
+        content: 'Cầm lên. Gập lại. Xây app cho chiếc iPhone Duo được mô phỏng thật trên trình duyệt.'
       },
       { name: 'twitter:image', content: OG_IMAGE }
     ],
@@ -139,7 +139,7 @@ function Page({ children }: { children: ReactNode }) {
 
 function Document({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
       <head>
         {/* Carries the theme boot script too; see the route's `head`. */}
         <HeadContent />
@@ -156,14 +156,14 @@ function NotFound() {
   return (
     <div {...stylex.props(styles.notFound)}>
       <Eyebrow>Error 404</Eyebrow>
-      <h1 {...stylex.props(styles.notFoundTitle)}>This page does not exist.</h1>
+      <h1 {...stylex.props(styles.notFoundTitle)}>Trang này không tồn tại.</h1>
       <p {...stylex.props(styles.notFoundText)}>
-        The link is wrong, or the page moved while the platform was being built. The docs are the safest place to start.
+        Đường dẫn sai, hoặc trang đã đổi chỗ khi nền tảng đang được xây. Tài liệu là nơi khởi đầu an toàn nhất.
       </p>
       <div {...stylex.props(styles.actions)}>
-        <Button to="/">Back to the start</Button>
+        <Button to="/">Về trang chủ</Button>
         <Button to="/docs" outline>
-          Browse the docs
+          Xem tài liệu
         </Button>
       </div>
     </div>

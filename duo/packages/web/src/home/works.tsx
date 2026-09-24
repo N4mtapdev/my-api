@@ -17,54 +17,54 @@ const CURVE = [0.32, 0.72, 0, 1] as const
 
 type Step = { cap?: string; text: string[]; note: string; app?: string; cue?: Cue }
 const STEPS: Step[] = [
-  { text: ['Fold it.'], note: 'The inner display hands over to the cover as the hinge closes.', app: 'Maps' },
+  { text: ['Gập nó lại.'], note: 'Màn hình trong bàn giao cho màn hình ngoài khi bản lề khép lại.', app: 'Maps' },
   {
-    text: ['Close it mid-song.'],
-    note: 'Playback continues on the cover. Nothing remounts.',
+    text: ['Đang nghe nhạc cứ gập.'],
+    note: 'Nhạc chạy tiếp trên màn hình ngoài. Không gì phải tải lại.',
     app: 'Music',
     cue: { play: true }
   },
   {
-    text: ['Take a screenshot.'],
-    note: 'Side button and volume up, like the phone in your pocket.',
+    text: ['Chụp màn hình.'],
+    note: 'Nút nguồn cùng phím tăng âm lượng, đúng như chiếc máy trong túi bạn.',
     app: 'Music',
     // `play` again, or this step would end the song the last one started.
     cue: { screenshot: true, play: true }
   },
   {
-    text: ['Drag an app into split screen.'],
-    note: 'Swipe up from the home bar and hold: the app becomes a card. Drop it on a half and open the next one beside it.',
+    text: ['Kéo app vào chia đôi màn hình.'],
+    note: 'Vuốt thanh home lên và giữ: app thành một thẻ. Thả vào một nửa màn hình rồi mở app kế bên.',
     app: 'Notes',
     cue: { split: 'Safari' }
   },
   {
-    text: ['Or pause, and let go.'],
-    note: 'Every running app is a card. Tap one to bring it back, flick one up to quit it.',
+    text: ['Hoặc tạm dừng rồi buông ra.'],
+    note: 'Mọi app đang chạy thành một thẻ. Bấm để quay lại, quét lên để thoát.',
     app: 'Notes',
     cue: { switcher: true }
   },
   {
-    text: ['Stack two icons.'],
-    note: 'Hold an icon on the home screen, carry it onto another, let go: a folder. Hold one inside to take it out again.',
+    text: ['Chồng hai icon lên nhau.'],
+    note: 'Giữ icon ở màn hình chính, kéo chồng lên icon khác rồi buông: thành thư mục. Giữ tiếp để kéo ra.',
     app: '',
     cue: { folder: true }
   },
   {
-    text: ['Hold the wallpaper.'],
-    note: 'Apple’s dune, a few gradients, and any shot the Camera took. Both displays change at once.',
+    text: ['Giữ vào hình nền.'],
+    note: 'Hoàng cát của Apple, vài dải màu, và mọi tấm Camera đã chụp. Cả hai màn hình đổi cùng lúc.',
     app: '',
     cue: { wallpaper: true }
   },
   {
-    cap: '02 · Real hardware',
-    text: ['The simulated phone', 'can use your real camera.'],
-    note: 'On the desktop it is your Mac camera, or your iPhone over Continuity Camera. Here it is your webcam.',
+    cap: '02 · Phần cứng thật',
+    text: ['Chiếc máy mô phỏng', 'dùng được camera thật của bạn.'],
+    note: 'Trên desktop nó là camera máy tính; còn ở đây chính là webcam của bạn.',
     app: 'Camera'
   },
   {
-    cap: '03 · The twist',
-    text: ['And then we gave it', 'an App Store.'],
-    note: 'Apps install into their own isolated runtime, keep their own storage, and update on their own.',
+    cap: '03 · Điểm khác',
+    text: ['Và rồi chúng tôi cho nó', 'một App Store.'],
+    note: 'App cài vào một runtime cô lập riêng, có kho lưu trữ riêng, và tự cập nhật.',
     app: 'App Store'
   }
 ]
@@ -79,10 +79,10 @@ const band = (i: number) => [i / N, (i + 1) / N] as const
 
 type Cam = 'idle' | 'asking' | 'granted' | 'denied'
 const CAM_SAYS: Record<Cam, string> = {
-  idle: 'Allow camera',
-  asking: 'Asking your browser…',
-  granted: 'Camera allowed',
-  denied: 'Camera blocked'
+  idle: 'Cho phép camera',
+  asking: 'Đang hỏi trình duyệt…',
+  granted: 'Đã cho phép camera',
+  denied: 'Camera bị chặn'
 }
 
 export function Works() {
@@ -197,14 +197,14 @@ function Intro() {
   return (
     <Stagger gap={0.09} amount={0.4}>
       <Rise>
-        <Cap>01 · Not a mockup</Cap>
+        <Cap>01 · Không phải mô hình dựng sẵn</Cap>
       </Rise>
       <Rise>
-        <Headline id="works-title" lines={['It looks like a concept.', 'It behaves like a device.']} />
+        <Headline id="works-title" lines={['Trông như một bản concept.', 'Chạy như một chiếc máy thật.']} />
       </Rise>
       <Rise>
         <Lede>
-          Every pose, button and gesture below is the shell itself, driven by the same code the desktop app runs.
+          Mọi tư thế, nút bấm và cử chỉ dưới đây đều là shell thật, chạy bằng chính mã nguồn của app desktop.
         </Lede>
       </Rise>
     </Stagger>
@@ -263,10 +263,10 @@ function CameraAsk({ state, onAllow }: { state: Cam; onAllow: () => void }) {
     <div {...stylex.props(styles.card)}>
       <p {...stylex.props(styles.cardText)}>
         {state === 'granted'
-          ? 'Point it at the screen and the phone films itself, forever.'
+          ? 'Hướng camera vào màn hình là chiếc máy tự quay chính nó, mãi mãi.'
           : state === 'denied'
-            ? 'No camera this time. The app still opens; it just has nothing to show. Allow it in the address bar and try again.'
-            : 'Your browser is asking for the camera. The picture goes to the phone on this page and nowhere else. Nothing is recorded or uploaded.'}
+            ? 'Lần này không có camera. App vẫn mở, chỉ là không có gì để hiển thị. Cho phép lại trên thanh địa chỉ rồi thử tiếp.'
+            : 'Trình duyệt đang xin quyền camera. Hình chỉ đi tới chiếc máy trên trang này và không đi đâu khác. Không ghi hình, không tải lên.'}
       </p>
       <button
         type="button"
@@ -287,7 +287,7 @@ function CameraAsk({ state, onAllow }: { state: Cam; onAllow: () => void }) {
             />
           </svg>
         )}
-        {state === 'denied' ? 'Try again' : CAM_SAYS[state]}
+        {state === 'denied' ? 'Thử lại' : CAM_SAYS[state]}
       </button>
     </div>
   )

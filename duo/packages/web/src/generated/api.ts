@@ -813,9 +813,9 @@ export const api: ApiEntry[] = [
     "name": "Menu",
     "kind": "component",
     "file": "packages/uikit/menu.tsx",
-    "line": 41,
-    "doc": "The iOS pop-up menu: a sheet of actions that floats out of the control which\nopened it and sinks back once one is chosen. The caller keeps `open` and puts\n`aria-expanded` on that control; `onClose` runs after the chosen action.\n\nThe sheet carries no coordinates of its own, so `xstyle` both places it —\npinned to a corner, or stacked above a toolbar — and tints it: a menu over a\nmap wants a near-opaque white, one over a night sky wants the dark glass.\n`itemStyle` is the app's type step and padding for a row.",
-    "signature": "function Menu({ open, onClose, items, size = 16, itemStyle, xstyle, animate, ...props }: MenuProps)",
+    "line": 48,
+    "doc": "The iOS pop-up menu: a sheet of actions that floats out of the control which\nopened it and sinks back once one is chosen. The caller keeps `open` and puts\n`aria-expanded` on that control; `onClose` runs after the chosen action.\n\nThe sheet carries no coordinates of its own, so `xstyle` both places it —\npinned to a corner, or stacked above a toolbar — and tints it: a menu over a\nmap wants a near-opaque white, one over a night sky wants the dark glass.\n`itemStyle` is the app's type step and padding for a row.\n\n`items` is the column of rows, with `'separator'` where iOS rules a line\nbetween groups. `footer` is the row of glyph-over-caption buttons some menus\nend in, Safari's Bookmarks and All Tabs.",
+    "signature": "function Menu({ open, onClose, items, footer, size = 16, itemStyle, xstyle, animate, ...props }: MenuProps)",
     "members": [
       {
         "name": "open",
@@ -831,8 +831,14 @@ export const api: ApiEntry[] = [
       },
       {
         "name": "items",
-        "type": "MenuItem[]",
+        "type": "MenuEntry[]",
         "optional": false,
+        "doc": ""
+      },
+      {
+        "name": "footer",
+        "type": "MenuItem[]",
+        "optional": true,
         "doc": ""
       },
       {
@@ -855,11 +861,20 @@ export const api: ApiEntry[] = [
   },
   {
     "pkg": "@doan-labs/duo-uikit",
+    "name": "MenuEntry",
+    "kind": "type",
+    "file": "packages/uikit/menu.tsx",
+    "line": 46,
+    "doc": "",
+    "signature": "type MenuEntry = MenuItem | 'separator'"
+  },
+  {
+    "pkg": "@doan-labs/duo-uikit",
     "name": "MenuItem",
     "kind": "type",
     "file": "packages/uikit/menu.tsx",
-    "line": 33,
-    "doc": "One action. `checked` present makes the row a radio and puts a tick on the\ntrailing edge in place of `icon`; `name` is what a screen reader says when the\nvisible label is not enough on its own.",
+    "line": 38,
+    "doc": "One action. The glyph sits on the leading edge, as iOS 26 draws it; `checked`\npresent makes the row a radio and puts a tick on the trailing edge. `name` is\nwhat a screen reader says when the visible label is not enough on its own.",
     "signature": "type MenuItem = {\n  label: ReactNode\n  icon?: SymProps['name']\n  checked?: boolean\n  disabled?: boolean\n  name?: string\n  onSelect: () => void\n}",
     "members": [
       {
@@ -905,9 +920,9 @@ export const api: ApiEntry[] = [
     "name": "MenuProps",
     "kind": "type",
     "file": "packages/uikit/menu.tsx",
-    "line": 19,
-    "doc": "The iOS pop-up menu: a sheet of actions that floats out of the control which\nopened it and sinks back once one is chosen. The caller keeps `open` and puts\n`aria-expanded` on that control; `onClose` runs after the chosen action.\n\nThe sheet carries no coordinates of its own, so `xstyle` both places it —\npinned to a corner, or stacked above a toolbar — and tints it: a menu over a\nmap wants a near-opaque white, one over a night sky wants the dark glass.\n`itemStyle` is the app's type step and padding for a row.",
-    "signature": "type MenuProps = Omit<PrimitiveProps<'div'>, 'children' | 'as'> & {\n  open: boolean\n  onClose: () => void\n  items: MenuItem[]\n  /** Row glyph size; a menu set in a smaller type step wants a smaller one. */\n  size?: number\n  itemStyle?: KitStyle\n}"
+    "line": 23,
+    "doc": "The iOS pop-up menu: a sheet of actions that floats out of the control which\nopened it and sinks back once one is chosen. The caller keeps `open` and puts\n`aria-expanded` on that control; `onClose` runs after the chosen action.\n\nThe sheet carries no coordinates of its own, so `xstyle` both places it —\npinned to a corner, or stacked above a toolbar — and tints it: a menu over a\nmap wants a near-opaque white, one over a night sky wants the dark glass.\n`itemStyle` is the app's type step and padding for a row.\n\n`items` is the column of rows, with `'separator'` where iOS rules a line\nbetween groups. `footer` is the row of glyph-over-caption buttons some menus\nend in, Safari's Bookmarks and All Tabs.",
+    "signature": "type MenuProps = Omit<PrimitiveProps<'div'>, 'children' | 'as'> & {\n  open: boolean\n  onClose: () => void\n  items: MenuEntry[]\n  footer?: MenuItem[]\n  /** Row glyph size; a menu set in a smaller type step wants a smaller one. */\n  size?: number\n  itemStyle?: KitStyle\n}"
   },
   {
     "pkg": "@doan-labs/duo-uikit",

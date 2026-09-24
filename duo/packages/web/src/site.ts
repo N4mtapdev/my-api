@@ -16,11 +16,11 @@ export const CATALOG = 'https://duo.doan-labs.com/catalog/index.json'
 export const NAV = [
   {
     to: '/apps',
-    label: 'Apps',
+    label: 'Ứng dụng',
     icon: 'M2.5 2.5h4.25v4.25H2.5zM9.25 2.5h4.25v4.25H9.25zM2.5 9.25h4.25v4.25H2.5zM9.25 9.25h4.25v4.25H9.25z'
   },
   { to: '/kit', label: 'UI kit', icon: 'M2.5 2.5h8v8h-8zM5.5 5.5h8v8h-8' },
-  { to: '/docs', label: 'Docs', icon: 'M4 1.75h5.5L13 5.25v9H4zM9.5 1.75v3.5H13M6.25 8.5h3.5M6.25 11h3.5' },
+  { to: '/docs', label: 'Tài liệu', icon: 'M4 1.75h5.5L13 5.25v9H4zM9.5 1.75v3.5H13M6.25 8.5h3.5M6.25 11h3.5' },
   {
     to: '/simulator',
     label: 'Simulator',
@@ -36,8 +36,8 @@ export const GITHUB_MARK =
 /** Every other page, reachable from the footer so nothing is orphaned. */
 export const MORE = [
   { to: '/simulator', label: 'Simulator' },
-  { to: '/publish', label: 'Submit an app' },
-  { to: '/guidelines', label: 'Guidelines' },
+  { to: '/publish', label: 'Đóng góp app' },
+  { to: '/guidelines', label: 'Hướng dẫn' },
   { to: '/changelog', label: 'Changelog' }
 ] as const
 

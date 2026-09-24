@@ -179,7 +179,7 @@ export function Simulator({
       {near ? (
         <iframe
           ref={frame}
-          title={app ? `Duo running ${app}` : 'Duo simulator'}
+          title={app ? `Duo đang chạy ${app}` : 'Mô phỏng Duo'}
           src={src}
           allow="camera; geolocation"
           {...stylex.props(styles.frame, !painted && styles.hidden)}

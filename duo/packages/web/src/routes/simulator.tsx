@@ -13,7 +13,7 @@ export const Route = createFileRoute('/simulator')({
       {
         name: 'description',
         content:
-          'The phone in the browser: open an app, fold it, and watch the cover display and the inner display hand the session between them.'
+          'Chiếc máy ngay trên trình duyệt: mở app, gập lại, và xem màn hình ngoài với màn hình trong bàn giao phiên cho nhau.'
       }
     ]
   }),

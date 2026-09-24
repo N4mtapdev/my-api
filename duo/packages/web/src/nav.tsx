@@ -57,7 +57,7 @@ export function Nav() {
         transition={still ? NOW : FADE}
       />
       <nav {...stylex.props(styles.inner)} aria-label="Global">
-        <Link to="/" {...stylex.props(styles.logo)} aria-label="Duo home">
+        <Link to="/" {...stylex.props(styles.logo)} aria-label="Trang chủ Duo">
           <img src="/icon.svg" alt="" width="22" height="22" {...stylex.props(styles.glyph)} />
           Duo
         </Link>
@@ -102,7 +102,7 @@ export function Nav() {
             whileTap={still ? undefined : { scale: TAP }}
           >
             <Link to="/simulator" {...stylex.props(styles.cta)}>
-              Try Duo
+              Dùng thử
             </Link>
           </motion.span>
           <Menu />

@@ -59,12 +59,12 @@ export function Footer() {
             </Link>
           </motion.span>
           <p {...stylex.props(styles.blurb)}>
-            A working simulator of a phone that folds, and the SDK to build apps for it.
+            Simulator thật của một chiếc máy biết gập, cùng SDK để xây app cho nó.
           </p>
         </div>
         <div {...stylex.props(styles.columns)}>
           <nav aria-label="Platform" {...stylex.props(styles.column)}>
-            <h2 {...stylex.props(styles.heading)}>Platform</h2>
+            <h2 {...stylex.props(styles.heading)}>Nền tảng</h2>
             {NAV.map((n) => (
               <Item key={n.to} to={n.to}>
                 {n.label}
@@ -72,24 +72,24 @@ export function Footer() {
             ))}
           </nav>
           <nav aria-label="Project" {...stylex.props(styles.column)}>
-            <h2 {...stylex.props(styles.heading)}>Project</h2>
+            <h2 {...stylex.props(styles.heading)}>Dự án</h2>
             <Item href={REPO}>GitHub</Item>
             {PROJECT.map((m) => (
               <Item key={m.to} to={m.to}>
                 {m.label}
               </Item>
             ))}
-            <Item href={LICENSE}>License</Item>
+            <Item href={LICENSE}>Giấy phép</Item>
           </nav>
         </div>
       </div>
       <div {...stylex.props(styles.base)}>
         <a href={DOAN} {...stylex.props(styles.link, styles.studio)}>
           <DoanMark />
-          An experiment by Doan Labs
+          Một thí nghiệm của Doan Labs
         </a>
         <p {...stylex.props(styles.fine)}>
-          An unofficial experiment, not affiliated with Apple. iPhone is a trademark of Apple Inc.
+          Thí nghiệm phi chính thức, không liên kết với Apple. iPhone là nhãn hiệu của Apple Inc.
         </p>
       </div>
     </footer>

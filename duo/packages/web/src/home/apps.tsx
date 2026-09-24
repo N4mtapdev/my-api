@@ -34,12 +34,12 @@ type Entry = {
 }
 
 const STATUS: Record<Status, { label: string; text: string }> = {
-  published: { label: 'Published', text: 'In the catalog. Installs through the Store on any Duo.' },
+  published: { label: 'Đã phát hành', text: 'Có trong catalog. Cài qua Store trên bất kỳ máy Duo nào.' },
   working: {
-    label: 'Available',
-    text: 'Ready to use in the simulator.'
+    label: 'Sẵn dùng',
+    text: 'Sẵn sàng chạy trong simulator.'
   },
-  mockup: { label: 'In development', text: 'A static screen with invented data while the real app is built.' }
+  mockup: { label: 'Đang phát triển', text: 'Màn hình tĩnh với dữ liệu giả trong lúc app thật đang được xây.' }
 }
 const ORDER: Status[] = ['published', 'working', 'mockup']
 
@@ -98,28 +98,28 @@ function fromRelease(c: CatalogApp): Entry {
 const LANES: { key: Lane; label: string; text: string; apps: Entry[] }[] = [
   {
     key: 'official',
-    label: 'Official',
-    text: 'Built by Doan Labs. Every app on the simulator’s home screen, from published releases to the mockups still being built.',
+    label: 'Chính thức',
+    text: 'Doan Labs xây dựng. Mọi app trên màn hình chính của simulator, từ bản phát hành đến mockup còn đang làm.',
     apps: OFFICIAL
   },
   {
     key: 'community',
-    label: 'Community',
-    text: 'Submitted through pull requests, reviewed, and published to the catalog.',
+    label: 'Cộng đồng',
+    text: 'Gửi qua pull request, được review, rồi phát hành lên catalog.',
     apps: COMMUNITY
   }
 ]
 const date = (iso: string) =>
-  new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  new Date(iso).toLocaleDateString('vi-VN', { year: 'numeric', month: 'short', day: 'numeric' })
 
 export function Apps() {
   return (
     <Block labelledBy="apps-title">
-      <Cap>06 · The apps</Cap>
-      <Headline id="apps-title" lines={['Built for both displays', 'and the fold between them.']} />
+      <Cap>06 · Các app</Cap>
+      <Headline id="apps-title" lines={['Xây cho cả hai màn hình', 'và độ gập ở giữa.']} />
       <Lede>
-        Official apps ship in the simulator and publish to the Duo catalog; community apps arrive as pull requests.
-        Every one is MIT licensed and installs through the Store.
+        App chính thức đi kèm simulator và phát hành lên catalog Duo; app cộng đồng đến từ pull request. Tất cả đều
+        giấy phép MIT và cài qua Store.
       </Lede>
       <Shelf apps={OFFICIAL.filter((a) => a.status !== 'mockup').slice(0, 6)} layout="grid" />
     </Block>
@@ -137,11 +137,11 @@ export function Browser() {
       <div {...stylex.props(styles.bar)}>
         <Segmented
           id="apps-lane"
-          label="Lane"
+          label="Mục"
           value={lane}
           onChange={(l) => setLane(l)}
           options={[
-            { value: 'all' as const, label: 'All', count: total },
+            { value: 'all' as const, label: 'Tất cả', count: total },
             ...LANES.map((l) => ({ value: l.key, label: l.label, count: l.apps.length }))
           ]}
         />
@@ -151,8 +151,8 @@ export function Browser() {
           value={layout}
           onChange={(l) => setLayout(l)}
           options={[
-            { value: 'grid' as const, label: 'Grid', icon: <Glyph name="grid" /> },
-            { value: 'list' as const, label: 'List', icon: <Glyph name="list" /> }
+            { value: 'grid' as const, label: 'Lưới', icon: <Glyph name="grid" /> },
+            { value: 'list' as const, label: 'Danh sách', icon: <Glyph name="list" /> }
           ]}
         />
       </div>
@@ -163,7 +163,7 @@ export function Browser() {
           </h2>
           <p {...stylex.props(styles.laneText)}>{l.text}</p>
           {l.apps.length === 0 ? (
-            <p {...stylex.props(styles.empty)}>No {l.label.toLowerCase()} apps are published yet.</p>
+            <p {...stylex.props(styles.empty)}>Chưa có app nào ở mục này được phát hành.</p>
           ) : layout === 'list' ? (
             <Shelf apps={l.apps} layout="list" />
           ) : (
@@ -205,11 +205,11 @@ export function Shelf({ apps, layout }: { apps: readonly Entry[]; layout: Layout
         <thead>
           <tr>
             <th {...stylex.props(styles.th)}>App</th>
-            <th {...stylex.props(styles.th)}>Status</th>
-            <th {...stylex.props(styles.th)}>Version</th>
-            <th {...stylex.props(styles.th)}>Permissions</th>
-            <th {...stylex.props(styles.th)}>Created</th>
-            <th {...stylex.props(styles.th)}>Updated</th>
+            <th {...stylex.props(styles.th)}>Trạng thái</th>
+            <th {...stylex.props(styles.th)}>Phiên bản</th>
+            <th {...stylex.props(styles.th)}>Quyền</th>
+            <th {...stylex.props(styles.th)}>Tạo lúc</th>
+            <th {...stylex.props(styles.th)}>Cập nhật</th>
           </tr>
         </thead>
         <tbody>
@@ -257,15 +257,15 @@ export function Shelf({ apps, layout }: { apps: readonly Entry[]; layout: Layout
                 <p {...stylex.props(styles.meta)}>
                   {a.author}
                   {a.version && ` · v${a.version}`}
-                  {a.release && a.release.releases > 1 && ` · ${a.release.releases} releases`}
+                  {a.release && a.release.releases > 1 && ` · ${a.release.releases} bản`}
                   {a.status === 'mockup' && ` · ${STATUS[a.status].label.toLowerCase()}`}
                   <Source entry={a} />
                 </p>
                 <Permissions perms={a.permissions} />
                 {a.created && a.updated && (
                   <p {...stylex.props(styles.dates)}>
-                    <span>Created {date(a.created)}</span>
-                    <span>Updated {date(a.updated)}</span>
+                    <span>Tạo {date(a.created)}</span>
+                    <span>Cập nhật {date(a.updated)}</span>
                   </p>
                 )}
               </div>
@@ -298,7 +298,7 @@ function Source({ entry }: { entry: Entry }) {
     <>
       {' · '}
       <a href={entry.release.repo} {...stylex.props(styles.metaLink)}>
-        Source
+        Mã nguồn
       </a>
     </>
   )
@@ -315,11 +315,11 @@ function StatusChip({ status }: { status: Status }) {
 
 function Permissions({ perms }: { perms: readonly Perm[] }) {
   return (
-    <ul {...stylex.props(styles.chips)} aria-label="Permissions">
+    <ul {...stylex.props(styles.chips)} aria-label="Quyền">
       {perms.length === 0 ? (
         <li {...stylex.props(styles.chip, styles.chipNone)}>
           <Glyph name="none" />
-          No permissions
+          Không cần quyền
         </li>
       ) : (
         perms.map((p) => (
