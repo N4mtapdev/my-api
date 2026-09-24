@@ -12,12 +12,14 @@
 //   cd duo/packages/web && bun run dev       # website on :3001, embeds :3000
 
 import { spawnSync } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import { existsSync, statSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 
 const ROOT = import.meta.dir
 const MODEL = resolve(ROOT, 'duo', 'public', 'model', 'iPhone_Duo_Render.usdc')
 const CLIENT = resolve(ROOT, 'duo', 'packages', 'web', 'dist', 'client')
+// The classroom build: one plain HTML file at the repo root, served as-is.
+const PLAIN = resolve(ROOT, 'index.html')
 const port = Number(process.env.PORT ?? 3000)
 
 // Cold start self-heal: a fresh workspace has neither the Apple model (gitignored)
@@ -36,12 +38,41 @@ if (!existsSync(resolve(CLIENT, 'index.html'))) {
   spawnSync('bun', ['run', 'build'], { cwd: resolve(ROOT, 'duo', 'packages', 'web'), stdio: 'inherit' })
 }
 
+// Live reload for the plain HTML page: the browser polls the file's mtime and
+// reloads when it changes, so editing index.html updates the page on save.
+const RELOAD = `<script>
+(function () {
+  var seen = null;
+  setInterval(function () {
+    fetch('/__plain-stamp', { cache: 'no-store' })
+      .then(function (r) { return r.text(); })
+      .then(function (text) {
+        text = text.trim();
+        if (seen === null) { seen = text; return; }
+        if (text !== seen) location.reload();
+      })
+      .catch(function () {});
+  }, 800);
+})();
+</script>`
+
 Bun.serve({
   port,
   hostname: '0.0.0.0',
   async fetch(req) {
     const path = decodeURIComponent(new URL(req.url).pathname)
     if (path.includes('..')) return new Response('Not found', { status: 404 })
+
+    if (path === '/__plain-stamp') {
+      return new Response(existsSync(PLAIN) ? String(statSync(PLAIN).mtimeMs) : '0')
+    }
+    // The plain build, straight from the repo root: no copy to keep in sync.
+    if ((path === '/index-plain.html' || path === '/plain') && existsSync(PLAIN)) {
+      const html = await Bun.file(PLAIN).text()
+      return new Response(html.replace('</head>', `${RELOAD}</head>`), {
+        headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }
+      })
+    }
 
     // Directory URLs and extensionless routes map to their prerendered index.
     const candidates = path.endsWith('/')
@@ -58,3 +89,4 @@ Bun.serve({
 })
 
 console.log(`[duo-preview] website + simulator on :${port} from duo/packages/web/dist/client`)
+console.log(`[duo-preview] plain HTML build at /plain (live reload) from index.html`)
