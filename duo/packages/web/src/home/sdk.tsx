@@ -6,10 +6,10 @@ import { Block, Cap, Headline, Lede, Rise, Stagger, TextLink } from './parts'
 const MID = '@media (max-width: 1068px)'
 
 const API = [
-  { area: 'Màn hình', sig: 'useDisplay()', text: 'Màn hình nào, kích thước, góc bản lề và trạng thái focus, theo thời gian thực.' },
-  { area: 'Lưu trữ', sig: 'useKV()', text: 'Kho lưu trữ bền, có phiên bản, riêng tư cho từng app.' },
-  { area: 'Giao diện', sig: 'os.commands', text: 'Một app, hai giao diện, một chủ sở hữu; phần còn lại gửi lệnh.' },
-  { area: 'Liên kết', sig: 'os.open()', text: 'Bàn giao sang app khác trên máy, kèm tham số.' }
+  { area: 'Màn hình', sig: 'useDisplay()', text: 'Màn hình nào, rộng bao nhiêu, góc bản lề và trạng thái focus - tất cả theo thời gian thực.' },
+  { area: 'Lưu trữ', sig: 'useKV()', text: 'Bộ nhớ bền, có phiên bản và riêng tư cho từng app.' },
+  { area: 'Giao diện', sig: 'os.commands', text: 'Một app, hai giao diện: một bên giữ màn hình, các bên còn lại gửi lệnh cho nhau.' },
+  { area: 'Liên kết', sig: 'os.open()', text: 'Mở sang app khác ngay trên máy, kèm theo tham số.' }
 ]
 
 export function Sdk() {
@@ -21,12 +21,12 @@ export function Sdk() {
           <Cap>05 · SDK</Cap>
         </Rise>
         <Rise>
-          <Headline id="sdk-title" lines={['Bốn nguyên thủy.', 'Toàn bộ giao diện của SDK.']} />
+          <Headline id="sdk-title" lines={['Bốn API nhỏ,', 'mà là cả SDK.']} />
         </Rise>
         <Rise>
           <Lede>
-            Đủ để xây một app thật, nhỏ đến mức đọc trong một phút. Phần còn lại là React và nền tảng bạn vốn đã biết.{' '}
-            <TextLink to="/docs/sdk">Xem trang SDK</TextLink> cho client đầy đủ.
+            Nhỏ đến mức đọc hết trong một phút mà vẫn đủ viết một app thật. Phần còn lại chỉ là React và những thứ
+            bạn vốn đã quen. <TextLink to="/docs/sdk">Xem trang SDK</TextLink> để có client đầy đủ.
           </Lede>
         </Rise>
       </Stagger>

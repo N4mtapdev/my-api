@@ -6,9 +6,9 @@ import { Block, Cap, Columns, Headline, Lede, Rise, Stagger, TextLink } from './
 
 const FACTS = [
   'App nằm ngay trong repository.',
-  'Mọi app đều giấy phép MIT.',
-  'Đóng góp bằng pull request.',
-  'Không tài khoản developer. Không thanh toán. Không rào cản.'
+  'Mọi app đều dùng giấy phép MIT.',
+  'Đóng góp qua pull request là được.',
+  'Không cần tài khoản developer, không phí, không rào cản.'
 ]
 
 const STEPS = ['fork', 'pull request', 'review', 'Duo Store']
@@ -26,8 +26,8 @@ export function Open() {
           </Rise>
           <Rise>
             <Lede>
-              Ai đó ở Berlin có thể viết một máy tính, mở pull request, và sau khi được review nó xuất hiện trên Duo
-              Store cho mọi người.
+              Ai đó ở Berlin viết một máy tính, gửi pull request, được review xong là nó xuất hiện trên Duo Store cho
+              mọi người dùng luôn.
             </Lede>
           </Rise>
         </Stagger>

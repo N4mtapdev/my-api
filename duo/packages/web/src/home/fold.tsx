@@ -16,7 +16,7 @@ const OPEN: Posture = { deg: 180, name: 'Mở hết cỡ', display: 'inner', siz
 const STATES: Posture[] = [
   OPEN,
   { deg: 120, name: 'Gập một phần', display: 'inner', size: '790 × 850', runs: 3 },
-  { deg: 90, name: 'Đặt bàn', display: 'inner', size: '790 × 850', runs: 3 },
+  { deg: 90, name: 'Đặt lên bàn', display: 'inner', size: '790 × 850', runs: 3 },
   { deg: 0, name: 'Gập kín', display: 'cover', size: '387 × 850', runs: 2 }
 ]
 
@@ -38,10 +38,10 @@ export function Fold() {
   return (
     <Block cinema labelledBy="fold-title">
       <Cap>04 · Ý tưởng cốt lõi</Cap>
-      <Headline id="fold-title" lines={['Độ gập không phải breakpoint.', 'Nó là dữ liệu đầu vào.']} />
+      <Headline id="fold-title" lines={['Độ gập không phải breakpoint,', 'mà là dữ liệu đầu vào của app.']} />
       <Lede>
-        Phần mềm responsive thường chỉ hỏi: màn hình rộng bao nhiêu? Duo còn hỏi máy đang ở dáng nào, và báo cho app
-        của bạn mỗi khi điều đó thay đổi.
+        Phần mềm responsive thường chỉ hỏi một câu: màn hình rộng bao nhiêu? Duo hỏi thêm máy đang ở dáng nào, và báo
+        cho app của bạn mỗi khi điều đó thay đổi.
       </Lede>
 
       <div {...stylex.props(styles.scene)}>
@@ -76,8 +76,8 @@ export function Fold() {
               <Field k="width × height" v={s.size} />
             </dl>
             <p {...stylex.props(styles.list)}>
-              App được thông báo màn hình đang dùng, vị trí của mình trên đó, kích thước và góc bản lề, mỗi khi một
-              giá trị thay đổi. Không gì khác; độ gập chính là API.
+              App nhận thông báo mỗi khi màn hình đang dùng, vị trí, kích thước hay góc bản lề thay đổi. Chỉ vậy thôi -
+              độ gập chính là API.
             </p>
           </div>
           <div {...stylex.props(styles.device)}>

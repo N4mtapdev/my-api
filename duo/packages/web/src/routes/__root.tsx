@@ -33,27 +33,27 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
+      { title: 'Duo - iPhone gập, mô phỏng thật trên trình duyệt' },
       {
         name: 'description',
         content:
-          'Mô phỏng thật chiếc iPhone Duo của Apple: cầm lên, gập lại, cài app, và tự tay viết app cho nó với SDK.'
+          'Mô phỏng thật chiếc iPhone Duo của Apple: cầm máy, gập máy, mở app, thậm chí tự viết app cho nó với SDK.'
       },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: 'Duo' },
-      { property: 'og:title', content: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
+      { property: 'og:title', content: 'Duo - iPhone gập, mô phỏng thật trên trình duyệt' },
       {
         property: 'og:description',
-        content: 'Cầm lên. Gập lại. Xây app cho chiếc iPhone Duo được mô phỏng thật trên trình duyệt.'
+        content: 'Mô phỏng thật chiếc iPhone Duo trên trình duyệt: gập mở thoải mái, thậm chí tự viết app cho nó.'
       },
       { property: 'og:image', content: OG_IMAGE },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Duo - Mô phỏng iPhone gập trên trình duyệt' },
+      { name: 'twitter:title', content: 'Duo - iPhone gập, mô phỏng thật trên trình duyệt' },
       {
         name: 'twitter:description',
-        content: 'Cầm lên. Gập lại. Xây app cho chiếc iPhone Duo được mô phỏng thật trên trình duyệt.'
+        content: 'Mô phỏng thật chiếc iPhone Duo trên trình duyệt: gập mở thoải mái, thậm chí tự viết app cho nó.'
       },
       { name: 'twitter:image', content: OG_IMAGE }
     ],
@@ -156,9 +156,10 @@ function NotFound() {
   return (
     <div {...stylex.props(styles.notFound)}>
       <Eyebrow>Error 404</Eyebrow>
-      <h1 {...stylex.props(styles.notFoundTitle)}>Trang này không tồn tại.</h1>
+      <h1 {...stylex.props(styles.notFoundTitle)}>Trang này không có thật rồi.</h1>
       <p {...stylex.props(styles.notFoundText)}>
-        Đường dẫn sai, hoặc trang đã đổi chỗ khi nền tảng đang được xây. Tài liệu là nơi khởi đầu an toàn nhất.
+        Có thể đường dẫn sai, hoặc trang đã đổi chỗ trong lúc nền tảng còn đang xây. Mở tài liệu lên là nơi bắt đầu
+        an toàn nhất.
       </p>
       <div {...stylex.props(styles.actions)}>
         <Button to="/">Về trang chủ</Button>

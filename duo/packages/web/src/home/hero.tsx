@@ -35,15 +35,15 @@ export function Hero() {
           <motion.h1 id="hero-title" {...stylex.props(styles.title)} {...rise(1)}>
             iPhone gập của Apple, mô phỏng thật.
             <br />
-            Xây app cho nó luôn.
+            Viết app cho nó cũng được luôn.
           </motion.h1>
           <motion.p {...stylex.props(styles.sub)} {...rise(2)}>
-            Cầm lên. Gập lại. Code cho nó.
+            Cầm máy, gập máy, mở app như iPhone thật, ngay trên trình duyệt.
           </motion.p>
           <motion.div {...stylex.props(styles.actions)} {...rise(3)}>
             <Button to="/simulator">Dùng thử Duo</Button>
             <Button to="/get-started" outline>
-              Xây app riêng
+              Viết app riêng
             </Button>
             <a
               href="https://www.producthunt.com/products/duo-9?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-duo-536"
@@ -74,7 +74,7 @@ export function Hero() {
             animate={{ opacity: painted ? 1 : 0 }}
             transition={still ? NONE : { duration: 0.6, ease: CURVE }}
           >
-            Kéo để xoay máy. Dùng thanh trượt để gập. Bấm vào icon để mở app.
+            Kéo để xoay máy, thanh trượt để gập, bấm vào icon để mở app.
           </motion.p>
         </motion.div>
       </div>

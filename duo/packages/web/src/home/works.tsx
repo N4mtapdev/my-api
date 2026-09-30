@@ -17,54 +17,54 @@ const CURVE = [0.32, 0.72, 0, 1] as const
 
 type Step = { cap?: string; text: string[]; note: string; app?: string; cue?: Cue }
 const STEPS: Step[] = [
-  { text: ['Gập nó lại.'], note: 'Màn hình trong bàn giao cho màn hình ngoài khi bản lề khép lại.', app: 'Maps' },
+  { text: ['Thử gập máy lại xem.'], note: 'Khi bản lề khép lại, màn hình trong bàn giao phiên cho màn hình ngoài.', app: 'Maps' },
   {
-    text: ['Đang nghe nhạc cứ gập.'],
-    note: 'Nhạc chạy tiếp trên màn hình ngoài. Không gì phải tải lại.',
+    text: ['Đang nghe nhạc mà vẫn gập được máy.'],
+    note: 'Nhạc chạy tiếp trên màn hình ngoài, chẳng cần tải lại gì cả.',
     app: 'Music',
     cue: { play: true }
   },
   {
-    text: ['Chụp màn hình.'],
-    note: 'Nút nguồn cùng phím tăng âm lượng, đúng như chiếc máy trong túi bạn.',
+    text: ['Chụp màn hình như trên iPhone thật.'],
+    note: 'Nút nguồn cùng phím tăng âm lượng, y như chiếc máy thật trong túi bạn vậy.',
     app: 'Music',
     // `play` again, or this step would end the song the last one started.
     cue: { screenshot: true, play: true }
   },
   {
-    text: ['Kéo app vào chia đôi màn hình.'],
-    note: 'Vuốt thanh home lên và giữ: app thành một thẻ. Thả vào một nửa màn hình rồi mở app kế bên.',
+    text: ['Chia đôi màn hình cho hai app.'],
+    note: 'Vuốt thanh home lên và giữ một nhịp, app thu thành một thẻ. Thả vào nửa màn hình rồi mở app kế bên.',
     app: 'Notes',
     cue: { split: 'Safari' }
   },
   {
-    text: ['Hoặc tạm dừng rồi buông ra.'],
-    note: 'Mọi app đang chạy thành một thẻ. Bấm để quay lại, quét lên để thoát.',
+    text: ['Hoặc vuốt lên, dừng một chút rồi buông.'],
+    note: 'Mọi app đang chạy thu thành một thẻ. Bấm để quay lại, quét lên để thoát.',
     app: 'Notes',
     cue: { switcher: true }
   },
   {
-    text: ['Chồng hai icon lên nhau.'],
-    note: 'Giữ icon ở màn hình chính, kéo chồng lên icon khác rồi buông: thành thư mục. Giữ tiếp để kéo ra.',
+    text: ['Kéo một icon chồng lên icon khác.'],
+    note: 'Giữ một icon ở màn hình chính, kéo chồng lên icon khác rồi buông là thành thư mục; giữ tiếp để kéo app ra.',
     app: '',
     cue: { folder: true }
   },
   {
-    text: ['Giữ vào hình nền.'],
-    note: 'Hoàng cát của Apple, vài dải màu, và mọi tấm Camera đã chụp. Cả hai màn hình đổi cùng lúc.',
+    text: ['Muốn đổi hình nền? Nhấn giữ vào nó.'],
+    note: 'Hình hoàng cát của Apple, vài dải màu đơn giản, hay mọi tấm Camera đã chụp. Cả hai màn hình cùng đổi một lúc.',
     app: '',
     cue: { wallpaper: true }
   },
   {
     cap: '02 · Phần cứng thật',
-    text: ['Chiếc máy mô phỏng', 'dùng được camera thật của bạn.'],
-    note: 'Trên desktop nó là camera máy tính; còn ở đây chính là webcam của bạn.',
+    text: ['Chiếc máy mô phỏng', 'vẫn dùng được camera thật của bạn.'],
+    note: 'Nó lấy camera sẵn có của máy bạn: trên laptop là webcam, trên điện thoại là camera sau.',
     app: 'Camera'
   },
   {
     cap: '03 · Điểm khác',
-    text: ['Và rồi chúng tôi cho nó', 'một App Store.'],
-    note: 'App cài vào một runtime cô lập riêng, có kho lưu trữ riêng, và tự cập nhật.',
+    text: ['Và nó còn có', 'cả một App Store.'],
+    note: 'Mỗi app cài vào một runtime tách biệt, có kho lưu trữ riêng và tự cập nhật.',
     app: 'App Store'
   }
 ]
@@ -79,10 +79,10 @@ const band = (i: number) => [i / N, (i + 1) / N] as const
 
 type Cam = 'idle' | 'asking' | 'granted' | 'denied'
 const CAM_SAYS: Record<Cam, string> = {
-  idle: 'Cho phép camera',
+  idle: 'Mở quyền camera',
   asking: 'Đang hỏi trình duyệt…',
-  granted: 'Đã cho phép camera',
-  denied: 'Camera bị chặn'
+  granted: 'Đã mở quyền camera',
+  denied: 'Camera đang bị chặn'
 }
 
 export function Works() {
@@ -263,10 +263,10 @@ function CameraAsk({ state, onAllow }: { state: Cam; onAllow: () => void }) {
     <div {...stylex.props(styles.card)}>
       <p {...stylex.props(styles.cardText)}>
         {state === 'granted'
-          ? 'Hướng camera vào màn hình là chiếc máy tự quay chính nó, mãi mãi.'
+          ? 'Hướng camera vào màn hình, và chiếc máy sẽ tự quay quanh chính nó mãi mãi.'
           : state === 'denied'
-            ? 'Lần này không có camera. App vẫn mở, chỉ là không có gì để hiển thị. Cho phép lại trên thanh địa chỉ rồi thử tiếp.'
-            : 'Trình duyệt đang xin quyền camera. Hình chỉ đi tới chiếc máy trên trang này và không đi đâu khác. Không ghi hình, không tải lên.'}
+            ? 'Lần này chưa truy cập được camera. App vẫn mở đấy, chỉ là không có gì để hiển thị thôi. Mở lại quyền trên thanh địa chỉ rồi thử tiếp nhé.'
+            : 'Trình duyệt sắp hỏi quyền camera. Hình chỉ dừng lại ở chiếc máy trên trang này, không đi đâu khác, không ghi hình hay tải lên đâu.'}
       </p>
       <button
         type="button"

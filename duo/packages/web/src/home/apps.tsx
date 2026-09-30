@@ -34,12 +34,12 @@ type Entry = {
 }
 
 const STATUS: Record<Status, { label: string; text: string }> = {
-  published: { label: 'Đã phát hành', text: 'Có trong catalog. Cài qua Store trên bất kỳ máy Duo nào.' },
+  published: { label: 'Đã phát hành', text: 'Có trong catalog, cài qua Store trên bất kỳ máy Duo nào.' },
   working: {
     label: 'Sẵn dùng',
-    text: 'Sẵn sàng chạy trong simulator.'
+    text: 'Mở simulator lên là chạy được ngay.'
   },
-  mockup: { label: 'Đang phát triển', text: 'Màn hình tĩnh với dữ liệu giả trong lúc app thật đang được xây.' }
+  mockup: { label: 'Đang làm dở', text: 'Màn hình tĩnh với dữ liệu giả trong lúc app thật đang được xây.' }
 }
 const ORDER: Status[] = ['published', 'working', 'mockup']
 
@@ -99,7 +99,7 @@ const LANES: { key: Lane; label: string; text: string; apps: Entry[] }[] = [
   {
     key: 'official',
     label: 'Chính thức',
-    text: 'Doan Labs xây dựng. Mọi app trên màn hình chính của simulator, từ bản phát hành đến mockup còn đang làm.',
+    text: 'Doan Labs tự xây, gồm mọi app trên màn hình chính của simulator, từ bản phát hành đến mockup còn đang làm dở.',
     apps: OFFICIAL
   },
   {
@@ -116,10 +116,10 @@ export function Apps() {
   return (
     <Block labelledBy="apps-title">
       <Cap>06 · Các app</Cap>
-      <Headline id="apps-title" lines={['Xây cho cả hai màn hình', 'và độ gập ở giữa.']} />
+      <Headline id="apps-title" lines={['Viết một lần cho cả hai màn hình', 'và cả dáng gập ở giữa.']} />
       <Lede>
-        App chính thức đi kèm simulator và phát hành lên catalog Duo; app cộng đồng đến từ pull request. Tất cả đều
-        giấy phép MIT và cài qua Store.
+        App chính thức đi kèm simulator và phát hành lên catalog Duo; app cộng đồng thì đến từ pull request. Tất cả
+        đều dùng giấy phép MIT và cài qua Store.
       </Lede>
       <Shelf apps={OFFICIAL.filter((a) => a.status !== 'mockup').slice(0, 6)} layout="grid" />
     </Block>
@@ -163,7 +163,7 @@ export function Browser() {
           </h2>
           <p {...stylex.props(styles.laneText)}>{l.text}</p>
           {l.apps.length === 0 ? (
-            <p {...stylex.props(styles.empty)}>Chưa có app nào ở mục này được phát hành.</p>
+            <p {...stylex.props(styles.empty)}>Chưa có app nào ở mục này được phát hành cả.</p>
           ) : layout === 'list' ? (
             <Shelf apps={l.apps} layout="list" />
           ) : (
@@ -257,14 +257,14 @@ export function Shelf({ apps, layout }: { apps: readonly Entry[]; layout: Layout
                 <p {...stylex.props(styles.meta)}>
                   {a.author}
                   {a.version && ` · v${a.version}`}
-                  {a.release && a.release.releases > 1 && ` · ${a.release.releases} bản`}
+                  {a.release && a.release.releases > 1 && ` · ${a.release.releases} lần phát hành`}
                   {a.status === 'mockup' && ` · ${STATUS[a.status].label.toLowerCase()}`}
                   <Source entry={a} />
                 </p>
                 <Permissions perms={a.permissions} />
                 {a.created && a.updated && (
                   <p {...stylex.props(styles.dates)}>
-                    <span>Tạo {date(a.created)}</span>
+                    <span>Tạo ngày {date(a.created)}</span>
                     <span>Cập nhật {date(a.updated)}</span>
                   </p>
                 )}

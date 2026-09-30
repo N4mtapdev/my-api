@@ -59,7 +59,7 @@ export function Footer() {
             </Link>
           </motion.span>
           <p {...stylex.props(styles.blurb)}>
-            Simulator thật của một chiếc máy biết gập, cùng SDK để xây app cho nó.
+            Trình mô phỏng thật cho một chiếc máy biết gập, kèm SDK để bạn viết app cho nó.
           </p>
         </div>
         <div {...stylex.props(styles.columns)}>
@@ -86,7 +86,7 @@ export function Footer() {
       <div {...stylex.props(styles.base)}>
         <a href={DOAN} {...stylex.props(styles.link, styles.studio)}>
           <DoanMark />
-          Một thí nghiệm của Doan Labs
+          Một thí nghiệm nhỏ của Doan Labs
         </a>
         <p {...stylex.props(styles.fine)}>
           Thí nghiệm phi chính thức, không liên kết với Apple. iPhone là nhãn hiệu của Apple Inc.
