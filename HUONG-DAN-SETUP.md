@@ -159,19 +159,19 @@ Kiểm tra thư mục `duo/public/model/` có các file:
 
 Dự án có **2 phần**: web giới thiệu (`duo/packages/web` - landing page có nhúng iPhone 3D, docs, /kit...) và **simulator** (mô phỏng iPhone 3D chạy riêng). Cả 2 đều chạy được:
 
-### Cách 1 - Xem web giới thiệu kèm simulator nhúng (chỉ cần xem)
+### Cách 1 - Xem web giới thiệu kèm simulator nhúng, có live reload (khuyên dùng)
 
 ```powershell
-cd duo/packages/web
-bun run build
-bun run preview
+cd duo
+bun ../duo-preview.mjs
 ```
 
-Mở URL mà Vite in ra (mặc định `http://localhost:4173`):
+Mở **http://localhost:3000**:
 
 - Trang chủ giới thiệu có iPhone 3D bay vào theo cuộn chuột, bấm vào là xoay/gập được luôn (iframe nhúng simulator)
 - `/device/` = simulator full màn hình
 - `/docs/` = tài liệu dự án, `/kit/` = demo UI kit, `/build` = công cụ viết app ngay trên web
+- **Live reload kiểu Live Server**: lệnh này tự chạy 2 dev server (simulator + web) và chuyển tiếp qua 1 cổng. Sửa file nào trong `duo/`, lưu lại là trang tự cập nhật, không cần F5
 
 ### Cách 2 - Chạy simulator ở chế độ dev (khi sửa code)
 
@@ -198,6 +198,12 @@ Mở trình duyệt (Chrome/Edge tốt nhất) vào: **http://localhost:3000**
 | `cd packages/web && bun run build` | Build cả website + simulator ra `packages/web/dist/client` (bản deploy Vercel) |
 | `bun run format:check` | Kiểm tra format Biome (đừng tự sửa tay, để extension lo) |
 | `bun run desktop` | Chạy app desktop Tauri (cần Rust, chính thức chỉ hỗ trợ macOS - bỏ qua trên Windows) |
+
+---
+
+### Cách 3 - Bản HTML thuần (đã ngừng hoàn toàn)
+
+> ⚠️ Bản HTML thuần đã bị xóa khỏi repo. Nếu muốn xem lại, tra lịch sử git của commit trước khi xóa.
 
 ---
 
@@ -287,12 +293,13 @@ cd my-api/duo
 bun install
 pip install usd-core
 python scripts/prepare-model.py
-bun run dev                    # → http://localhost:3000 (simulator)
-cd packages/web && bun run build && bun run preview   # → web giới thiệu
+bun ../duo-preview.mjs        # → http://localhost:3000 (web + simulator, có live reload)
 
 # NHỮNG LẦN SAU
 cd my-api/duo
-bun run dev
+bun ../duo-preview.mjs
 ```
+
+👉 Cài xong rồi? Mở tiếp **`THU-TU-GO-CODE.md`** - hướng dẫn siêu chi tiết gõ file nào trước sau, từng bước cho cả 4 lộ trình (sửa web, viết app trong máy, app cộng đồng, lõi simulator).
 
 Chúc code vui! 🎉 Mọi thắc mắc về cấu trúc xem thêm `duo/docs/README.md` (có bản đồ tài liệu đầy đủ của dự án).
