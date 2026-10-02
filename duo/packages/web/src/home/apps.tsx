@@ -47,13 +47,13 @@ const ORDER: Status[] = ['published', 'working', 'mockup']
  *  this is what they actually use, not a grant the runtime enforces. */
 const USES: Record<string, Perm[]> = {
   Camera: [{ name: 'camera', label: 'Camera' }],
-  Maps: [{ name: 'network', label: 'Network' }],
+  Maps: [{ name: 'network', label: 'Mạng' }],
   Safari: [
-    { name: 'network', label: 'Network' },
-    { name: 'clipboard-write', label: 'Write clipboard' }
+    { name: 'network', label: 'Mạng' },
+    { name: 'clipboard-write', label: 'Ghi clipboard' }
   ],
-  'Voice Memos': [{ name: 'microphone', label: 'Microphone' }],
-  YouTube: [{ name: 'network', label: 'Network' }]
+  'Voice Memos': [{ name: 'microphone', label: 'Micro' }],
+  YouTube: [{ name: 'network', label: 'Mạng' }]
 }
 
 const OFFICIAL: Entry[] = [
@@ -147,7 +147,7 @@ export function Browser() {
         />
         <Segmented
           id="apps-layout"
-          label="Layout"
+          label="Bố cục"
           value={layout}
           onChange={(l) => setLayout(l)}
           options={[
@@ -220,7 +220,7 @@ export function Shelf({ apps, layout }: { apps: readonly Entry[]; layout: Layout
                   <img src={a.icon} alt="" width={1024} height={1024} {...stylex.props(styles.iconSm)} />
                   <div>
                     <Name entry={a} row />
-                    {HOT.has(a.key) && <span {...stylex.props(styles.hot)}>Hot</span>}
+                    {HOT.has(a.key) && <span {...stylex.props(styles.hot)}>Nổi bật</span>}
                     <div {...stylex.props(styles.meta)}>
                       {a.author}
                       <Source entry={a} />
@@ -252,7 +252,7 @@ export function Shelf({ apps, layout }: { apps: readonly Entry[]; layout: Layout
               <div {...stylex.props(styles.body)}>
                 <h4 {...stylex.props(styles.name)}>
                   <Name entry={a} />
-                  {HOT.has(a.key) && <span {...stylex.props(styles.hot)}>Hot</span>}
+                  {HOT.has(a.key) && <span {...stylex.props(styles.hot)}>Nổi bật</span>}
                 </h4>
                 <p {...stylex.props(styles.meta)}>
                   {a.author}

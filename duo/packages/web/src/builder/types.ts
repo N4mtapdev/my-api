@@ -12,7 +12,7 @@ export type Runtime = {
 }
 export const SOURCE_LIMIT = 180_000
 export function parseSource(value: unknown): Source {
-  if (!value || typeof value !== 'object') throw new Error('Expected an app object')
+  if (!value || typeof value !== 'object') throw new Error('Cần một object app')
   const source = value as Source
   if (
     typeof source.name !== 'string' ||
@@ -24,15 +24,15 @@ export function parseSource(value: unknown): Source {
     typeof source.files !== 'object' ||
     Array.isArray(source.files)
   )
-    throw new Error('Invalid app name, summary or files')
+    throw new Error('Tên, tóm tắt hoặc tệp của app không hợp lệ')
   const entries = Object.entries(source.files)
   if (!entries.length || entries.length > 12 || typeof source.files['app.tsx'] !== 'string')
-    throw new Error('Include app.tsx and no more than 12 files')
+    throw new Error('Cần có app.tsx và tối đa 12 tệp')
   for (const [path, content] of entries) {
     if (!/^[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)*\.(?:tsx?|json)$/.test(path) || typeof content !== 'string')
-      throw new Error('Only kebab-case TS, TSX and JSON source files are supported')
+      throw new Error('Chỉ hỗ trợ tệp nguồn TS, TSX và JSON đặt tên kebab-case')
   }
-  if (new TextEncoder().encode(JSON.stringify(source)).length > SOURCE_LIMIT) throw new Error('Source exceeds 180 KB')
+  if (new TextEncoder().encode(JSON.stringify(source)).length > SOURCE_LIMIT) throw new Error('Mã nguồn vượt quá 180 KB')
   return { name: source.name.trim(), summary: source.summary, files: Object.fromEntries(entries) }
 }
 export function parseResponse(text: string) {
@@ -43,6 +43,6 @@ export function parseResponse(text: string) {
   try {
     return parseSource(JSON.parse(clean))
   } catch (error) {
-    throw new Error(`Invalid generated revision: ${error instanceof Error ? error.message : 'invalid JSON'}`)
+    throw new Error(`Bản tạo ra không hợp lệ: ${error instanceof Error ? error.message : 'JSON không hợp lệ'}`)
   }
 }

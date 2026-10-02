@@ -22,7 +22,7 @@ export const TYPE_COUNT = fonts.length + typeScale.length + weight.length
 export function Typography() {
   return (
     <div>
-      <Group title="Faces" note="SF Pro and its siblings. Every app draws in one of these four.">
+      <Group title="Kiểu chữ" note="SF Pro và họ hàng. Mọi app chỉ vẽ bằng một trong bốn kiểu này.">
         <div {...stylex.props(styles.rows)}>
           {fonts.map((f) => (
             <div key={f.name} {...stylex.props(styles.row)}>
@@ -33,7 +33,7 @@ export function Typography() {
         </div>
       </Group>
 
-      <Group title="Dynamic Type" note="At the Large size, the default. Size / leading / tracking, in CSS px.">
+      <Group title="Dynamic Type" note="Ở cỡ Large, mặc định. Cỡ / giãn dòng / giãn chữ, theo CSS px.">
         <div {...stylex.props(styles.rows)}>
           {typeScale.map((t) => {
             const line = LEADING.get(t.name)
@@ -51,7 +51,7 @@ export function Typography() {
         </div>
       </Group>
 
-      <Group title="Weight" note="Nothing lighter than regular, except thin for an oversized numeral.">
+      <Group title="Độ đậm" note="Không gì mảnh hơn regular, trừ thin cho chữ số cỡ lớn.">
         <div {...stylex.props(styles.rows)}>
           {weight.map((w) => (
             <div key={w.name} {...stylex.props(styles.row)}>

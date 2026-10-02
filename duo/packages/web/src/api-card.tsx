@@ -31,7 +31,7 @@ export function ApiCard({ entry, heading = 'h2' }: { entry: ApiEntry; heading?: 
       {entry.doc ? (
         <div {...stylex.props(styles.doc)}>{render(parse(entry.doc), ctx)}</div>
       ) : (
-        <p {...stylex.props(styles.undocumented)}>No TSDoc on this export yet.</p>
+        <p {...stylex.props(styles.undocumented)}>Export này chưa có TSDoc.</p>
       )}
       <Signature code={entry.signature} />
       <ApiTable entry={entry} />
@@ -49,7 +49,7 @@ export function Signature({ code }: { code: string }) {
   return (
     <div {...stylex.props(styles.sig)}>
       <div {...stylex.props(styles.sigCopy)}>
-        <CopyButton text={code} label="Copy signature" />
+        <CopyButton text={code} label="Chép chữ ký" />
       </div>
       {/* Lenis owns the page's wheel events; without this it swallows the block's own sideways scroll. */}
       <pre data-lenis-prevent {...stylex.props(styles.pre)}>
@@ -72,9 +72,9 @@ export function ApiTable({ entry }: { entry: ApiEntry }) {
             <thead>
               <tr>
                 <th {...stylex.props(styles.th)}>{entry.kind === 'component' ? 'Prop' : 'Member'}</th>
-                <th {...stylex.props(styles.th)}>Type</th>
-                {entry.kind === 'component' && <th {...stylex.props(styles.th)}>Default</th>}
-                <th {...stylex.props(styles.th)}>Description</th>
+                <th {...stylex.props(styles.th)}>Kiểu</th>
+                {entry.kind === 'component' && <th {...stylex.props(styles.th)}>Mặc định</th>}
+                <th {...stylex.props(styles.th)}>Mô tả</th>
               </tr>
             </thead>
             <tbody>
@@ -121,8 +121,8 @@ function extendsLine(types: string[]) {
     const tag = primitive?.[1]?.match(/^'(\w+)'$/)?.[1]
     return primitive ? (
       <span key={t}>
-        every attribute of {tag ? <code {...stylex.props(styles.code)}>{`<${tag}>`}</code> : 'the rendered element'},
-        plus <code {...stylex.props(styles.code)}>as</code>, <code {...stylex.props(styles.code)}>xstyle</code> and{' '}
+        mọi thuộc tính của {tag ? <code {...stylex.props(styles.code)}>{`<${tag}>`}</code> : 'element được render'},
+        cộng với <code {...stylex.props(styles.code)}>as</code>, <code {...stylex.props(styles.code)}>xstyle</code> và{' '}
         <code {...stylex.props(styles.code)}>animate</code>
         {i < types.length - 1 ? ', ' : ''}
       </span>
@@ -135,8 +135,8 @@ function extendsLine(types: string[]) {
   })
   return (
     <>
-      Also accepts {parts}. Raw <code {...stylex.props(styles.code)}>style</code> and{' '}
-      <code {...stylex.props(styles.code)}>className</code> are refused.
+      Cũng nhận {parts}. Còn <code {...stylex.props(styles.code)}>style</code> và{' '}
+      <code {...stylex.props(styles.code)}>className</code> thô thì bị từ chối.
     </>
   )
 }

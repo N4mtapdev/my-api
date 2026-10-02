@@ -1,6 +1,6 @@
-# Catalogs
+# Catalog
 
-Apps do not ship with Duo. They install from a catalog: a static `index.json` next to immutable release folders, served with CORS from any origin. You can host one yourself today.
+App không được đóng sẵn trong Duo. Chúng cài từ một catalog: một `index.json` tĩnh đặt cạnh các thư mục phát hành bất biến, phục vụ với CORS từ bất kỳ origin nào. Bạn có thể tự host một cái ngay hôm nay.
 
 ## index.json
 
@@ -14,7 +14,7 @@ Apps do not ship with Duo. They install from a catalog: a static `index.json` ne
       "repo": "https://github.com/ada/tides",
       "permissions": ["geolocation"],
       "releases": [
-        { "release": "1.2.0+9f3ab21c", "sdk": "0.0.0", "bytes": 412000, "sha256": "…", "note": "Tide tables offline" },
+        { "release": "1.2.0+9f3ab21c", "sdk": "0.0.0", "bytes": 412000, "sha256": "…", "note": "Bảng thủy triều offline" },
         { "release": "1.1.0+02cc7e10", "sdk": "0.0.0", "bytes": 398000, "sha256": "…" }
       ]
     }
@@ -22,29 +22,29 @@ Apps do not ship with Duo. They install from a catalog: a static `index.json` ne
 }
 ```
 
-One entry per app, releases newest first. Each release names its identity, its SDK requirement, the size of `app.html` and the hash of its `release.json`. `build` writes this file for you; to publish several apps, merge their entries.
+Mỗi app một mục, bản phát hành mới nhất lên đầu. Mỗi bản phát hành nêu định danh, yêu cầu SDK của nó, dung lượng `app.html` và mã băm của `release.json`. `build` viết file này giúp bạn; muốn phát hành nhiều app, gộp các mục lại.
 
-## Layout
+## Cấu trúc
 
 ```
-index.json                                    mutable; keep its cache short
-apps/<id>/<version>+<hash>/release.json       immutable
-apps/<id>/<version>+<hash>/app.html           immutable
-apps/<id>/<version>+<hash>/icon-1024.png      immutable
+index.json                                    được thay đổi; giữ cache ngắn
+apps/<id>/<version>+<hash>/release.json       bất biến
+apps/<id>/<version>+<hash>/app.html           bất biến
+apps/<id>/<version>+<hash>/icon-1024.png      bất biến
 ```
 
-Publish the complete release before the index references it. Never rewrite a published release folder; the identity includes the hash, so a rebuild is a new folder.
+Phát hành bản phát hành hoàn chỉnh trước khi index trỏ tới nó. Không bao giờ viết lại thư mục phát hành đã công bố; định danh bao gồm cả mã băm, nên một lần rebuild là một thư mục mới.
 
-## What the store does
+## Store làm gì
 
-Paste the index URL into the Developer catalog field. The store loads it once and on explicit Refresh; there is no polling. For each app it picks the newest release whose `sdk` the running shell satisfies. With none compatible the row reads "Requires a newer platform version".
+Dán URL index vào ô Developer catalog. Store tải nó một lần và khi bạn bấm Refresh thủ công; không có cơ chế hỏi ngầm. Với mỗi app, nó chọn bản phát hành mới nhất mà shell đang chạy thỏa mãn `sdk`. Không có bản nào tương thích thì dòng app ghi "Yêu cầu phiên bản nền tảng mới hơn".
 
-Get downloads `release.json`, checks its hash against the index, validates it, streams `app.html` with progress and a size bound, verifies its hash against the release, fetches the icon, then writes the release and the install record in one transaction. Interrupted before that commit, nothing is written. Open launches the stored bytes; the catalog is not consulted again until you refresh.
+Bấm Get sẽ tải `release.json`, đối chiếu mã băm với index, kiểm tra hợp lệ, tải `app.html` theo luồng với thanh tiến độ và trần dung lượng, xác minh mã băm với bản phát hành, tải icon, rồi ghi bản phát hành và bản ghi cài đặt trong một transaction duy nhất. Bị ngắt trước lúc commit thì không có gì được ghi. Bấm Open khởi chạy các byte đã lưu; catalog không được hỏi lại cho tới khi bạn refresh.
 
-## Updates
+## Cập nhật
 
-A newer compatible release in the same catalog shows as an update. Updates bind to the catalog origin the app was installed from. A downloaded update is staged while a view of the app is open and activates once none is; an update that fails to start twice is held back and offered as Retry. Remove deletes the release, the app's data and its widgets.
+Một bản phát hành tương thích mới hơn trong cùng catalog hiện lên dưới dạng cập nhật. Cập nhật gắn với origin catalog mà app được cài từ đó. Bản cập nhật đã tải về được cài chờ trong khi app còn một khung nhìn đang mở, và kích hoạt khi không còn khung nào; bản cập nhật khởi động thất bại hai lần bị giữ lại và hiển thị nút Thử lại. Remove xóa bản phát hành, dữ liệu app và các widget của nó.
 
-## Bundled apps
+## App đóng sẵn
 
-The simulator seeds Notes and Weather from its own preinstalled catalog on first run so the store is never empty. They are installed apps like any other and can be removed.
+Simulator nạp Notes và Weather từ catalog preinstalled của chính nó trong lần chạy đầu để store không bao giờ trống trơn. Chúng là app đã cài như mọi app khác và có thể gỡ được.

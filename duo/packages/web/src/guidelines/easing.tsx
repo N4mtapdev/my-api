@@ -27,7 +27,7 @@ export function Easing() {
   const duration = PRESS.get('pressDuration') ?? '0s'
   return (
     <div>
-      <Group title="Curves" note="The only easings in the system. Hover a row to run it, or tap it.">
+      <Group title="Đường chuyển động" note="Những đường easing duy nhất của hệ thống. Rê chuột vào một hàng để chạy thử, hoặc chạm vào.">
         <div {...stylex.props(styles.rows)}>
           {easing.map((t) => (
             <Curve key={t.name} name={t.name} value={t.value} doc={t.doc} still={still} />
@@ -35,13 +35,13 @@ export function Easing() {
         </div>
       </Group>
 
-      <Group title="Press" note="One press state, shared by everything tappable. Hold the button to feel it.">
+      <Group title="Trạng thái nhấn" note="Một trạng thái nhấn dùng chung cho mọi thứ bấm được. Giữ nút để cảm nhận.">
         <div {...stylex.props(styles.rows)}>
           <div {...stylex.props(styles.row)}>
             <span {...stylex.props(styles.name)}>press</span>
             <span>
               <button type="button" {...stylex.props(styles.press, styles.held(still ? 'scale(1)' : scale, duration))}>
-                Hold me
+                Nhấn giữ
               </button>
             </span>
             <span {...stylex.props(styles.metrics)}>{pressTokens.map((t) => t.value).join(' / ')}</span>

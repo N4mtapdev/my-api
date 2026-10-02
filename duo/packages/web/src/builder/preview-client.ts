@@ -25,7 +25,7 @@ export class PreviewClient {
     clearTimeout(job.timer)
     this.pending.delete(event.data.sequence)
     if (event.data.status === 'ready' || event.data.status === 'connected') job.resolve()
-    else job.reject(new Error(event.data.message ?? 'Preview failed'))
+    else job.reject(new Error(event.data.message ?? 'Không chạy thử được'))
   }
   constructor(
     private frame: HTMLIFrameElement,
@@ -39,7 +39,7 @@ export class PreviewClient {
     return new Promise<void>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(message.sequence)
-        reject(new Error('Simulator did not respond. Reload the workspace.'))
+        reject(new Error('Simulator không phản hồi. Tải lại workspace.'))
       }, 40_000)
       this.pending.set(message.sequence, { resolve, reject, timer })
       this.frame.contentWindow?.postMessage({ ...message, token: this.token, channel: BUILDER_CHANNEL }, this.origin)
@@ -55,7 +55,7 @@ export class PreviewClient {
     window.removeEventListener('message', this.listener)
     for (const pending of this.pending.values()) {
       clearTimeout(pending.timer)
-      pending.reject(new Error('Workspace closed'))
+      pending.reject(new Error('Workspace đã đóng'))
     }
     this.pending.clear()
   }

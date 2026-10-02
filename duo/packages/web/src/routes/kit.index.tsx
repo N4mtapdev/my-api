@@ -10,7 +10,7 @@ export const Route = createFileRoute('/kit/')({
       {
         name: 'description',
         content:
-          'The components every Duo app is built from: iOS controls, lists, navigation and widgets that already know about the cover display, the inner display and the fold between them.'
+          'Những component mà mọi app Duo được dựng nên từ đó: nút bấm, danh sách, điều hướng và widget sinh ra đã hiểu màn hình ngoài, màn hình trong và nếp gấp ở giữa.'
       }
     ]
   }),

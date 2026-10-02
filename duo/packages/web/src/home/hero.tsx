@@ -52,7 +52,7 @@ export function Hero() {
               {...stylex.props(styles.hunt)}
             >
               <img
-                alt="Duo - An iPhone Duo simulator you can build apps for | Product Hunt"
+                alt="Duo - Bộ mô phỏng iPhone Duo để bạn tự viết app | Product Hunt"
                 width="250"
                 height="54"
                 src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1254308&theme=light&t=1789724483407"

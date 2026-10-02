@@ -1,39 +1,39 @@
 # CLI
 
-`@doan-labs/duo-cli`, a small Bun tool. Until it is published, run it from the repository as `bun packages/cli/index.mjs <command>`, or through the scripts `create` writes into your app's `package.json`.
+`@doan-labs/duo-cli`, một công cụ Bun nhỏ gọn. Cho tới khi được phát hành chính thức, chạy nó từ repository dưới dạng `bun packages/cli/index.mjs <lệnh>`, hoặc qua các script mà `create` ghi vào `package.json` của app.
 
 ```sh
-bun scripts/package-platform.ts                  # archives + artifacts.json into .cache/platform-packages/
-bun packages/cli/index.mjs create <name> --packages .cache/platform-packages/artifacts.json
-bun packages/cli/index.mjs check   <folder>
-bun packages/cli/index.mjs build   <folder> [--out <dir>]
-bun packages/cli/index.mjs dev     <folder> [--port 5173] [--simulator http://localhost:3000]
-bun packages/cli/index.mjs preview <folder> [--port 5173]
+bun scripts/package-platform.ts                  # bản nén + artifacts.json vào .cache/platform-packages/
+bun packages/cli/index.mjs create <ten> --packages .cache/platform-packages/artifacts.json
+bun packages/cli/index.mjs check   <thu-muc>
+bun packages/cli/index.mjs build   <thu-muc> [--out <dir>]
+bun packages/cli/index.mjs dev     <thu-muc> [--port 5173] [--simulator http://localhost:3000]
+bun packages/cli/index.mjs preview <thu-muc> [--port 5173]
 bun packages/cli/index.mjs serve   <dir>    [--port 5173]
 ```
 
 ## create
 
-Writes `manifest.json`, `main.tsx`, a placeholder `icon.png`, `CHANGELOG.md` and `package.json` into a new folder in the current directory. The name is kebab-case and at most twelve characters; it becomes the folder, the display name and the last segment of `dev.example.<name>`.
+Ghi `manifest.json`, `main.tsx`, một `icon.png` tạm, `CHANGELOG.md` và `package.json` vào thư mục mới trong thư mục hiện tại. Tên là kebab-case, tối đa mười hai ký tự; nó thành tên thư mục, tên hiển thị và đoạn cuối của `dev.example.<ten>`.
 
-`--packages <artifacts.json>` points the generated `package.json` at local SDK, kit and CLI archives instead of published versions. It is required while the packages are unpublished.
+`--packages <artifacts.json>` trỏ `package.json` sinh ra vào bản nén cục bộ của SDK, kit và CLI thay vì phiên bản đã phát hành. Bắt buộc trong thời gian các gói chưa lên npm.
 
-The generated scripts are `bun run check`, `bun run build` and `bun run dev`.
+Các script được sinh ra là `bun run check`, `bun run build` và `bun run dev`.
 
 ## check
 
-Everything a machine can decide before a human looks:
+Mọi thứ máy móc quyết định được trước khi con người nhìn vào:
 
-- the manifest validates, the version has a changelog line, an `official` lane is backed by the trust list;
-- imports stay inside the app: no relative imports above the folder, no computed imports, no remote modules, no source symlinks, nothing from the shell or another app;
-- strict TypeScript against the SDK and kit exports;
-- the built document is under 4 MiB.
+- manifest hợp lệ, phiên bản có dòng changelog, lane `official` có danh sách tin cậy chống lưng;
+- import nằm gọn trong app: không import tương đối vượt lên trên thư mục, không import tính toán, không module từ xa, không symlink nguồn, không lấy gì từ shell hay app khác;
+- TypeScript strict đối chiếu với các export của SDK và kit;
+- tài liệu build ra dưới 4 MiB.
 
-Temporary output is removed afterwards. A pass prints the app id, the size and the permissions in words.
+Kết quả tạm được dọn sau đó. Lượt đạt in ra app id, dung lượng và các quyền bằng lời.
 
 ## build
 
-Compiles `entry` with the StyleX plugin into one `app.html`, hashes every file, and writes an immutable release plus a catalog:
+Biên dịch `entry` với plugin StyleX thành một `app.html`, băm mọi file, và ghi ra một bản phát hành bất biến cùng catalog:
 
 ```
 dist/
@@ -43,16 +43,16 @@ dist/
   apps/<id>/<version>+<hash>/icon-1024.png
 ```
 
-`build` refuses to write into a release folder that already exists. Bump the version, or change the bytes and get a new hash.
+`build` từ chối ghi vào thư mục phát hành đã tồn tại. Tăng version, hoặc đổi byte để nhận mã băm mới.
 
-## dev and preview
+## dev và preview
 
-Both build the app into a temporary folder and serve it on loopback with CORS. `dev` also watches the source and rebuilds; each build is a new immutable release, and you reload the simulator to select it. Both print the simulator URL with `?dev=` and `&app=` filled in.
+Cả hai build app vào một thư mục tạm và phục vụ trên loopback với CORS. `dev` còn theo dõi mã nguồn và build lại; mỗi lần build là một bản phát hành bất biến mới, và bạn nạp lại simulator để chọn nó. Cả hai in ra URL simulator với `?dev=` và `&app=` điền sẵn.
 
-The shell fetches `release.json` from that origin, verifies the document once, and runs its bytes from a Blob URL in the same sandbox an installed app gets, under a `dev:` storage namespace with a DEV badge. Framing an arbitrary URL is not development mode; the document has to be one the CLI built.
+Shell tải `release.json` từ origin đó, xác minh tài liệu một lần, và chạy các byte của nó từ Blob URL trong đúng sandbox mà app cài đặt nhận được, dưới không gian lưu trữ `dev:` kèm nhãn DEV. Nhúng một URL tùy ý không phải là chế độ development; tài liệu phải là thứ do CLI build ra.
 
-Ctrl-C stops the server and the watcher and removes the temporary output.
+Ctrl-C dừng server và watcher, rồi xóa kết quả tạm.
 
 ## serve
 
-Static hosting for a built catalog on loopback with CORS and no caching. Paste its `/index.json` URL into the App Store's Developer catalog field. Use it to test the install path exactly as a person would experience it, or to hand a catalog to another machine on your network.
+Hosting tĩnh cho một catalog đã build trên loopback với CORS và không cache. Dán URL `/index.json` của nó vào ô Developer catalog trong App Store. Dùng nó để thử đúng đường cài đặt mà người dùng trải nghiệm, hoặc trao catalog cho máy khác trong mạng của bạn.

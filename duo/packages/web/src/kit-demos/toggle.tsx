@@ -5,11 +5,11 @@ export default function Demo() {
   const [on, setOn] = useState(true)
   return (
     <Section>
-      <Row label="Airplane mode">
-        <Toggle aria-label="Airplane mode" checked={on} onChange={(e) => setOn(e.target.checked)} />
+      <Row label="Chế độ máy bay">
+        <Toggle aria-label="Chế độ máy bay" checked={on} onChange={(e) => setOn(e.target.checked)} />
       </Row>
-      <Row label="Disabled">
-        <Toggle aria-label="Disabled switch" checked disabled />
+      <Row label="Vô hiệu">
+        <Toggle aria-label="Công tắc vô hiệu" checked disabled />
       </Row>
     </Section>
   )

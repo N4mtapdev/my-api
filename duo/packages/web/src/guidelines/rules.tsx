@@ -13,57 +13,58 @@ export function Rules() {
   return (
     <div {...stylex.props(styles.measure)}>
       <ol {...stylex.props(styles.rules)}>
-        <Rule n="1" title="Design for the cover first">
+        <Rule n="1" title="Thiết kế cho màn hình ngoài trước">
           <p {...stylex.props(styles.p)}>
-            The cover display is 387 points wide; the inner display is 790, a little more than two covers. A layout that
-            reads on the cover has room to breathe unfolded: a list becomes a list beside its detail, a toolbar spreads
-            out, a chart gets its axis labels back. The reverse never works: an inner-first layout squeezed onto the
-            cover loses controls or text.
+            Màn hình ngoài rộng 387 điểm; màn hình trong 790, hơn gấp đôi chút xíu. Bố cục đọc tốt trên màn hình ngoài
+            thì khi mở máy có nơi để thở: danh sách thành danh sách đứng cạnh phần chi tiết, thanh công cụ trải ra, biểu
+            đồ lấy lại được nhãn trục. Chiều ngược lại không bao giờ ổn: bố cục thiết kế cho màn hình trong mà nhồi vào
+            màn hình ngoài là mất nút hoặc mất chữ.
           </p>
           <p {...stylex.props(styles.p)}>
-            Lay out in boxes and let width decide. The kit's components collapse themselves at cover width; yours should
-            too. Never hide a feature on the cover: the person may never unfold the phone for it.
-          </p>
-        </Rule>
-
-        <Rule n="2" title="Your app runs twice">
-          <p {...stylex.props(styles.p)}>
-            While the phone is in use, the other display holds a running copy of your app so the fold hands over without
-            a remount or a flash. The copy draws everything and starts nothing: no sound, no network request, no timer
-            of its own. State that both copies must agree on lives in shared storage, not in a component.
-          </p>
-          <p {...stylex.props(styles.p)}>
-            Test it: open your app, fold the phone all the way, unfold it. The same note, the same scroll position, the
-            same playback, once.
+            Dàn trang theo các hộp và để chiều rộng quyết định. Component của kit tự co lại ở độ rộng màn hình ngoài;
+            component của bạn cũng nên vậy. Đừng bao giờ giấu một tính năng nào khỏi màn hình ngoài: người dùng có thể
+            chẳng bao giờ mở máy ra để tìm nó.
           </p>
         </Rule>
 
-        <Rule n="3" title="Tokens only">
+        <Rule n="2" title="App của bạn chạy hai bản">
           <p {...stylex.props(styles.p)}>
-            Every colour, font size, radius and easing comes from the kit's tokens. No hex, no pixel font sizes. This is
-            not taste: the two displays have different densities and the shell tunes the palette for both, and an app
-            with literals looks wrong on one of them and inherits no fix.
+            Trong khi máy đang dùng, màn hình kia giữ một bản chạy của app để việc gập - mở không phải remount hay chớp
+            màn hình. Bản này vẽ lại tất cả nhưng không khởi động gì: không âm thanh, không gọi mạng, không bộ đếm của
+            riêng nó. Trạng thái mà cả hai bản phải thống nhất thì nằm trong storage dùng chung, không nằm trong
+            component.
+          </p>
+          <p {...stylex.props(styles.p)}>
+            Thử là biết: mở app, gập máy hết cỡ, mở ra. Vẫn ghi chú đó, đúng vị trí cuộn đó, phát đúng một lần.
+          </p>
+        </Rule>
+
+        <Rule n="3" title="Chỉ dùng token">
+          <p {...stylex.props(styles.p)}>
+            Mọi màu, cỡ chữ, bo góc và đường cong chuyển động lấy từ token của kit. Không hex, không cỡ chữ ghi bằng
+            pixel. Đây không phải chuyện gu thẩm mỹ: hai màn hình có mật độ điểm khác nhau và shell tinh chỉnh bảng màu
+            cho từng màn, app mà ghi số cứng thì nhìn sai ở một bên mà chẳng có gì chữa được.
           </p>
         </Rule>
       </ol>
 
-      <h3 {...stylex.props(styles.h3)}>And the iOS rules still hold</h3>
+      <h3 {...stylex.props(styles.h3)}>Và các quy tắc iOS vẫn có hiệu lực</h3>
       <ul {...stylex.props(styles.ul)}>
-        <li {...stylex.props(styles.li)}>Navigation is a stack with a back button on the left; Escape goes home.</li>
-        <li {...stylex.props(styles.li)}>Text input works on the cover: a note, a search, a message, at 387 points.</li>
-        <li {...stylex.props(styles.li)}>Timings are iOS timings. Pushes take about 380 ms; nothing bounces twice.</li>
+        <li {...stylex.props(styles.li)}>Điều hướng là một ngăn xếp với nút back bên trái; phím Escape về màn hình chính.</li>
+        <li {...stylex.props(styles.li)}>Nhập liệu phải dùng được trên màn hình ngoài: ghi chú, tìm kiếm, nhắn tin, ở 387 điểm.</li>
+        <li {...stylex.props(styles.li)}>Thời lượng chuyển động theo chuẩn iOS. Push mất cỡ 380 ms; không thứ gì nảy hai lần.</li>
         <li {...stylex.props(styles.li)}>
-          A widget is a snapshot the shell draws, with its age shown. It is not a live view of your app.
+          Widget là ảnh chụp trạng thái mà shell vẽ ra, kèm thời điểm chụp. Nó không phải khung nhìn sống của app.
         </li>
       </ul>
       <p {...stylex.props(styles.p)}>
-        Every component:{' '}
+        Toàn bộ component:{' '}
         <Link to="/kit" {...stylex.props(styles.link)}>
           UI kit
         </Link>
-        . The fold's mechanics:{' '}
+        . Cơ chế nếp gấp:{' '}
         <Link to="/docs/$" params={{ _splat: 'displays' }} {...stylex.props(styles.link)}>
-          Displays and the fold
+          Màn hình và nếp gấp
         </Link>
         .
       </p>

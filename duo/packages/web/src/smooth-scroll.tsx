@@ -85,7 +85,7 @@ function GlideButton() {
     <button
       type="button"
       onClick={toggle}
-      aria-label={gliding ? 'Stop the glide' : 'Glide to the bottom'}
+      aria-label={gliding ? 'Dừng lướt xuống' : 'Lướt xuống đáy trang'}
       style={{
         position: 'fixed',
         top: 0,

@@ -10,7 +10,7 @@ import { prompt } from './prompt'
 import { type Connection, completion, models, PROVIDERS } from './provider'
 import { type Project, parseResponse, type Source } from './types'
 
-const SUGGESTIONS = ['Make me a timer app', 'Build a simple notes app', 'Make a daily habit counter']
+const SUGGESTIONS = ['Làm cho tôi app đếm giờ', 'Dựng app ghi chú đơn giản', 'Làm một app đếm thói quen hằng ngày']
 
 /**
  * `upcoming` shows the workspace with the phone live and the chat side switched off.
@@ -33,7 +33,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
   const [sourceOpen, setSourceOpen] = useState(false)
   const [mode, setMode] = useState<'simulator' | 'build'>(upcoming ? 'simulator' : 'build')
   const [text, setText] = useState('')
-  const [stage, setStage] = useState('Loading workspace')
+  const [stage, setStage] = useState('Đang tải workspace')
   const [error, setError] = useState('')
   const [saveError, setSaveError] = useState('')
   const [busy, setBusy] = useState(!upcoming)
@@ -91,11 +91,11 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     if (!token || client || upcoming) return
     const timer = setTimeout(() => {
       setBusy(false)
-      setStage('Simulator not responding')
+      setStage('Simulator không phản hồi')
       setError(
         import.meta.env.DEV
-          ? 'The phone did not start. Check that `bun run dev` is serving the shell on port 3000, then reload.'
-          : 'The phone did not start. Reload the page; if it keeps failing, the simulator files may be missing.'
+          ? 'Máy không khởi động. Kiểm tra `bun run dev` có đang phục vụ shell ở cổng 3000 không, rồi tải lại trang.'
+          : 'Máy không khởi động. Tải lại trang; nếu vẫn lỗi, có thể máy đang thiếu tệp của simulator.'
       )
     }, 30_000)
     return () => clearTimeout(timer)
@@ -141,19 +141,19 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     controller.current = control
     setBusy(true)
     setError('')
-    setStage('Compiling your app')
+    setStage('Đang biên dịch app')
     const revision = selected.revisions[selected.current]!
     void compile(revision.source, control.signal)
       .then(async (bundle) => {
         if (control.signal.aborted) return
-        setStage('Starting on the phone')
+        setStage('Đang mở trên máy')
         await client.apply(selected.id, revision.id, bundle)
-        if (alive.current) setStage('Ready')
+        if (alive.current) setStage('Sẵn sàng')
       })
       .catch((e) => {
         if (alive.current && !control.signal.aborted) {
           setError(e.message)
-          setStage('Preview unavailable')
+          setStage('Không xem trước được')
         }
       })
       .finally(() => {
@@ -171,18 +171,18 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     if (!settings) return
     const control = new AbortController()
     const timer = setTimeout(() => {
-      setModelNote('Loading models')
+      setModelNote('Đang tải model')
       models({ endpoint, key, model: '' }, control.signal)
         .then((list) => {
           setModelList(list)
           setModelNote(
-            list.length ? `${list.length} models available. Type to search.` : 'No models listed. Type an ID.'
+            list.length ? `${list.length} model khả dụng. Gõ để tìm kiếm.` : 'Chưa có model nào. Hãy gõ một ID.'
           )
         })
         .catch(() => {
           if (control.signal.aborted) return
           setModelList([])
-          setModelNote(key.trim() ? 'Could not list models. Type an ID.' : 'Add a key to list models, or type an ID.')
+          setModelNote(key.trim() ? 'Không lấy được danh sách model. Hãy gõ một ID.' : 'Thêm key để lấy danh sách model, hoặc gõ một ID.')
         })
     }, 500)
     return () => {
@@ -209,7 +209,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     if (!connection.key.trim() || !connection.model.trim()) {
       setSettings(true)
       setText(message)
-      setError('Enter your API key and model to start building.')
+      setError('Nhập API key và model để bắt đầu tạo app.')
       return
     }
     const control = new AbortController()
@@ -226,17 +226,17 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     let next: Source | undefined
     try {
       const context = await prompt(project.revisions[project.current]!.source, messages)
-      setStage('Generating')
+      setStage('Đang tạo')
       let output = await completion(connection, context, control.signal, (n) =>
-        setStage(`Generating · ${n.toLocaleString()} characters`)
+        setStage(`Đang tạo · ${n.toLocaleString()} ký tự`)
       )
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
           next = parseResponse(output)
-          setStage('Compiling your app')
+          setStage('Đang biên dịch app')
           const bundle = await compile(next, control.signal)
           if (control.signal.aborted) throw new Error('Stopped')
-          setStage('Starting on the phone')
+          setStage('Đang mở trên máy')
           const revision = { id: crypto.randomUUID(), source: next, at: Date.now() }
           await client.apply(project.id, revision.id, bundle)
           const revisions = [...project.revisions.slice(0, project.current + 1), revision].slice(-10)
@@ -250,12 +250,12 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
               { id: crypto.randomUUID(), role: 'assistant' as const, content: next.summary }
             ].slice(-40)
           })
-          setStage('Ready')
+          setStage('Sẵn sàng')
           return
         } catch (failure) {
           if (control.signal.aborted || attempt === 1) throw failure
-          setStage('Repairing once · uses another provider request')
-          const diagnostic = failure instanceof Error ? failure.message.slice(0, 1800) : 'Build failed'
+          setStage('Sửa lỗi một lần · tốn thêm một request')
+          const diagnostic = failure instanceof Error ? failure.message.slice(0, 1800) : 'Build thất bại'
           output = await completion(
             connection,
             [
@@ -271,8 +271,8 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
         }
       }
     } catch (e) {
-      setStage(control.signal.aborted ? 'Stopped' : 'Could not update')
-      if (!control.signal.aborted) setError(e instanceof Error ? e.message : 'Generation failed')
+      setStage(control.signal.aborted ? 'Đã dừng' : 'Không cập nhật được')
+      if (!control.signal.aborted) setError(e instanceof Error ? e.message : 'Tạo app thất bại')
       setText(message)
     } finally {
       setBusy(false)
@@ -284,16 +284,16 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     controller.current = control
     setBusy(true)
     setError('')
-    setStage('Restoring revision')
+    setStage('Đang khôi phục bản lưu')
     try {
       const revision = project.revisions[index]!
       const bundle = await compile(revision.source, control.signal)
-      setStage('Starting on the phone')
+      setStage('Đang mở trên máy')
       await client.apply(project.id, revision.id, bundle, true)
       setProject({ ...project, current: index, name: revision.source.name })
-      setStage('Ready')
+      setStage('Sẵn sàng')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Restore failed')
+      setError(e instanceof Error ? e.message : 'Khôi phục thất bại')
     } finally {
       setBusy(false)
     }
@@ -303,12 +303,12 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
     controller.current = control
     setBusy(true)
     setError('')
-    setStage('Testing connection')
+    setStage('Đang kiểm tra kết nối')
     try {
       await completion(connection, [{ role: 'user', content: 'Reply OK.' }], control.signal, undefined, true)
-      setStage('Connection works')
+      setStage('Kết nối thành công')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Connection failed')
+      setError(e instanceof Error ? e.message : 'Kết nối thất bại')
     } finally {
       setBusy(false)
     }
@@ -316,22 +316,22 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
   const source = project?.revisions[project.current]?.source
   const provider = custom ? undefined : PROVIDERS.find((p) => p.endpoint === connection.endpoint)
   const connected = Boolean(connection.key.trim() && connection.model.trim())
-  const working = busy && stage !== 'Ready'
+  const working = busy && stage !== 'Sẵn sàng'
   return (
     <section {...stylex.props(styles.workspace)} data-builder data-lenis-prevent>
       <div {...stylex.props(styles.toolbar)}>
         <div {...stylex.props(styles.toolbarSide)}>
-          <span {...stylex.props(styles.appName)}>{upcoming ? (app ?? 'Duo') : (source?.name ?? 'Your app')}</span>
+          <span {...stylex.props(styles.appName)}>{upcoming ? (app ?? 'Duo') : (source?.name ?? 'App của bạn')}</span>
           <span {...stylex.props(styles.hint, styles.desktopOnly)}>
             {project && project.revisions.length > 1
-              ? `Revision ${project.current + 1} of ${project.revisions.length}`
-              : 'Fold it. Try both screens.'}
+              ? `Bản lưu ${project.current + 1} / ${project.revisions.length}`
+              : 'Gập máy thử. Chạm thử cả hai màn hình.'}
           </span>
         </div>
         <div {...stylex.props(styles.seg)}>
           <Segmented
             id="builder-mode"
-            label="Mode"
+            label="Chế độ"
             size="sm"
             value={mode}
             onChange={(m) => {
@@ -343,7 +343,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
               {
                 value: 'build' as const,
                 label: 'Build',
-                count: upcoming ? <span {...stylex.props(styles.segNote)}>soon</span> : undefined
+                count: upcoming ? <span {...stylex.props(styles.segNote)}>sắp có</span> : undefined
               }
             ]}
           />
@@ -353,12 +353,12 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
             <>
               <button
                 type="button"
-                title="Restore the previous code and its saved app data"
+                title="Khôi phục mã trước đó và dữ liệu app đã lưu"
                 disabled={busy || !project || project.current === 0}
                 onClick={() => project && void restore(project.current - 1)}
                 {...stylex.props(styles.button)}
               >
-                Undo
+                Hoàn tác
               </button>
               <button
                 type="button"
@@ -366,7 +366,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 onClick={() => setSourceOpen(!sourceOpen)}
                 {...stylex.props(styles.button, sourceOpen && styles.buttonOn)}
               >
-                Source
+                Mã nguồn
               </button>
             </>
           )}
@@ -375,13 +375,13 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
       <div {...stylex.props(styles.mobileTabs, mode === 'simulator' && styles.hidden)}>
         <Segmented
           id="builder-panel"
-          label="Panel"
+          label="Bảng"
           size="sm"
           value={tab}
           onChange={(t) => setTab(t)}
           options={[
             { value: 'chat' as const, label: 'Chat' },
-            { value: 'preview' as const, label: 'Preview' }
+            { value: 'preview' as const, label: 'Xem thử' }
           ]}
         />
       </div>
@@ -395,13 +395,13 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
             {upcoming && (
               <>
                 <span {...stylex.props(styles.appName)}>Build</span>
-                <span {...stylex.props(styles.badge)}>Upcoming</span>
+                <span {...stylex.props(styles.badge)}>Sắp ra mắt</span>
               </>
             )}
             {!upcoming && (
               <>
                 <select
-                  aria-label="Project"
+                  aria-label="Dự án"
                   value={project?.id ?? ''}
                   disabled={busy}
                   onChange={(e) => setProject(projects.find((p) => p.id === e.target.value))}
@@ -415,22 +415,22 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 </select>
                 <button
                   type="button"
-                  title={projects.length >= 10 ? 'Ten projects are kept locally' : 'Start a new app'}
+                  title={projects.length >= 10 ? 'Giữ tối đa 10 dự án trên máy' : 'Bắt đầu một app mới'}
                   disabled={busy || projects.length >= 10}
                   onClick={() => setProject(newProject())}
                   {...stylex.props(styles.button)}
                 >
-                  New app
+                  App mới
                 </button>
                 <div {...stylex.props(styles.spacer)} />
                 <button
                   type="button"
-                  title="Download the source as JSON"
+                  title="Tải mã nguồn về dưới dạng JSON"
                   disabled={!project}
                   onClick={() => project && downloadProject(project)}
                   {...stylex.props(styles.button)}
                 >
-                  Download
+                  Tải về
                 </button>
               </>
             )}
@@ -440,13 +440,13 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
               <div {...stylex.props(styles.intro)}>
                 <span {...stylex.props(styles.spark)}>✳</span>
                 <h1 {...stylex.props(styles.headline)}>
-                  An idea.
-                  <br />A working app.
+                  Một ý tưởng.
+                  <br />Một app chạy được.
                 </h1>
                 <p {...stylex.props(styles.description)}>
                   {upcoming
-                    ? 'Describe an app and watch it run on the phone. Chat opens soon. Until then, fold it, tap it and try the apps.'
-                    : 'Describe what you want. Try it on the phone. Change it one message at a time.'}
+                    ? 'Mô tả một app rồi xem nó chạy trên máy. Chat sẽ sớm mở. Trong lúc chờ, cứ gập máy, chạm thử và mở các app có sẵn.'
+                    : 'Mô tả điều bạn muốn. Thử ngay trên máy. Chỉnh sửa từng tin nhắn một.'}
                 </p>
                 <div {...stylex.props(styles.suggestions)}>
                   {SUGGESTIONS.map((suggestion) => (
@@ -465,14 +465,14 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
             )}
             {project?.messages.map((message) => (
               <div key={message.id} {...stylex.props(styles.message, message.role === 'user' && styles.userMessage)}>
-                <span {...stylex.props(styles.label)}>{message.role === 'user' ? 'You' : 'Duo'}</span>
+                <span {...stylex.props(styles.label)}>{message.role === 'user' ? 'Bạn' : 'Duo'}</span>
                 <p {...stylex.props(styles.messageText)}>{message.content}</p>
               </div>
             ))}
           </div>
           {upcoming && (
             <div {...stylex.props(styles.composer)}>
-              <p {...stylex.props(styles.hint)}>Chat and AI builds are in development. The phone is real: try it.</p>
+              <p {...stylex.props(styles.hint)}>Chat và tính năng tạo app bằng AI đang trong quá trình phát triển. Còn chiếc máy là thật: thử đi.</p>
             </div>
           )}
           {!upcoming && (
@@ -481,15 +481,15 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 <div {...stylex.props(styles.settings)}>
                   <div {...stylex.props(styles.settingsHead)}>
                     <div>
-                      <div {...stylex.props(styles.settingsTitle)}>Connection</div>
+                      <div {...stylex.props(styles.settingsTitle)}>Kết nối</div>
                       <div {...stylex.props(styles.hint)}>
-                        Your key stays in this tab and goes only to the provider.
+                        Key của bạn chỉ nằm trong tab này và chỉ gửi tới nhà cung cấp.
                       </div>
                     </div>
                     <div {...stylex.props(styles.spacer)} />
                     <button
                       type="button"
-                      aria-label="Close connection"
+                      aria-label="Đóng kết nối"
                       onClick={() => setSettings(false)}
                       {...stylex.props(styles.button, styles.iconButton)}
                     >
@@ -498,7 +498,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                   </div>
                   <div {...stylex.props(styles.fields)}>
                     <label {...stylex.props(styles.field)}>
-                      Provider
+                      Nhà cung cấp
                       <select
                         value={provider?.id ?? 'custom'}
                         disabled={busy}
@@ -510,7 +510,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                             {p.name}
                           </option>
                         ))}
-                        <option value="custom">Custom endpoint</option>
+                        <option value="custom">Endpoint tùy chỉnh</option>
                       </select>
                     </label>
                     <div {...stylex.props(styles.field)}>
@@ -518,7 +518,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                         <label htmlFor="builder-key">API key</label>
                         {provider && (
                           <a href={provider.keys} target="_blank" rel="noreferrer" {...stylex.props(styles.link)}>
-                            Get a key ↗
+                            Lấy key ↗
                           </a>
                         )}
                       </span>
@@ -577,7 +577,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                       onClick={testConnection}
                       {...stylex.props(styles.button)}
                     >
-                      Test connection
+                      Kiểm tra kết nối
                     </button>
                     <button
                       type="button"
@@ -585,10 +585,10 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                       onClick={() => setConnection({ ...connection, key: '' })}
                       {...stylex.props(styles.button)}
                     >
-                      Clear key
+                      Xóa key
                     </button>
                     <span {...stylex.props(styles.hint)}>
-                      Test sends one tiny paid request. Custom endpoints must allow browser access.
+                      Nút kiểm tra gửi một request nhỏ, có tính phí. Endpoint tùy chỉnh phải cho phép truy cập từ trình duyệt.
                     </span>
                   </div>
                 </div>
@@ -606,7 +606,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 {...stylex.props(styles.form, working && styles.formBusy)}
               >
                 <textarea
-                  aria-label="Describe your app or ask for a change"
+                  aria-label="Mô tả app của bạn hoặc yêu cầu thay đổi"
                   value={text}
                   disabled={upcoming}
                   maxLength={8000}
@@ -618,12 +618,10 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                     }
                   }}
                   placeholder={
-                    upcoming
-                      ? 'Chat opens when Build ships'
+                    upcoming                      ? 'Chat sẽ mở khi Build phát hành'
                       : project?.messages.length
-                        ? 'Ask for a change…'
-                        : 'Describe your app…'
-                  }
+                        ? 'Yêu cầu thay đổi…'
+                        : 'Mô tả app của bạn…'}
                   rows={1}
                   {...stylex.props(styles.textarea)}
                 />
@@ -631,19 +629,19 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                   {!upcoming && (
                     <button
                       type="button"
-                      aria-label="Connection"
+                      aria-label="Kết nối"
                       aria-expanded={settings}
                       title={
                         connected
                           ? `${provider?.name ?? connection.endpoint} · ${connection.model}`
-                          : 'Connect a provider'
+                          : 'Kết nối nhà cung cấp'
                       }
                       onClick={() => setSettings(!settings)}
                       {...stylex.props(styles.chip, !connected && styles.chipOff)}
                     >
                       <span {...stylex.props(styles.dot, connected && styles.dotOn)} aria-hidden="true" />
                       <span {...stylex.props(styles.chipText)}>
-                        {connected ? connection.model : 'Connect a provider'}
+                        {connected ? connection.model : 'Kết nối nhà cung cấp'}
                       </span>
                     </button>
                   )}
@@ -656,14 +654,14 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                     <button
                       key="stop"
                       type="button"
-                      disabled={stage === 'Starting on the phone' || !controller.current}
+                      disabled={stage === 'Đang mở trên máy' || !controller.current}
                       onClick={(e) => {
                         e.preventDefault()
                         controller.current?.abort()
                       }}
                       {...stylex.props(styles.button)}
                     >
-                      Stop
+                      Dừng
                     </button>
                   ) : (
                     <button
@@ -672,7 +670,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                       disabled={upcoming || !text.trim()}
                       {...stylex.props(styles.button, styles.primary)}
                     >
-                      {project?.messages.length ? 'Update app ↗' : 'Build app ↗'}
+                      {project?.messages.length ? 'Cập nhật app ↗' : 'Tạo app ↗'}
                     </button>
                   )}
                 </div>
@@ -693,9 +691,9 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
           {sourceOpen && (
             <div {...stylex.props(styles.source)}>
               <label {...stylex.props(styles.field)}>
-                Revision
+                Bản lưu
                 <select
-                  aria-label="Revision"
+                  aria-label="Bản lưu"
                   value={project?.current ?? 0}
                   disabled={busy}
                   onChange={(e) => void restore(Number(e.target.value))}
@@ -709,7 +707,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 </select>
               </label>
               <p {...stylex.props(styles.hint)}>
-                Restoring also restores saved app data from that revision. Later app data may be lost.
+                Khôi phục sẽ trả cả dữ liệu app đã lưu từ bản đó về. Dữ liệu app tạo sau đó có thể mất.
               </p>
               {Object.entries(source?.files ?? {}).map(([path, code]) => (
                 <div key={path}>

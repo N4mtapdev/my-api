@@ -19,11 +19,11 @@ export const Route = createFileRoute('/docs/sdk')({
 const sdk = api.filter((e) => e.pkg === '@doan-labs/duo-sdk' && !e.file.endsWith('/legacy.ts'))
 
 const GUIDES = [
-  ['Lifecycle', 'Connect, render, ready. Requests, errors and limits.', 'lifecycle'],
-  ['Displays and the fold', 'The view, two running copies, one owner, commands and widgets.', 'displays'],
-  ['Storage', 'Two revisioned key-value spaces and the React hook over them.', 'storage'],
-  ['Permissions', 'The permission table, network origins and what the sandbox denies.', 'permissions'],
-  ['Manifest', 'Every field, and what a built release adds.', 'manifest']
+  ['Vòng đời', 'Kết nối, render, sẵn sàng. Request, lỗi và giới hạn.', 'lifecycle'],
+  ['Màn hình và nếp gấp', 'Khung nhìn, hai bản chạy song song, một chủ sở hữu, lệnh và widget.', 'displays'],
+  ['Storage', 'Hai không gian key-value có đánh số phiên bản và React hook bọc trên đó.', 'storage'],
+  ['Quyền', 'Bảng quyền, origin mạng và những gì sandbox từ chối.', 'permissions'],
+  ['Manifest', 'Mọi trường, và những gì một bản release build thêm vào.', 'manifest']
 ] as const
 
 function Page() {
@@ -31,12 +31,12 @@ function Page() {
     <div {...stylex.props(styles.wrap)}>
       <Prose>
         <PageTop
-          eyebrow="Reference"
+          eyebrow="Tham chiếu"
           title="SDK"
           lead={
             <>
-              <Code>@doan-labs/duo-sdk</Code> is how an app talks to the phone: displays and the fold, storage, commands
-              between its views, widgets and links. One client, <Code>os</Code>, and a React hook.
+              <Code>@doan-labs/duo-sdk</Code> là cách app nói chuyện với chiếc điện thoại: màn hình và nếp gấp, storage,
+              lệnh giữa các khung nhìn, widget và link. Một client duy nhất, <Code>os</Code>, kèm một React hook.
             </>
           }
         />
@@ -60,7 +60,7 @@ import { useKV } from '@doan-labs/duo-sdk/react'
 const note = useKV(os.storage, 'note')   // { value, status, set, del }`}</Pre>
 
         <Reveal>
-          <h2 {...stylex.props(styles.h2)}>Guides</h2>
+          <h2 {...stylex.props(styles.h2)}>Hướng dẫn</h2>
           <ul {...stylex.props(styles.list)}>
             {GUIDES.map(([title, text, slug]) => (
               <li key={slug}>
@@ -74,13 +74,13 @@ const note = useKV(os.storage, 'note')   // { value, status, set, del }`}</Pre>
         </Reveal>
 
         <Reveal>
-          <h2 {...stylex.props(styles.h2)}>Reference</h2>
+          <h2 {...stylex.props(styles.h2)}>Tham chiếu</h2>
           <p {...stylex.props(styles.p)}>
-            Every export of the package, generated from the source and its TSDoc. Version{' '}
+            Mọi export của gói, sinh từ mã nguồn và TSDoc của nó. Phiên bản{' '}
             <Code>{versions.sdk?.version}</Code>, protocol 1.
           </p>
           {/* Every card is an anchor already; this is the way back up to them from the middle of the page. */}
-          <nav aria-label="Exports" {...stylex.props(styles.jump)}>
+          <nav aria-label="Danh sách export" {...stylex.props(styles.jump)}>
             {sdk.map((e) => (
               <a key={e.name} href={`#${e.name}`} {...stylex.props(styles.chip)}>
                 {e.name}

@@ -3,26 +3,26 @@ import { Row, Section, Text } from '@doan-labs/duo-uikit'
 export default function Demo() {
   return (
     <Section>
-      <Row label="Body" detail={<Text>Regular text</Text>} />
-      <Row label="Caption" detail={<Text size="caption">Secondary label</Text>} />
-      <Row label="Footnote" detail={<Text size="footnote">Footnote</Text>} />
+      <Row label="Thân bài" detail={<Text>Chữ thường</Text>} />
+      <Row label="Chú thích" detail={<Text size="caption">Nhãn phụ</Text>} />
+      <Row label="Chú thích cuối" detail={<Text size="footnote">Chú thích cuối</Text>} />
       <Row
-        label="Title"
+        label="Tiêu đề"
         detail={
           <Text size="title2" weight="bold">
-            Title
+            Tiêu đề
           </Text>
         }
       />
       <Row
-        label="Accent"
+        label="Màu nhấn"
         detail={
           <Text color="accent" weight="medium">
-            Tinted
+            Nhuộm màu
           </Text>
         }
       />
-      <Row label="Number" detail={<Text value={1234.5} format={{ maximumFractionDigits: 1 }} suffix=" units" />} />
+      <Row label="Số" detail={<Text value={1234.5} format={{ maximumFractionDigits: 1 }} suffix=" đơn vị" />} />
     </Section>
   )
 }

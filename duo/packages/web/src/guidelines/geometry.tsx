@@ -15,7 +15,7 @@ export const GEOMETRY_COUNT = space.length + radii.length + layout.length
 export function Geometry() {
   return (
     <div>
-      <Group title="Space" note="A 4 px grid. Gaps, padding and insets pick a step, never a number.">
+      <Group title="Khoảng cách" note="Lưới 4 px. Gap, padding và inset chọn một nấc có sẵn, không chọn số tùy ý.">
         <div {...stylex.props(styles.rows, styles.bars)}>
           {space.map((t) => (
             <div key={t.name} {...stylex.props(styles.row)}>
@@ -27,7 +27,7 @@ export function Geometry() {
         </div>
       </Group>
 
-      <Group title="Radius" note="Continuous corners, one per role. Nothing in between.">
+      <Group title="Bo góc" note="Bo liên tục, mỗi vai trò một cỡ. Không có cỡ ở giữa.">
         <div {...stylex.props(styles.grid)}>
           {radii.map((t) => (
             <div key={t.name} {...stylex.props(styles.tile)} title={t.doc || undefined}>
@@ -39,7 +39,7 @@ export function Geometry() {
         </div>
       </Group>
 
-      <Group title="Home grid" note="CSS px at 5 px/mm. The shell bakes the same numbers at 12 px/mm.">
+      <Group title="Lưới màn hình chính" note="CSS px theo 5 px/mm. Shell đóng gói cùng các con số đó ở 12 px/mm.">
         <div {...stylex.props(styles.rows)}>
           {layout.map((t) => (
             <div key={t.name} {...stylex.props(styles.measure)}>

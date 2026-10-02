@@ -12,12 +12,12 @@ import { color, ease, font, radius } from '../tokens.stylex'
 const SMALL = '@media (max-width: 734px)'
 
 export const Route = createFileRoute('/changelog')({
-  head: () => ({ meta: [{ title: 'Changelog · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Lịch sử phiên bản · Duo' }] }),
   component: Page
 })
 
 const ORDER = ['sdk', 'uikit', 'shell', 'cli'] as const
-const LABEL: Record<(typeof ORDER)[number], string> = { sdk: 'SDK', uikit: 'UI kit', shell: 'Shell', cli: 'CLI' }
+const LABEL: Record<(typeof ORDER)[number], string> = { sdk: 'SDK', uikit: 'UI kit', shell: 'Shell (lõi máy)', cli: 'CLI' }
 
 /**
  * The package name is this page's `h2`, so a CHANGELOG's own `# 1.0.0` drops a
@@ -29,9 +29,9 @@ function Page() {
   return (
     <Section narrow>
       <PageTop
-        eyebrow="Changelog"
-        title="Changelog"
-        lead="Every package on one page, read from its CHANGELOG.md at build time. Apps bundle the SDK and kit they compile against, so a new version here never breaks an installed app."
+        eyebrow="Lịch sử phiên bản"
+        title="Lịch sử phiên bản"
+        lead="Mọi gói nằm trên một trang, đọc từ CHANGELOG.md lúc build. App gói sẵn SDK và kit lúc biên dịch, nên phiên bản mới ở đây không bao giờ làm hỏng app đã cài."
       />
       <Reveal>
         <ul {...stylex.props(styles.cards)}>
@@ -44,7 +44,7 @@ function Page() {
                 <p {...stylex.props(styles.pkg)}>{LABEL[k]}</p>
                 <p {...stylex.props(styles.version)}>{v.version}</p>
                 <p {...stylex.props(styles.name)}>{v.name}</p>
-                <p {...stylex.props(styles.note)}>{v.changelog ? 'Changelog below' : 'No changelog yet'}</p>
+                <p {...stylex.props(styles.note)}>{v.changelog ? 'Lịch sử bên dưới' : 'Chưa có lịch sử'}</p>
               </>
             )
             return (

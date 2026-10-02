@@ -4,11 +4,11 @@ export default function Demo() {
   return (
     <>
       <Section>
-        <Row label="First group" />
-        <Row label="Rows share one rounded card" />
+        <Row label="Nhóm đầu tiên" />
+        <Row label="Các hàng chung một thẻ bo tròn" />
       </Section>
       <Section>
-        <Row label="Second group" />
+        <Row label="Nhóm thứ hai" />
       </Section>
     </>
   )

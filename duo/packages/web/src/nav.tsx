@@ -218,7 +218,7 @@ function Menu() {
                 key="scrim"
                 type="button"
                 tabIndex={SKIP}
-                aria-label="Close the menu"
+                aria-label="Đóng thực đơn"
                 onClick={close}
                 {...stylex.props(styles.scrim)}
                 initial={{ opacity: 0 }}

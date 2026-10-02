@@ -57,7 +57,7 @@ export async function models(connection: Connection, signal: AbortSignal): Promi
 export function endpointURL(base: string) {
   const url = new URL(base.trim())
   if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash)
-    throw new Error('Use an HTTPS API base URL without credentials, query parameters or a fragment')
+    throw new Error('Dùng URL API HTTPS, không kèm thông tin đăng nhập, tham số truy vấn hay fragment')
   url.pathname = `${url.pathname.replace(/\/+$/, '')}/chat/completions`
   return url.href
 }
@@ -69,8 +69,8 @@ export async function completion(
   test = false
 ) {
   const url = endpointURL(connection.endpoint)
-  if (!connection.key.trim()) throw new Error('Enter your API key in Connection')
-  if (!connection.model.trim()) throw new Error('Enter a model ID in Connection')
+  if (!connection.key.trim()) throw new Error('Nhập API key trong phần Kết nối')
+  if (!connection.model.trim()) throw new Error('Nhập ID model trong phần Kết nối')
   const timeout = AbortSignal.timeout(180_000)
   const combined = AbortSignal.any([signal, timeout])
   let response: Response
@@ -85,20 +85,20 @@ export async function completion(
       signal: combined
     })
   } catch {
-    if (combined.aborted) throw new Error(signal.aborted ? 'Stopped' : 'Provider timed out after 3 minutes')
-    throw new Error('Cannot reach this endpoint. Check the URL, connection and provider browser CORS support.')
+    if (combined.aborted) throw new Error(signal.aborted ? 'Đã dừng' : 'Provider phản hồi quá lâu (3 phút)')
+    throw new Error('Không kết nối được endpoint này. Kiểm tra URL, kết nối và việc provider có hỗ trợ CORS từ trình duyệt không.')
   }
   if (!response.ok) {
     void response.body?.cancel()
     const reason: Record<number, string> = {
-      401: 'API key was rejected',
-      403: 'Access denied by the provider',
-      402: 'Provider credits are exhausted',
-      429: 'Provider rate limit reached; retry later'
+      401: 'API key bị từ chối',
+      403: 'Provider từ chối truy cập',
+      402: 'Provider đã hết credit',
+      429: 'Provider bị giới hạn tần suất; thử lại sau'
     }
-    throw new Error(reason[response.status] ?? `Provider request failed (${response.status})`)
+    throw new Error(reason[response.status] ?? `Yêu cầu tới provider thất bại (${response.status})`)
   }
-  if (!response.body) throw new Error('Provider returned an empty response')
+  if (!response.body) throw new Error('Provider trả về phản hồi rỗng')
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   const streaming = response.headers.get('content-type')?.includes('text/event-stream')
@@ -112,10 +112,10 @@ export async function completion(
       return
     }
     const data = JSON.parse(json)
-    if (data.error) throw new Error('Provider reported a generation error')
+    if (data.error) throw new Error('Provider báo lỗi khi tạo nội dung')
     const choice = data.choices?.[0]
-    if (choice?.finish_reason === 'length') throw new Error('Response was truncated. Ask for a smaller app.')
-    if (choice?.finish_reason === 'content_filter') throw new Error('Provider declined this request')
+    if (choice?.finish_reason === 'length') throw new Error('Phản hồi bị cắt ngắn. Hãy yêu cầu một app nhỏ hơn.')
+    if (choice?.finish_reason === 'content_filter') throw new Error('Provider từ chối yêu cầu này')
     const content = choice?.delta?.content ?? choice?.message?.content
     if (typeof content === 'string') {
       output += content
@@ -128,7 +128,7 @@ export async function completion(
       const { value, done } = await reader.read()
       if (done) break
       received += value.byteLength
-      if (received > 2_000_000) throw new Error('Provider response exceeds the size limit')
+      if (received > 2_000_000) throw new Error('Phản hồi của provider vượt giới hạn kích thước')
       buffer += decoder.decode(value, { stream: true }).replace(/\r/g, '')
       if (streaming) {
         let index = buffer.indexOf('\n\n')
@@ -147,7 +147,7 @@ export async function completion(
     }
     buffer += decoder.decode()
     if (!streaming) consume(buffer)
-    if (!complete || !output.trim()) throw new Error('Provider stream ended before a complete response')
+    if (!complete || !output.trim()) throw new Error('Luồng phản hồi của provider kết thúc khi chưa có phản hồi hoàn chỉnh')
     return output
   } finally {
     await reader.cancel().catch(() => {})

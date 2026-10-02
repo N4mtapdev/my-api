@@ -4,13 +4,13 @@ export default function Demo() {
   return (
     <>
       <Title as="h1">
-        Reminders
+        Nhắc việc
         <Title as="span" variant="accessory">
-          3 due
+          3 việc tới hạn
         </Title>
       </Title>
       <Section>
-        <Row label="Call the vet" />
+        <Row label="Gọi bác sĩ thú y" />
       </Section>
     </>
   )

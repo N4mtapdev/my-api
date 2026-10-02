@@ -5,7 +5,7 @@ import * as stylex from '@stylexjs/stylex'
 export default function Demo() {
   return (
     <VStack xstyle={styles.night}>
-      <WidgetLabel>Weather</WidgetLabel>
+      <WidgetLabel>Thời tiết</WidgetLabel>
       <WidgetLabel as="span">Cupertino · 21°</WidgetLabel>
     </VStack>
   )

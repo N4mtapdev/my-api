@@ -26,12 +26,12 @@ export const Route = createFileRoute('/kit/docs/$name')({
 })
 
 const GROUP: Record<string, string> = {
-  component: 'Components',
-  hook: 'Hooks',
-  function: 'Functions',
-  class: 'Classes',
-  type: 'Types',
-  value: 'Values'
+  component: 'Component',
+  hook: 'Hook',
+  function: 'Hàm',
+  class: 'Lớp',
+  type: 'Kiểu dữ liệu',
+  value: 'Giá trị'
 }
 
 function Page() {
@@ -52,7 +52,7 @@ function Page() {
         animate={{ opacity: 1, transform: 'translateY(0px)' }}
         transition={{ duration: still ? 0 : 0.34, ease: CURVE }}
       >
-        <nav aria-label="Breadcrumb" {...stylex.props(styles.crumbs)}>
+        <nav aria-label="Đường dẫn" {...stylex.props(styles.crumbs)}>
           <Link to="/kit/docs" {...stylex.props(styles.crumb)}>
             {GROUP[entry.kind]}
           </Link>
@@ -65,7 +65,7 @@ function Page() {
             {lead ? (
               <p {...stylex.props(styles.lead)}>{inline(lead.replace(/\n+/g, ' '), ctx)}</p>
             ) : (
-              <p {...stylex.props(styles.undocumented)}>No TSDoc on this export yet.</p>
+              <p {...stylex.props(styles.undocumented)}>Export này chưa có TSDoc.</p>
             )}
           </div>
           <a
@@ -77,16 +77,16 @@ function Page() {
             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
             </svg>
-            Source
+            Nguồn
           </a>
         </div>
         {hasDemo(entry.name) ? <KitPreview name={entry.name} /> : <Signature code={entry.signature} />}
         {rest.length > 0 && <div {...stylex.props(styles.doc)}>{render(parse(rest.join('\n\n')), ctx)}</div>}
-        <h2 {...stylex.props(styles.h2)}>API reference</h2>
+        <h2 {...stylex.props(styles.h2)}>Tham chiếu API</h2>
         {entry.members && entry.members.length > 0 ? <ApiTable entry={entry} /> : <Signature code={entry.signature} />}
         {related.length > 0 && (
           <>
-            <h2 {...stylex.props(styles.h2)}>Related {GROUP[entry.kind]?.toLowerCase()}</h2>
+            <h2 {...stylex.props(styles.h2)}>{GROUP[entry.kind]} liên quan</h2>
             <div {...stylex.props(styles.related)}>
               {related.map((e) => (
                 <Link key={e.name} to="/kit/docs/$name" params={{ name: e.name }} {...stylex.props(styles.tile)}>

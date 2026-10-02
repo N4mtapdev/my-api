@@ -27,11 +27,11 @@ const INSTALL = 'bun add @doan-labs/duo-uikit'
 const NONE = { duration: 0 }
 
 const STATS = [
-  `${counts.components} components`,
-  `${counts.hooks} hooks`,
-  `${counts.helpers} types and helpers`,
-  `${counts.live} live demos`,
-  '387 and 790 point displays'
+  `${counts.components} component`,
+  `${counts.hooks} hook`,
+  `${counts.helpers} kiểu và hàm hỗ trợ`,
+  `${counts.live} demo chạy thật`,
+  'Màn hình 387 và 790 điểm'
 ]
 
 export function KitHero() {
@@ -46,19 +46,19 @@ export function KitHero() {
     <section {...stylex.props(styles.hero)} aria-labelledby="kit-title">
       <div {...stylex.props(styles.inner)}>
         <motion.p {...stylex.props(styles.eyebrow)} {...rise(0)}>
-          @doan-labs/duo-uikit · v{versions.uikit?.version} · {kit.length} exports
+          @doan-labs/duo-uikit · v{versions.uikit?.version} · {kit.length} export
         </motion.p>
         <motion.h1 id="kit-title" {...stylex.props(styles.title)} {...rise(1)}>
-          {counts.components} components that
+          {counts.components} component sinh ra
           <br />
-          already know the phone folds.
+          đã biết máy này có thể gập.
         </motion.h1>
         <motion.p {...stylex.props(styles.sub)} {...rise(2)}>
-          Buttons, rows, lists, navigation stacks and widgets, drawn the way iOS draws them. Everything below is the
-          real package running in your browser.
+          Nút bấm, hàng, danh sách, ngăn xếp điều hướng và widget, vẽ đúng cách iOS vẽ. Mọi thứ bên dưới là gói thật
+          đang chạy trong trình duyệt của bạn.
         </motion.p>
         <motion.div {...stylex.props(styles.actions)} {...rise(3)}>
-          <Button to="/kit/docs">See all components</Button>
+          <Button to="/kit/docs">Xem tất cả component</Button>
           <Button to="/guidelines" outline>
             Human Interface Guidelines
           </Button>
@@ -152,7 +152,7 @@ function Install() {
         animate={{ scale: copied && !still ? [1, 1.16, 1] : 1 }}
         transition={still ? NONE : { duration: 0.4, ease: CURVE }}
       >
-        {copied ? 'Copied ✓' : 'Copy'}
+        {copied ? 'Đã chép ✓' : 'Chép'}
       </motion.span>
     </motion.button>
   )

@@ -6,20 +6,20 @@ export default function Demo() {
     <Section>
       <Row>
         <HStack gap={8}>
-          <Button variant="filled">Save</Button>
-          <Button>Later</Button>
+          <Button variant="filled">Lưu</Button>
+          <Button>Để sau</Button>
         </HStack>
       </Row>
       <Row>
         <HStack gap={10} justify="between" xstyle={styles.fill}>
-          <Text>Pushed apart</Text>
-          <Text color="secondary">by justify</Text>
+          <Text>Đẩy ra hai bên</Text>
+          <Text color="secondary">nhờ justify</Text>
         </HStack>
       </Row>
       <Row>
         <HStack gap={6}>
           <Sym name="wifi" size={15} />
-          <Text size="subheadline">Centred on the cross axis</Text>
+          <Text size="subheadline">Căn giữa theo trục ngang</Text>
         </HStack>
       </Row>
     </Section>

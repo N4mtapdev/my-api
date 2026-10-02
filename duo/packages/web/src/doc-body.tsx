@@ -31,8 +31,8 @@ export function DocBody({ doc }: { doc: Doc }) {
         <p {...stylex.props(styles.group)}>{doc.group}</p>
         <Title>{doc.title}</Title>
         {toc.length > 5 && (
-          <nav aria-label="On this page" {...stylex.props(styles.toc)}>
-            <h2 {...stylex.props(styles.tocTitle)}>On this page</h2>
+          <nav aria-label="Trong trang này" {...stylex.props(styles.toc)}>
+            <h2 {...stylex.props(styles.tocTitle)}>Trong trang này</h2>
             <ul {...stylex.props(styles.tocList)}>
               {toc.map((h) => (
                 <li key={h.id} {...stylex.props(styles.tocItem, h.level === 3 && styles.tocSub)}>
@@ -50,7 +50,7 @@ export function DocBody({ doc }: { doc: Doc }) {
         {prev ? (
           <Link to="/docs/$" params={{ _splat: prev.slug }} {...stylex.props(styles.pageLink)}>
             <span {...stylex.props(styles.pageLabel)}>
-              <span aria-hidden="true">&#8592;</span> Previous
+              <span aria-hidden="true">&#8592;</span> Trước
             </span>
             <span {...stylex.props(styles.pageTitle)}>{prev.title}</span>
           </Link>
@@ -60,7 +60,7 @@ export function DocBody({ doc }: { doc: Doc }) {
         {next && (
           <Link to="/docs/$" params={{ _splat: next.slug }} {...stylex.props(styles.pageLink, styles.pageNext)}>
             <span {...stylex.props(styles.pageLabel)}>
-              Next <span aria-hidden="true">&#8594;</span>
+              Sau <span aria-hidden="true">&#8594;</span>
             </span>
             <span {...stylex.props(styles.pageTitle)}>{next.title}</span>
           </Link>
@@ -68,7 +68,7 @@ export function DocBody({ doc }: { doc: Doc }) {
       </nav>
       <p {...stylex.props(styles.edit)}>
         <a href={blob(doc.path)} {...stylex.props(styles.editLink)}>
-          Edit this page on GitHub
+          Sửa trang này trên GitHub
         </a>
       </p>
     </Prose>

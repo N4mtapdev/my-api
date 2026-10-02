@@ -21,12 +21,12 @@ export type Doc = {
   body: string
 }
 
-export const groups = ['Start', 'Build', 'Ship'] as const
+export const groups = ['Bắt đầu', 'Xây dựng', 'Phát hành'] as const
 
 const ORDER: Record<Doc['group'], string[]> = {
-  Start: ['introduction', 'getting-started', 'your-first-app'],
-  Build: ['manifest', 'lifecycle', 'displays', 'storage', 'permissions'],
-  Ship: ['cli', 'catalogs', 'publishing']
+  'Bắt đầu': ['introduction', 'getting-started', 'your-first-app'],
+  'Xây dựng': ['manifest', 'lifecycle', 'displays', 'storage', 'permissions'],
+  'Phát hành': ['cli', 'catalogs', 'publishing']
 }
 
 const rank = (slug: string) => {

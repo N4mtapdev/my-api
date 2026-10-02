@@ -12,7 +12,7 @@ import { color, ease, font, radius } from '../tokens.stylex'
 const SMALL = '@media (max-width: 734px)'
 
 export const Route = createFileRoute('/publish')({
-  head: () => ({ meta: [{ title: 'Submit your app · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Gửi app của bạn · Duo' }] }),
   component: Page
 })
 
@@ -21,26 +21,26 @@ function Page() {
   return (
     <Section narrow>
       <PageTop
-        eyebrow="Publish"
-        title="Submit your app to the Duo App Store"
-        lead="Contributions are reviewed through GitHub pull requests."
+        eyebrow="Đóng góp"
+        title="Gửi app của bạn lên App Store của Duo"
+        lead="Mọi đóng góp được review qua GitHub pull request."
       />
       <div {...stylex.props(styles.actions)}>
-        <Button href={SUBMIT}>Submit with GitHub</Button>
+        <Button href={SUBMIT}>Gửi bằng GitHub</Button>
         <Button to="/get-started" outline>
-          Build your first app
+          Viết app đầu tiên
         </Button>
       </div>
       <p {...stylex.props(styles.note)}>
-        The button opens GitHub's compare view with the submission template selected - that is what{' '}
-        <Code>?template=app-submission.md</Code> in the URL does. Push a branch with your app on it first; the compare
-        view cannot create the source for you.
+        Nút bấm mở trang compare của GitHub với sẵn mẫu khai báo app - đó là tác dụng của{' '}
+        <Code>?template=app-submission.md</Code> trong URL. Push nhánh chứa app của bạn lên trước; trang compare không
+        tự tạo code giúp bạn.
       </p>
       <ol {...stylex.props(styles.timeline)}>
-        <Step n={1} title="Prepare your app">
+        <Step n={1} title="Chuẩn bị app">
           <p {...stylex.props(styles.p)}>
-            You need Bun and a clone of the repository. The SDK, the UI kit and the CLI are not on npm, so a submission
-            is built against local archives:
+            Bạn cần Bun và một bản clone của repository. SDK, UI kit và CLI chưa lên npm, nên app được build dựa trên
+            bản nén cục bộ:
           </p>
           <Pre lang="sh">{`bun install
 bun scripts/package-platform.ts          # local SDK, kit and CLI archives, once
@@ -48,126 +48,126 @@ bun packages/cli/index.mjs create my-app --packages .cache/platform-packages/art
 cd my-app && bun install
 bun run check                            # import boundaries, strict TypeScript, the 4 MiB cap`}</Pre>
           <p {...stylex.props(styles.p)}>
-            New to this?{' '}
+            Còn bỡ ngỡ?{' '}
             <Link to="/get-started" {...stylex.props(styles.link)}>
-              Get started
+              Bắt đầu
             </Link>{' '}
-            walks the same commands with the simulator running beside them.
+            hướng dẫn lại các lệnh đó với simulator chạy song song.
           </p>
         </Step>
-        <Step n={2} title="Check the requirements">
-          <p {...stylex.props(styles.p)}>These are the rules for the first curated launch. All of them are checked.</p>
+        <Step n={2} title="Kiểm tra yêu cầu">
+          <p {...stylex.props(styles.p)}>Đây là các điều kiện cho đợt phát hành tuyển chọn đầu tiên. Tất cả đều được máy kiểm tra.</p>
           <Table>
             <thead>
               <tr>
-                <Th>Rule</Th>
-                <Th>What it means</Th>
+                <Th>Quy tắc</Th>
+                <Th>Nghĩa là gì</Th>
               </tr>
             </thead>
             <tbody>
               <Tr>
-                <Td nowrap>Both displays</Td>
-                <Td>Runs on the inner display and on the cover. Cover support is required, not optional.</Td>
+                <Td nowrap>Cả hai màn hình</Td>
+                <Td>Chạy được trên màn hình trong lẫn màn hình ngoài khi gập. Hỗ trợ cover là bắt buộc, không tùy chọn.</Td>
               </Tr>
               <Tr>
-                <Td nowrap>Public API only</Td>
+                <Td nowrap>Chỉ dùng API công khai</Td>
                 <Td>
-                  Only exports of <Code>@doan-labs/duo-sdk</Code> and <Code>@doan-labs/duo-uikit</Code>. No shell
-                  imports, no imports from another app.
+                  Chỉ import từ <Code>@doan-labs/duo-sdk</Code> và <Code>@doan-labs/duo-uikit</Code>. Không import từ
+                  shell, không import từ app khác.
                 </Td>
               </Tr>
               <Tr>
-                <Td nowrap>Complete metadata</Td>
+                <Td nowrap>Metadata đầy đủ</Td>
                 <Td>
-                  A 1024 px <Code>icon.png</Code>, <Code>screenshots/inner.png</Code> and{' '}
-                  <Code>screenshots/cover.png</Code>, a <Code>README.md</Code> and a <Code>CHANGELOG.md</Code>.
+                  <Code>icon.png</Code> 1024 px, <Code>screenshots/inner.png</Code> và{' '}
+                  <Code>screenshots/cover.png</Code>, <Code>README.md</Code> và <Code>CHANGELOG.md</Code>.
                 </Td>
               </Tr>
               <Tr>
-                <Td nowrap>Existing limits</Td>
+                <Td nowrap>Giới hạn hiện hành</Td>
                 <Td>
-                  The built document stays under the 4 MiB cap <Code>check</Code> enforces.
+                  Tài liệu build ra phải nằm dưới trần 4 MiB mà <Code>check</Code> kiểm tra.
                 </Td>
               </Tr>
               <Tr>
                 <Td nowrap>Lane</Td>
                 <Td>
-                  <Code>"lane": "community"</Code> in the manifest.
+                  <Code>"lane": "community"</Code> trong manifest.
                 </Td>
               </Tr>
               <Tr>
-                <Td nowrap>No permissions</Td>
+                <Td nowrap>Không xin quyền</Td>
                 <Td>
-                  <Code>permissions</Code> is empty. Apps that need a device permission are not eligible yet.
+                  <Code>permissions</Code> để trống. App cần quyền thiết bị thì chưa đủ điều kiện ở thời điểm này.
                 </Td>
               </Tr>
               <Tr>
-                <Td nowrap>Declared network</Td>
+                <Td nowrap>Khai báo mạng</Td>
                 <Td>
-                  Every origin the app contacts is listed in <Code>network</Code>. Nothing else is reachable from the
-                  sandbox.
+                  Mọi origin app kết nối tới phải nằm trong <Code>network</Code>. Ngoài danh sách đó, sandbox không với
+                  tới gì khác.
                 </Td>
               </Tr>
               <Tr>
-                <Td nowrap>MIT licence</Td>
+                <Td nowrap>Giấy phép MIT</Td>
                 <Td>
-                  A <Code>LICENSE</Code> file with the MIT text in the app folder.
+                  File <Code>LICENSE</Code> chứa nội dung MIT trong thư mục app.
                 </Td>
               </Tr>
             </tbody>
           </Table>
         </Step>
-        <Step n={3} title="Add your source">
+        <Step n={3} title="Thêm mã nguồn">
           <p {...stylex.props(styles.p)}>
-            Community apps live as source in the repository. Fork it, clone your fork, and put the app in its own
-            kebab-case folder under <Code>community-apps/</Code>:
+            App cộng đồng nằm trong repository dưới dạng mã nguồn. Fork repo, clone bản fork, rồi đặt app vào thư mục
+            kebab-case riêng dưới <Code>community-apps/</Code>:
           </p>
           <Pre>{`community-apps/<app-slug>/`}</Pre>
           <p {...stylex.props(styles.p)}>
-            The folder name is for humans. The identity is the reverse-DNS <Code>id</Code> in the manifest, and it never
-            changes once published.
+            Tên thư mục là để người đọc. Định danh thật là <Code>id</Code> dạng reverse-DNS trong manifest, và không bao
+            giờ đổi sau khi phát hành.
           </p>
           <Table>
             <thead>
               <tr>
                 <Th>File</Th>
-                <Th>What it is</Th>
+                <Th>Là gì</Th>
               </tr>
             </thead>
             <tbody>
               <Tr>
                 <Td nowrap>manifest.json</Td>
-                <Td>Identity, version, lane, permissions, declared network origins.</Td>
+                <Td>Định danh, phiên bản, lane, quyền, các origin mạng đã khai báo.</Td>
               </Tr>
               <Tr>
                 <Td nowrap>main.tsx</Td>
-                <Td>The entry, plus whatever other source files it imports.</Td>
+                <Td>Điểm khởi động, cùng mọi file nguồn khác nó import.</Td>
               </Tr>
               <Tr>
                 <Td nowrap>package.json</Td>
                 <Td>
-                  Dependencies. <Code>bun.lock</Code> as well, but only when you add something beyond the platform set:{' '}
+                  Dependencies. Có <Code>bun.lock</Code> khi bạn thêm gì vượt ngoài bộ nền tảng:{' '}
                   <Code>@doan-labs/duo-sdk</Code>, <Code>@doan-labs/duo-uikit</Code>, <Code>@stylexjs/stylex</Code>,{' '}
                   <Code>react</Code>, <Code>react-dom</Code>.
                 </Td>
               </Tr>
               <Tr>
                 <Td nowrap>icon.png</Td>
-                <Td>1024 px square.</Td>
+                <Td>Hình vuông 1024 px.</Td>
               </Tr>
               <Tr>
                 <Td nowrap>screenshots/</Td>
                 <Td>
-                  <Code>inner.png</Code> and <Code>cover.png</Code>, both required.
+                  <Code>inner.png</Code> và <Code>cover.png</Code>, bắt buộc cả hai.
                 </Td>
               </Tr>
               <Tr>
                 <Td nowrap>README.md</Td>
-                <Td>What the app does and how it behaves across the fold.</Td>
+                <Td>App làm gì và ứng xử thế nào qua nếp gấp.</Td>
               </Tr>
               <Tr>
                 <Td nowrap>CHANGELOG.md</Td>
-                <Td>One entry per version, newest first.</Td>
+                <Td>Mỗi phiên bản một mục, mới nhất lên đầu.</Td>
               </Tr>
               <Tr>
                 <Td nowrap>LICENSE</Td>
@@ -179,93 +179,89 @@ bun run check                            # import boundaries, strict TypeScript,
             <a href={blob('community-apps/fold-compass')} {...stylex.props(styles.link)}>
               community-apps/fold-compass
             </a>{' '}
-            is a complete example to copy the shape from.
+            là ví dụ hoàn chỉnh để học theo cấu trúc.
           </p>
           <p {...stylex.props(styles.p)}>
-            Then add your entry to{' '}
+            Sau đó thêm mục của bạn vào{' '}
             <a href={blob('community-apps/registry.json')} {...stylex.props(styles.link)}>
               community-apps/registry.json
             </a>
-            , which maps each app id to its folder and to the GitHub accounts allowed to maintain it. Changing an
-            identity, transferring ownership or approving a release needs a review from those accounts. The{' '}
-            <Code>author</Code> and <Code>repo</Code> strings in a manifest are labels, not proof of ownership.
+            , file này ánh xạ mỗi app id tới thư mục của nó và tới các tài khoản GitHub được phép giữ mã nguồn. Đổi định
+            danh, chuyển quyền sở hữu hay duyệt phát hành đều cần review từ đúng các tài khoản đó. Chuỗi{' '}
+            <Code>author</Code> và <Code>repo</Code> trong manifest chỉ là nhãn, không phải bằng chứng sở hữu.
           </p>
-          <p {...stylex.props(styles.p)}>Run the same check CI runs, before you push:</p>
+          <p {...stylex.props(styles.p)}>Chạy đúng bước kiểm tra mà CI sẽ chạy, trước khi push:</p>
           <Pre lang="sh">{'bun scripts/check-submissions.ts community-apps/<app-slug>'}</Pre>
         </Step>
-        <Step n={4} title="Open your PR">
+        <Step n={4} title="Mở pull request">
           <p {...stylex.props(styles.p)}>
-            Commit on a branch, push it to your fork, then open the pull request against <Code>main</Code> with the{' '}
-            <Code>app-submission</Code> template. The template asks for the app id, the version, the folder, the
-            registry entry, any dependency you added and why, the network origins you declared, and a confirmation that
-            you ran the check.
+            Commit lên một nhánh, push lên fork, rồi mở pull request vào <Code>main</Code> với mẫu{' '}
+            <Code>app-submission</Code>. Mẫu này hỏi app id, phiên bản, thư mục, mục registry, dependency nào bạn thêm
+            và vì sao, các origin mạng đã khai báo, và xác nhận đã chạy bước kiểm tra.
           </p>
           <p {...stylex.props(styles.p)}>
-            Attach both screenshots to the pull request body: the inner display and the cover. Reviewers read the
-            manifest, the diff, the dependencies, the declared origins, and how the app behaves when the phone folds
-            while it is open.
+            Đính kèm cả hai ảnh chụp màn hình vào phần mô tả PR: màn hình trong và màn hình ngoài. Người review đọc
+            manifest, diff, dependencies, origin đã khai báo, và cách app ứng xử khi máy bị gập lại trong lúc đang mở.
           </p>
         </Step>
-        <Step n={5} title="After review">
-          <p {...stylex.props(styles.p)}>A submission moves through three states, and they are not the same thing:</p>
+        <Step n={5} title="Sau khi review">
+          <p {...stylex.props(styles.p)}>Một bài gửi đi qua ba trạng thái, và chúng không phải là một:</p>
           <Table>
             <thead>
               <tr>
-                <Th>State</Th>
-                <Th>What it means</Th>
+                <Th>Trạng thái</Th>
+                <Th>Nghĩa là gì</Th>
               </tr>
             </thead>
             <tbody>
               <Tr>
-                <Td nowrap>Checks passed</Td>
-                <Td>Eligible for review. Not acceptance.</Td>
+                <Td nowrap>Check đạt</Td>
+                <Td>Đủ điều kiện để được review. Chưa phải là được chấp nhận.</Td>
               </Tr>
               <Tr>
-                <Td nowrap>Merged</Td>
-                <Td>Accepted. The source is in the repository.</Td>
+                <Td nowrap>Đã merge</Td>
+                <Td>Được chấp nhận. Mã nguồn đã nằm trong repository.</Td>
               </Tr>
               <Tr>
-                <Td nowrap>Published</Td>
+                <Td nowrap>Đã phát hành</Td>
                 <Td>
-                  The publish workflow run succeeded and the release is in the curated catalog at <Code>{CATALOG}</Code>
-                  . Only then is the app installable.
+                  Workflow publish chạy thành công và bản phát hành đã nằm trong catalog tuyển chọn tại{' '}
+                  <Code>{CATALOG}</Code>. Đến lúc đó app mới cài được.
                 </Td>
               </Tr>
             </tbody>
           </Table>
           <p {...stylex.props(styles.p)}>
-            To ship an update, bump <Code>version</Code>, add a changelog entry, and open a new pull request. If a
-            publish fails, the reason is in that workflow run. To have an app removed from the catalog, open an issue -
-            delisting stops new installs; it does not uninstall the app from anyone's phone and does not delete their
-            data.
+            Muốn phát hành bản cập nhật: tăng <Code>version</Code>, thêm mục changelog, và mở pull request mới. Nếu
+            publish thất bại, lý do nằm ngay trong lần chạy workflow đó. Muốn rút app khỏi catalog, mở issue - việc gỡ
+            chỉ chặn cài mới; app không bị gỡ khỏi máy ai và dữ liệu của họ không bị xóa.
           </p>
         </Step>
       </ol>
       <SectionTop
-        eyebrow="Alternative"
-        title="Host your own catalog"
-        lead="You do not need the curated catalog to distribute an app. Nothing about this changes later."
+        eyebrow="Con đường khác"
+        title="Tự host catalog của riêng bạn"
+        lead="Bạn không cần catalog tuyển chọn để phát hành app. Cách này không đổi ở các lần sau."
       />
       <ol {...stylex.props(styles.plain)}>
         <li {...stylex.props(styles.item)}>
-          <Code>bun run build</Code> in your app. <Code>dist/</Code> is a complete catalog with one app in it.
+          <Code>bun run build</Code> trong app của bạn. <Code>dist/</Code> là một catalog hoàn chỉnh có một app.
         </li>
         <li {...stylex.props(styles.item)}>
-          Put <Code>dist/</Code> on any static host that serves the files with CORS and a short cache on{' '}
+          Đặt <Code>dist/</Code> lên bất kỳ host tĩnh nào phục vụ file với CORS và cache ngắn cho{' '}
           <Code>index.json</Code>.
         </li>
         <li {...stylex.props(styles.item)}>
-          Share the URL of <Code>index.json</Code>. Anyone running Duo pastes it into the App Store's Developer catalog
-          field.
+          Chia sẻ URL của <Code>index.json</Code>. Ai đang chạy Duo dán nó vào ô Developer catalog trong App Store.
         </li>
       </ol>
       <p {...stylex.props(styles.p)}>
-        Bump the version, upload the new release folder, then the new <Code>index.json</Code>; never edit a published
-        release folder.{' '}
+        Tăng version, tải thư mục phát hành mới lên, rồi thay <Code>index.json</Code> mới; đừng bao giờ sửa một thư mục
+        phát hành đã công bố.{' '}
         <Link to="/docs/$" params={{ _splat: 'catalogs' }} {...stylex.props(styles.link)}>
-          Catalogs
+          Catalog
         </Link>{' '}
-        has the format and what the store does with it.
+        có định dạng và cách store dùng nó.
       </p>
     </Section>
   )

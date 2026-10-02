@@ -63,7 +63,7 @@ export function Footer() {
           </p>
         </div>
         <div {...stylex.props(styles.columns)}>
-          <nav aria-label="Platform" {...stylex.props(styles.column)}>
+          <nav aria-label="Nền tảng" {...stylex.props(styles.column)}>
             <h2 {...stylex.props(styles.heading)}>Nền tảng</h2>
             {NAV.map((n) => (
               <Item key={n.to} to={n.to}>
@@ -71,7 +71,7 @@ export function Footer() {
               </Item>
             ))}
           </nav>
-          <nav aria-label="Project" {...stylex.props(styles.column)}>
+          <nav aria-label="Dự án" {...stylex.props(styles.column)}>
             <h2 {...stylex.props(styles.heading)}>Dự án</h2>
             <Item href={REPO}>GitHub</Item>
             {PROJECT.map((m) => (

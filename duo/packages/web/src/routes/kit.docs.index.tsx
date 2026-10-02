@@ -8,7 +8,7 @@ import { blob } from '../site'
 import { color, ease, font, radius } from '../tokens.stylex'
 
 export const Route = createFileRoute('/kit/docs/')({
-  head: () => ({ meta: [{ title: 'UI kit reference · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Tham chiếu UI kit · Duo' }] }),
   component: Index
 })
 
@@ -20,13 +20,13 @@ function Index() {
   return (
     <Prose>
       <PageTop
-        eyebrow="Reference"
+        eyebrow="Tham chiếu"
         title="UI kit"
         lead={
           <>
-            <Code>@doan-labs/duo-uikit</Code>: the components and tokens every app on the phone is built from. They
-            already know about the cover and the inner display, so a screen that reads at 387 points grows into the room
-            it gets unfolded.
+            <Code>@doan-labs/duo-uikit</Code>: component và token mà mọi app trên máy được dựng nên từ đó. Chúng sinh ra
+            đã hiểu màn hình ngoài lẫn màn hình trong, nên khung hình đọc tốt ở 387 điểm sẽ lớn lên thành không gian
+            đầy đủ khi máy được mở ra.
           </>
         }
       />
@@ -48,21 +48,21 @@ function App() {
   )
 }`}</Pre>
       <p {...stylex.props(styles.p)}>
-        Version <Code>{versions.uikit?.version}</Code>. Apps bundle the kit they compile against, so a new version never
-        changes whether a host can run an installed app. Components accept native attributes, <Code>as</Code> for the
-        element, <Code>animate</Code> for the CSS-only presets and <Code>xstyle</Code> for compiled StyleX extensions,
-        and refuse raw <Code>style</Code> and <Code>className</Code>. The{' '}
+        Phiên bản <Code>{versions.uikit?.version}</Code>. App đóng gói luôn bản kit mà nó biên dịch cùng, nên phiên bản
+        mới không bao giờ làm thay đổi việc máy có chạy được app đã cài hay không. Component nhận thuộc tính native,{' '}
+        <Code>as</Code> để chọn element, <Code>animate</Code> cho các preset CSS thuần và <Code>xstyle</Code> cho phần
+        mở rộng StyleX đã biên dịch, và từ chối <Code>style</Code> cùng <Code>className</Code> thô. Trang{' '}
         <Link to="/kit" {...stylex.props(styles.link)}>
           showcase
         </Link>{' '}
-        runs every component live, and the{' '}
+        chạy mọi component trực tiếp, còn{' '}
         <a href={blob('examples/developer/main.tsx')} {...stylex.props(styles.link)}>
           Developer gallery
         </a>{' '}
-        is an installable app that renders every export at both display widths.
+        là một app cài được, render mọi export ở cả hai bề rộng màn hình.
       </p>
       <Reveal>
-        <h2 {...stylex.props(styles.h2)}>Exports</h2>
+        <h2 {...stylex.props(styles.h2)}>Danh sách export</h2>
         <ul {...stylex.props(styles.list)}>
           {listed.map((e) => (
             <li key={e.name}>
@@ -77,12 +77,12 @@ function App() {
       </Reveal>
       <h2 {...stylex.props(styles.h2)}>Tokens</h2>
       <p {...stylex.props(styles.p)}>
-        Colours, type and easing live in{' '}
+        Màu sắc, kiểu chữ và độ nảy nằm trong{' '}
         <a href={blob('packages/uikit/tokens.stylex.ts')} {...stylex.props(styles.link)}>
           tokens.stylex.ts
         </a>{' '}
-        as StyleX variables. Use them and never a literal: the two displays have different densities, the shell tunes
-        the palette for both, and that rule is what lets a fix in the kit reach every app.
+        dưới dạng biến StyleX. Dùng token, đừng dùng số cứng: hai màn hình có mật độ khác nhau, shell tự tinh chỉnh
+        bảng màu cho cả hai, và chính quy tắc đó khiến một lần sửa trong kit lan tới mọi app.
       </p>
     </Prose>
   )

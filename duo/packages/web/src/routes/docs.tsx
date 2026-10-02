@@ -18,12 +18,12 @@ function Layout() {
                     {d.title}
                   </SideLink>
                 ))}
-              {g === 'Build' && <SideLink to="/docs/sdk">SDK reference</SideLink>}
+              {g === 'Xây dựng' && <SideLink to="/docs/sdk">Tham chiếu SDK</SideLink>}
             </SideList>
           ))}
-          <SideList title="Reference">
+          <SideList title="Tham chiếu">
             <SideLink to="/kit/docs">UI kit</SideLink>
-            <SideLink to="/changelog">Changelog</SideLink>
+            <SideLink to="/changelog">Lịch sử phiên bản</SideLink>
           </SideList>
         </>
       }

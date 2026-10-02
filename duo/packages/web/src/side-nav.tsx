@@ -65,7 +65,7 @@ export function Split({ aside, children }: { aside: ReactNode; children: ReactNo
                 onClick={() => setOpen((o) => !o)}
                 {...stylex.props(styles.toggle)}
               >
-                <span {...stylex.props(styles.toggleLabel)}>{label || 'Documentation'}</span>
+                <span {...stylex.props(styles.toggleLabel)}>{label || 'Tài liệu'}</span>
                 <motion.svg
                   width="14"
                   height="14"

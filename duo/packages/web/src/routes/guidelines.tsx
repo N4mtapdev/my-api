@@ -13,18 +13,18 @@ import { CURVE } from '../motion'
 import { PageTop } from '../page-parts'
 
 export const Route = createFileRoute('/guidelines')({
-  head: () => ({ meta: [{ title: 'Human Interface Guidelines · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Nguyên tắc giao diện · Duo' }] }),
   component: Page
 })
 
 // Every count is the number of tokens the tab draws, read off the generated
 // arrays: a token added to the kit shows up here without an edit.
 const TABS: Tab[] = [
-  { id: 'rules', label: 'Rules' },
-  { id: 'colour', label: 'Colour', count: COLOUR_COUNT },
-  { id: 'typography', label: 'Typography', count: TYPE_COUNT },
-  { id: 'layout', label: 'Layout', count: GEOMETRY_COUNT },
-  { id: 'motion', label: 'Motion', count: EASING_COUNT }
+  { id: 'rules', label: 'Quy tắc' },
+  { id: 'colour', label: 'Màu', count: COLOUR_COUNT },
+  { id: 'typography', label: 'Chữ', count: TYPE_COUNT },
+  { id: 'layout', label: 'Bố cục', count: GEOMETRY_COUNT },
+  { id: 'motion', label: 'Chuyển động', count: EASING_COUNT }
 ]
 
 function Page() {
@@ -34,9 +34,9 @@ function Page() {
   return (
     <Section>
       <PageTop
-        eyebrow="Guidelines"
-        title="Human Interface Guidelines"
-        lead="Short and opinionated. Three rules cover most of what makes an app feel right on a phone that folds; the rest is iOS."
+        eyebrow="Nguyên tắc"
+        title="Nguyên tắc giao diện"
+        lead="Ngắn gọn và có lập trường. Ba quy tắc phủ được phần lớn cái làm cho app có cảm giác đúng trên một chiếc máy gập; phần còn lại là iOS."
       />
 
       <Tabs tabs={TABS} open={open} onOpen={setOpen} />

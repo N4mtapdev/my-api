@@ -3,13 +3,13 @@ import { Button, Nav, Page, Row, Section, useNav } from '@doan-labs/duo-uikit'
 function Root() {
   const nav = useNav()
   return (
-    <Page title="Library">
+    <Page title="Thư viện">
       <Section>
         <Row>
           <Button
             onClick={() =>
               nav.push((back) => (
-                <Page title="Detail" back={back}>
+                <Page title="Chi tiết" back={back}>
                   <Section>
                     <Row label="Pushed with" detail="useNav().push" />
                   </Section>
@@ -17,7 +17,7 @@ function Root() {
               ))
             }
           >
-            Push a page
+            Mở một trang
           </Button>
         </Row>
       </Section>

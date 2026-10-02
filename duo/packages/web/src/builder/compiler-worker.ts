@@ -12,7 +12,7 @@ function runtime() {
   boot ??= (async () => {
     await esbuild.initialize({ wasmURL, worker: false })
     const response = await fetch(runtimeURL, { credentials: 'omit' })
-    if (!response.ok) throw new Error('Compiler assets unavailable. Reload the page.')
+    if (!response.ok) throw new Error('Thiếu tệp trình biên dịch. Tải lại trang.')
     return (await response.json()) as Runtime
   })()
   return boot
@@ -33,7 +33,7 @@ function inlineTokens(tokens: Runtime['tokens']) {
                 !t.isIdentifier(specifier.imported) ||
                 !tokens[specifier.imported.name]
               )
-                throw importPath.buildCodeFrameError('Use named token imports from the Duo kit')
+                throw importPath.buildCodeFrameError('Chỉ import token theo tên từ kit Duo')
               names.set(specifier.local.name, tokens[specifier.imported.name]!)
             }
           }
@@ -81,11 +81,11 @@ createRoot(root).render(<Boundary><Ready /></Boundary>);`
               if (Object.hasOwn(lib.files, args.path)) return { path: args.path, namespace: 'library' }
               if (args.kind === 'entry-point') return { path: args.path, namespace: 'project' }
               if (!args.path.startsWith('./') && !args.path.startsWith('../'))
-                throw new Error(`Unsupported import: ${args.path}`)
+                throw new Error(`Import không được hỗ trợ: ${args.path}`)
               const parts = args.importer.split('/').slice(0, -1)
               for (const part of args.path.split('/')) {
                 if (part === '..') {
-                  if (!parts.length) throw new Error('Import leaves project')
+                  if (!parts.length) throw new Error('Import vượt ra ngoài dự án')
                   parts.pop()
                 } else if (part !== '.') parts.push(part)
               }
@@ -93,7 +93,7 @@ createRoot(root).render(<Boundary><Ready /></Boundary>);`
               const found = [path, `${path}.tsx`, `${path}.ts`, `${path}.json`, `${path}/index.tsx`].find((p) =>
                 Object.hasOwn(virtual, p)
               )
-              if (!found) throw new Error(`Missing source file: ${path}`)
+              if (!found) throw new Error(`Thiếu tệp mã nguồn: ${path}`)
               return { path: found, namespace: 'project' }
             })
             build.onLoad({ filter: /.*/, namespace: 'library' }, (args) => ({
@@ -121,6 +121,6 @@ createRoot(root).render(<Boundary><Ready /></Boundary>);`
     const bundle = await previewBundle(result.outputFiles![0]!.text, css, source.name, lib.sdk, lib.kit)
     scope.postMessage({ bundle })
   } catch (error) {
-    scope.postMessage({ error: error instanceof Error ? error.message.slice(0, 2500) : 'Compilation failed' })
+    scope.postMessage({ error: error instanceof Error ? error.message.slice(0, 2500) : 'Biên dịch thất bại' })
   }
 }

@@ -21,23 +21,23 @@ const PAPER = colors.find((t) => t.name === 'white')?.value ?? '#fff'
 
 const GROUPS = [
   {
-    title: 'Hues',
-    note: 'Tinting only: an icon square, a chart, a switch. Blue is the one interaction colour.',
+    title: 'Màu sắc',
+    note: 'Chỉ dùng để nhuộm: ô icon, biểu đồ, công tắc. Xanh dương là màu tương tác duy nhất.',
     tokens: colors.filter((t) => !NEUTRAL.test(t.name))
   },
   {
-    title: 'Greys',
-    note: 'systemGray through systemGray6, and the same steps in a dark app.',
+    title: 'Xám',
+    note: 'systemGray tới systemGray6, và cùng các nấc đó trong app nền tối.',
     tokens: colors.filter((t) => NEUTRAL.test(t.name))
   },
   {
-    title: 'Labels and fills',
-    note: 'The UIKit dynamic colours, themed per app. Text and surfaces come from here, never from a hue.',
+    title: 'Nhãn và nền',
+    note: 'Màu động của UIKit, tuỳ theo từng app. Chữ và bề mặt lấy từ đây, không lấy từ nhóm màu nhuộm.',
     tokens: app
   },
   {
-    title: 'Wallpaper',
-    note: 'One group of colours per wallpaper. Consts, because both displays bake the same picture.',
+    title: 'Hình nền',
+    note: 'Mỗi hình nền một nhóm màu. Là hằng số, vì cả hai màn hình vẽ cùng một bức.',
     tokens: wallpaper
   }
 ]

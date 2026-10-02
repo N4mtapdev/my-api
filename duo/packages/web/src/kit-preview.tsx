@@ -57,13 +57,13 @@ export function KitPreview({ name }: { name: string }) {
       <div {...stylex.props(styles.tabs)}>
         <Segmented
           id={id}
-          label="Component view"
+          label="Khung xem component"
           semantics="tablist"
           value={tab}
           onChange={(t) => setTab(t)}
           options={[
-            { value: 'preview' as const, label: 'Preview' },
-            { value: 'usage' as const, label: 'Usage' }
+            { value: 'preview' as const, label: 'Xem thử' },
+            { value: 'usage' as const, label: 'Cách dùng' }
           ]}
         />
       </div>

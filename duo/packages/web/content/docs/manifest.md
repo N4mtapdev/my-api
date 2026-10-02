@@ -1,6 +1,6 @@
 # Manifest
 
-One `manifest.json` per app. You write this file and nothing else about a release; `build` derives the rest into `release.json`, which is what the shell, the store and the loader read. Both types are exported by the SDK as `Manifest` and `Release`.
+Mỗi app một `manifest.json`. Bạn chỉ viết đúng file này về bản phát hành; `build` suy ra phần còn lại thành `release.json`, thứ mà shell, store và loader đọc. Cả hai kiểu dữ liệu được SDK export thành `Manifest` và `Release`.
 
 ```json
 {
@@ -21,34 +21,34 @@ One `manifest.json` per app. You write this file and nothing else about a releas
 }
 ```
 
-## Fields
+## Các trường
 
-| Field | Required | Meaning |
+| Trường | Bắt buộc | Ý nghĩa |
 | --- | --- | --- |
-| `id` | yes | Reverse-DNS, lowercase, at most 64 characters, immutable. The key for the app's data, its releases and `os.open`. Two apps may share a name, never an id. |
-| `name` | yes | Home screen label and store title. At most 12 characters, or it truncates on the cover display. |
-| `version` | yes | Strict semver. Prereleases run only under `?dev=`. |
-| `lane` | yes | `community` or `official`. Official is a review status set by the catalog owner, not something an author grants themselves; `check` refuses `official` for an id outside the repository's `OFFICIAL.txt`. |
-| `entry` | yes | Your entry module, relative to the manifest. Built into one `app.html` with script, styles and assets inline. |
-| `icon` | yes | A square 1024 px PNG. Copied as `icon-1024.png`. |
-| `light` | no | The status bar draws dark on this app. |
-| `edge` | no | The app draws under the status stack. |
-| `widgets` | no | Sizes you publish snapshots for through `os.widget.set`: `small`, `medium`. The shell renders the snapshot; no app code runs outside the frame. |
-| `network` | no | Exact HTTPS origins the document may connect to: scheme and host, optional port, no path, no wildcard. They become the document's `connect-src` and `media-src`. Loopback `http://` origins are allowed in development builds only. |
-| `permissions` | no | Names from the [permission table](permissions.md): `geolocation`, `clipboard-read`, `clipboard-write`, `photos`. Undeclared means refused at runtime. |
-| `author`, `repo`, `license` | yes | Shown in the store. `repo` is an `https://` URL. `license` must be `MIT`. |
+| `id` | có | Reverse-DNS, chữ thường, tối đa 64 ký tự, bất biến. Khóa cho dữ liệu app, các bản phát hành và `os.open`. Hai app được trùng tên, không bao giờ trùng id. |
+| `name` | có | Nhãn màn hình chính và tên trong store. Tối đa 12 ký tự, nếu không sẽ bị cắt trên màn hình ngoài. |
+| `version` | có | Semver nghiêm ngặt. Bản prerelease chỉ chạy dưới `?dev=`. |
+| `lane` | có | `community` hoặc `official`. Official là trạng thái review do chủ catalog đặt, không phải thứ tác giả tự cấp cho mình; `check` từ chối `official` cho id nằm ngoài `OFFICIAL.txt` của repository. |
+| `entry` | có | Module khởi động, tính tương đối từ manifest. Được build thành một `app.html` với script, style và asset nhúng ngay trong file. |
+| `icon` | có | PNG vuông 1024 px. Được copy thành `icon-1024.png`. |
+| `light` | không | Thanh trạng thái vẽ màu tối trên app này. |
+| `edge` | không | App vẽ tràn dưới dải trạng thái. |
+| `widgets` | không | Các cỡ mà bạn phát hành snapshot qua `os.widget.set`: `small`, `medium`. Shell vẽ snapshot; không có mã app nào chạy ngoài khung. |
+| `network` | không | Các origin HTTPS chính xác mà tài liệu được kết nối: scheme và host, port tùy chọn, không path, không wildcard. Chúng trở thành `connect-src` và `media-src` của tài liệu. Origin `http://` loopback chỉ được chấp nhận ở bản development. |
+| `permissions` | không | Tên trong [bảng quyền](permissions.md): `geolocation`, `clipboard-read`, `clipboard-write`, `photos`. Không khai báo nghĩa là bị từ chối khi chạy. |
+| `author`, `repo`, `license` | có | Hiển thị trong store. `repo` là URL `https://`. `license` phải là `MIT`. |
 
-## Rules
+## Quy tắc
 
-- `id` never changes. Renaming an app changes `name` only. A new id is a new app with no data.
-- `version` increases with every release, and `CHANGELOG.md` must mention it; `check` reads both.
-- Layout is responsive by requirement. There is no flag to opt out of the cover display: every app runs at 387 points wide.
+- `id` không bao giờ đổi. Đổi tên app chỉ đổi `name`. Id mới là một app mới, không có dữ liệu gì.
+- `version` tăng ở mọi bản phát hành, và `CHANGELOG.md` phải nhắc tới nó; `check` đọc cả hai.
+- Layout responsive là yêu cầu bắt buộc. Không có cờ nào để thoát khỏi màn hình ngoài: mọi app đều chạy ở bề rộng 387 điểm.
 
 ## release.json
 
 ```json
 {
-  "manifest": { "...": "the file above" },
+  "manifest": { "...": "file ở trên" },
   "build": { "sdk": "0.0.0", "kit": "0.1.0", "at": "2026-09-18T09:12:00Z", "commit": "…", "hash": "9f3ab21c" },
   "files": [
     { "path": "app.html", "bytes": 412000, "sha256": "…" },
@@ -57,4 +57,4 @@ One `manifest.json` per app. You write this file and nothing else about a releas
 }
 ```
 
-`build.sdk` is the SDK version the app compiled against and its host requirement: the shell runs a release when its own SDK satisfies `^build.sdk` under npm's caret rules, which while the SDK is 0.x means the exact version. `build.kit` is recorded for the store page and never gates. The release identity is `version+hash`, so a rebuild that changes any byte is a new identity and a published path is never overwritten.
+`build.sdk` là phiên bản SDK mà app biên dịch cùng và là yêu cầu tối thiểu của máy chủ: shell chỉ chạy bản phát hành khi SDK của nó thỏa `^build.sdk` theo quy tắc caret của npm, và khi SDK còn 0.x thì nghĩa là phải đúng phiên bản đó. `build.kit` được ghi lại cho trang store và không bao giờ chặn. Định danh bản phát hành là `version+hash`, nên một lần rebuild làm đổi bất kỳ byte nào cũng tạo ra định danh mới, và đường dẫn đã phát hành không bao giờ bị ghi đè.

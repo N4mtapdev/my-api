@@ -11,7 +11,7 @@ const FACTS = [
   'Không cần tài khoản developer, không phí, không rào cản.'
 ]
 
-const STEPS = ['fork', 'pull request', 'review', 'Duo Store']
+const STEPS = ['tách bản (fork)', 'pull request', 'duyệt', 'Duo Store']
 
 export function Open() {
   return (

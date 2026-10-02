@@ -1,62 +1,60 @@
-# Getting started
+# Bắt đầu
 
-To build entirely in your browser, open [Build](/build), connect an OpenRouter key or a
-browser-accessible OpenAI-compatible endpoint, and describe your app. No local tools are
-needed. Your provider receives requests directly; Duo does not proxy your key or prompts.
+Muốn viết app ngay trong trình duyệt, mở [Build](/build), kết nối key OpenRouter hoặc một endpoint tương thích OpenAI chạy được trên trình duyệt, rồi mô tả app bạn muốn. Không cần công cụ gì trên máy. Provider nhận request trực tiếp; Duo không proxy key hay prompt của bạn.
 
-The local developer workflow below remains available for full source projects and catalogs.
+Quy trình dev cục bộ dưới đây vẫn dùng được cho dự án nguồn đầy đủ và catalog riêng.
 
-Ten minutes: the simulator running locally, a new app on its inner home screen, then installed from a catalog like any other app.
+Mười phút: simulator chạy trên máy, một app mới nằm trên màn hình trong, rồi được cài từ catalog như mọi app khác.
 
-You need [Bun](https://bun.sh) and Python 3 with `pip`. The packages are not on npm yet; the repository builds local archives that the CLI resolves instead.
+Bạn cần [Bun](https://bun.sh) và Python 3 kèm `pip`. Các gói chưa lên npm; repository build sẵn bản nén cục bộ cho CLI dùng thay thế.
 
-## 1. Run the simulator
+## 1. Chạy simulator
 
 ```sh
 git clone https://github.com/doan-labs/duo.git && cd duo
 bun install
-pip install usd-core && python3 scripts/prepare-model.py   # Apple's model into public/model, once
+pip install usd-core && python3 scripts/prepare-model.py   # model của Apple vào public/model, làm một lần
 bun run dev                                                # http://localhost:3000
 ```
 
-Open `http://localhost:3000/?deg=180` for the phone flat open, or `?deg=0` for the cover. The slider on the right folds it live.
+Mở `http://localhost:3000/?deg=180` để xem máy mở phẳng, hoặc `?deg=0` để xem màn hình ngoài. Thanh trượt bên phải gập máy trực tiếp.
 
-## 2. Create an app
+## 2. Tạo một app
 
-From the repository root:
+Từ thư mục gốc repository:
 
 ```sh
-bun scripts/package-platform.ts          # SDK, kit and CLI archives → .cache/platform-packages/
+bun scripts/package-platform.ts          # bản nén SDK, kit và CLI → .cache/platform-packages/
 bun packages/cli/index.mjs create my-app --packages .cache/platform-packages/artifacts.json
 cd my-app && bun install
 ```
 
-The name is kebab-case, at most twelve characters. You get `manifest.json`, `main.tsx`, `icon.png`, `CHANGELOG.md` and a `package.json` wired to the local archives. The folder can live anywhere; nothing has to be inside the repository.
+Tên là kebab-case, tối đa mười hai ký tự. Bạn nhận được `manifest.json`, `main.tsx`, `icon.png`, `CHANGELOG.md` và một `package.json` nối sẵn vào bản nén cục bộ. Thư mục app đặt đâu cũng được; không nhất thiết nằm trong repository.
 
-## 3. Run it on the phone
-
-```sh
-bun run check   # import boundaries, strict TypeScript, the 4 MiB cap
-bun run dev     # builds, watches, prints the link
-```
-
-`dev` prints something like `http://localhost:3000/?dev=http://localhost:5173&app=dev.example.my-app`. Open it. Your app is on the inner home screen with a DEV badge, running in the same sandbox an installed app gets. Edit `main.tsx`, save, reload the simulator to pick up the new build.
-
-## 4. Install it
+## 3. Chạy app trên điện thoại
 
 ```sh
-bun run build                                        # dist/: index.json plus the release
-bun packages/cli/index.mjs serve dist --port 5173    # from the repository root
+bun run check   # biên giới import, TypeScript strict, trần 4 MiB
+bun run dev     # build, theo dõi file, in ra link
 ```
 
-In the simulator, open App Store, paste `http://localhost:5173/index.json` into the Developer catalog field, then Get and Open. The app now installs the way every Duo app installs: verified, hashed, stored in the shell's own database, launched from there.
+`dev` in ra đường dẫn dạng `http://localhost:3000/?dev=http://localhost:5173&app=dev.example.my-app`. Mở nó. App của bạn nằm trên màn hình chính với nhãn DEV, chạy trong đúng sandbox mà app cài đặt nhận được. Sửa `main.tsx`, lưu lại, nạp lại simulator để nhận bản build mới.
 
-## Where things live
+## 4. Cài nó vào máy
+
+```sh
+bun run build                                        # dist/: index.json kèm bản phát hành
+bun packages/cli/index.mjs serve dist --port 5173    # chạy từ thư mục gốc repository
+```
+
+Trong simulator, mở App Store, dán `http://localhost:5173/index.json` vào ô Developer catalog, rồi bấm Get và Open. Từ giờ app cài đúng đường mà mọi app Duo đi: được xác minh, có mã băm, nằm trong cơ sở dữ liệu của shell, khởi động từ đó.
+
+## Thứ gì nằm ở đâu
 
 | | |
 | --- | --- |
-| Your app's data | The shell's IndexedDB, under the app id. A `?dev=` app uses a separate `dev:` namespace; the DEV row in App Store removes it. |
-| The release | `dist/apps/<id>/<version>+<hash>/`: `release.json`, `app.html`, `icon-1024.png`. Immutable; a rebuild that changes bytes is a new identity. |
-| The catalog | `dist/index.json`. What App Store reads. |
+| Dữ liệu app | IndexedDB của shell, dưới app id. App chạy qua `?dev=` dùng không gian `dev:` riêng; dòng DEV trong App Store xóa được nó. |
+| Bản phát hành | `dist/apps/<id>/<version>+<hash>/`: `release.json`, `app.html`, `icon-1024.png`. Bất biến; rebuild làm đổi byte là một định danh mới. |
+| Catalog | `dist/index.json`. App Store đọc file này. |
 
-Next: [Your first app](your-first-app.md).
+Tiếp theo: [App đầu tiên](your-first-app.md).

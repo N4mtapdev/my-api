@@ -1,31 +1,31 @@
 # Storage
 
-Two key-value spaces, both strings only, both asynchronous, both revisioned. The frame has no `localStorage`; this is the whole persistence story.
+Hai không gian key-value, đều chỉ chứa chuỗi, đều không đồng bộ, đều có đánh số phiên bản. Khung app không có `localStorage`; đây là toàn bộ câu chuyện lưu trữ.
 
 | | `os.storage` | `os.session` |
 | --- | --- | --- |
-| Lifetime | Until the app is removed | While the app is open |
-| Shared by | Every view, every session, in the shell's IndexedDB under the app id | Every view of this open app |
-| Size | 5 MiB, 4096 keys | 64 KiB |
-| Use it for | Documents, settings, anything the person would miss | Scroll position, the selected item, a draft mid-edit |
+| Tuổi thọ | Cho tới khi app bị gỡ | Trong lúc app đang mở |
+| Dùng chung bởi | Mọi khung nhìn, mọi phiên, trong IndexedDB của shell dưới app id | Mọi khung nhìn của app đang mở này |
+| Kích thước | 5 MiB, 4096 key | 64 KiB |
+| Dùng cho | Tài liệu, cài đặt, thứ gì người dùng sẽ tiếc nếu mất | Vị trí cuộn, mục đang chọn, bản nháp đang dở |
 
-## The API
+## API
 
 ```ts
 await os.storage.get('lastTab')                       // string | null
-const { rev } = await os.storage.set('lastTab', 'today')   // durable when this resolves
+const { rev } = await os.storage.set('lastTab', 'today')   // bền vững khi dòng này hoàn tất
 await os.storage.del('lastTab')
-const { keys, cursor } = await os.storage.keys()      // 256 per page; pass cursor for the next
+const { keys, cursor } = await os.storage.keys()      // 256 mỗi trang; truyền cursor để lấy trang sau
 
 const snap = await os.storage.snapshot()              // { rev, entries: [k, v][] }
-const stop = os.storage.watch(snap.rev, (change) => { // { rev, k, v }; v is null for a delete
-  // apply in order
+const stop = os.storage.watch(snap.rev, (change) => { // { rev, k, v }; v là null khi xóa
+  // áp dụng theo đúng thứ tự
 })
 ```
 
-Revisions are per space and increase by one per change. Take a snapshot, then watch from its `rev`: you receive every change after it, in order, from any view. A gap in `rev` means you missed one; take a new snapshot. A watch that the shell refuses calls back once with `rev: -1`.
+Số phiên bản tính riêng từng không gian và tăng một sau mỗi thay đổi. Lấy một snapshot, rồi watch từ `rev` của nó: bạn nhận mọi thay đổi sau đó, đúng thứ tự, từ bất kỳ khung nhìn nào. Một khoảng trống trong `rev` nghĩa là bạn đã bỏ sót; lấy snapshot mới. Watch bị shell từ chối sẽ gọi lại một lần với `rev: -1`.
 
-Both views of an app see the same revisions, so the mirror stays current without any code of yours.
+Cả hai khung nhìn của app thấy cùng số phiên bản, nên bản chiếu luôn cập nhật mà không cần bạn viết dòng code nào.
 
 ## React
 
@@ -35,16 +35,16 @@ import { useKV } from '@doan-labs/duo-sdk/react'
 const { value, status, error, set, del } = useKV(os.storage, 'note')
 ```
 
-`status` is `hydrating` until the first read lands, then `ready`, `saving` while a write is in flight, or `error`. Edits during hydration are kept and applied after it. Writes are serialised per key, and an incoming change from the other view replaces `value`. One mirror is shared by every `useKV` on the same space, so the snapshot and watch happen once per document.
+`status` là `hydrating` cho đến khi lần đọc đầu tiên về đích, rồi `ready`, `saving` khi đang ghi, hoặc `error`. Chỉnh sửa trong lúc hydrate được giữ lại và áp dụng sau đó. Ghi chép được xếp hàng theo từng key, và thay đổi đến từ khung kia sẽ ghi đè `value`. Một bản chiếu được dùng chung bởi mọi `useKV` trên cùng không gian, nên snapshot và watch chỉ xảy ra một lần mỗi tài liệu.
 
-## Timeouts
+## Hết giờ
 
-A mutation that gets no acknowledgement in five seconds is retried once with the same request id, and the shell deduplicates it. If the retry also times out the promise rejects with `E_TIMEOUT`. Timing out is not proof the write failed: read the key back before writing again.
+Thao tác ghi không được xác nhận trong năm giây được thử lại một lần với cùng request id, và shell khử trùng lặp. Nếu lần thử lại cũng hết giờ, promise từ chối với `E_TIMEOUT`. Hết giờ không phải bằng chứng việc ghi thất bại: đọc lại key trước khi ghi tiếp.
 
-## Migrations
+## Chuyển đổi dữ liệu
 
-Keep a `schema` key. When `os.session.migration` is set on the owner, the app is starting on data written by version `from`: migrate forward, tolerate unknown keys, and finish before `os.ready()`. The shell hands migration context to the owner only, and never to a `?dev=` app.
+Giữ một key `schema`. Khi `os.session.migration` có giá trị ở chủ sở hữu, app đang khởi động trên dữ liệu do phiên bản `from` ghi: chuyển đổi tiến lên, chấp nhận key lạ, và hoàn tất trước `os.ready()`. Shell chỉ trao ngữ cảnh chuyển đổi cho chủ sở hữu, và không bao giờ cho app chạy qua `?dev=`.
 
-## Removal
+## Gỡ bỏ
 
-Removing the app deletes its storage, sessions, widget snapshots and recovery copies in one pass. A development app's data lives under `dev:<origin>:<id>` and is deleted from the DEV row in App Store; it never touches the installed app with the same id.
+Gỡ app xóa sạch storage, session, widget snapshot và bản sao phục hồi trong một lượt. Dữ liệu của app development nằm dưới `dev:<origin>:<id>` và xóa từ dòng DEV trong App Store; nó không bao giờ đụng tới app đã cài cùng id.

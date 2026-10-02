@@ -1,6 +1,6 @@
-# Your first app
+# App đầu tiên
 
-`create` writes five files. Here is what each one does and what to change first.
+`create` viết ra năm file. Đây là chức năng từng file và chỗ nên sửa trước tiên.
 
 ## manifest.json
 
@@ -12,13 +12,13 @@
   "lane": "community",
   "entry": "main.tsx",
   "icon": "icon.png",
-  "author": "Your name",
-  "repo": "https://github.com/your-name/your-app",
+  "author": "Tên bạn",
+  "repo": "https://github.com/ten-ban/ten-app",
   "license": "MIT"
 }
 ```
 
-Change `id` before you share anything: it is reverse-DNS, immutable, and the key for the app's data. `name` is the home screen label and must fit in twelve characters. Every field is in [Manifest](manifest.md).
+Đổi `id` trước khi chia sẻ cho ai: nó là reverse-DNS, bất biến, và là khóa cho dữ liệu của app. `name` là nhãn trên màn hình chính, phải vừa trong mười hai ký tự. Mọi trường được liệt kê trong [Manifest](manifest.md).
 
 ## main.tsx
 
@@ -34,7 +34,7 @@ function App() {
   useEffect(() => { requestAnimationFrame(() => os.ready()) }, [])
   return (
     <main {...stylex.props(styles.root)}>
-      <Nav><Page title="my-app"><ul><li>Your first Duo app</li></ul></Page></Nav>
+      <Nav><Page title="my-app"><ul><li>App Duo đầu tiên của bạn</li></ul></Page></Nav>
     </main>
   )
 }
@@ -47,11 +47,11 @@ await os.connect()
 createRoot(document.body).render(<App />)
 ```
 
-Two lines matter. `await os.connect()` runs before anything renders: it performs the handshake with the shell and fills `os.view`, `os.owner` and `os.session`. `os.ready()` after the first paint tells the shell to drop its launch cover. Everything else is React.
+Có hai dòng quyết định. `await os.connect()` chạy trước mọi thứ được vẽ: nó bắt tay với shell và điền `os.view`, `os.owner`, `os.session`. `os.ready()` sau khung hình đầu tiên bảo shell gỡ màn hình che lúc khởi động. Mọi thứ còn lại chỉ là React.
 
-Colours come from the kit's tokens, never literals. The two displays have different densities and the shell tunes the palette for both; a hex value looks wrong on one of them.
+Màu sắc lấy từ token của kit, không bao giờ ghi số cứng. Hai màn hình có mật độ điểm khác nhau và shell tinh chỉnh bảng màu cho từng màn; một giá trị hex sẽ nhìn sai ở một trong hai bên.
 
-## Reading the fold
+## Đọc độ gập
 
 ```tsx
 import { useDisplay } from '@doan-labs/duo-uikit'
@@ -62,9 +62,9 @@ function Layout() {
 }
 ```
 
-`display` is `cover` or `inner`. `width` is the box you actually have, which is also the right thing to lay out against: a split half of the inner display is as narrow as the cover. `angle` is the hinge in degrees, live while the person folds. [Displays and the fold](displays.md) has the rest.
+`display` là `cover` hoặc `inner`. `width` là kích thước hộp bạn thật sự có, và cũng là đúng thứ cần dựa vào để dàn trang: một nửa split của màn hình trong hẹp như màn hình ngoài. `angle` là góc bản lề theo độ, cập nhật sống trong khi người dùng gập máy. [Màn hình và nếp gấp](displays.md) có phần còn lại.
 
-## Remembering something
+## Ghi nhớ một thứ gì đó
 
 ```tsx
 import { useKV } from '@doan-labs/duo-sdk/react'
@@ -75,8 +75,8 @@ function Note() {
 }
 ```
 
-Storage is asynchronous, string-valued and private to the app. `status` is `hydrating`, `ready`, `saving` or `error`. Edits made during hydration are kept, writes are serialised, and both displays see the same value. [Storage](storage.md) explains the revisions underneath.
+Storage không đồng bộ, chỉ chứa chuỗi, và riêng tư theo từng app. `status` là `hydrating`, `ready`, `saving` hoặc `error`. Chỉnh sửa trong lúc hydrate được giữ lại, ghi chép được xếp hàng tuần tự, và cả hai màn hình thấy cùng một giá trị. [Storage](storage.md) giải thích cơ chế revision bên dưới.
 
-## A complete example
+## Một ví dụ hoàn chỉnh
 
-[Fold Compass](https://github.com/doan-labs/duo/blob/main/examples/fold-compass/main.tsx) is an independent app in about a hundred lines: it reads the hinge angle, switches between a pocket card on the cover and a board on the inner display, and keeps one field note in storage. The [Developer gallery](https://github.com/doan-labs/duo/blob/main/examples/developer/main.tsx) renders every kit component at both widths.
+[Fold Compass](https://github.com/doan-labs/duo/blob/main/examples/fold-compass/main.tsx) là một app độc lập chừng một trăm dòng: đọc góc bản lề, chuyển qua lại giữa thẻ bỏ túi trên màn hình ngoài và bảng điều khiển trên màn hình trong, và giữ một ghi chú nhỏ trong storage. [Bộ sưu tập developer](https://github.com/doan-labs/duo/blob/main/examples/developer/main.tsx) vẽ mọi component của kit ở cả hai độ rộng.

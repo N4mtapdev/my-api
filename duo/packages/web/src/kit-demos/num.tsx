@@ -9,12 +9,12 @@ export default function Demo() {
   }, [])
   return (
     <Section>
-      <Row label="Steps" detail={<Num value={steps} />} />
+      <Row label="Số bước" detail={<Num value={steps} />} />
       <Row
-        label="Distance"
+        label="Quãng đường"
         detail={<Num value={steps * 0.00074} format={{ maximumFractionDigits: 2 }} suffix=" km" />}
       />
-      <Row label="Unavailable" detail={<Num value={undefined} />} />
+      <Row label="Không có dữ liệu" detail={<Num value={undefined} />} />
     </Section>
   )
 }

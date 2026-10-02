@@ -5,16 +5,16 @@ export default function Demo() {
   const [taps, setTaps] = useState(0)
   return (
     <Section>
-      <Row label="Label only" />
-      <Row label="With detail" detail="Value" />
-      <Row icon={<Sym name="gear" />} label="Icon and chevron" chevron />
-      <Row label="With a control">
-        <Toggle aria-label="Example switch" defaultChecked />
+      <Row label="Chỉ có nhãn" />
+      <Row label="Kèm chi tiết" detail="Giá trị" />
+      <Row icon={<Sym name="gear" />} label="Icon và mũi tên" chevron />
+      <Row label="Kèm nút điều khiển">
+        <Toggle aria-label="Công tắc ví dụ" defaultChecked />
       </Row>
       <Row
         as="button"
-        label="As a button"
-        detail={taps ? `${taps} taps` : undefined}
+        label="Là nút bấm"
+        detail={taps ? `${taps} lần chạm` : undefined}
         onClick={() => setTaps((n) => n + 1)}
         chevron
       />

@@ -12,9 +12,9 @@ export function compile(source: Source, signal: AbortSignal): Promise<PreviewBun
       else resolve(bundle!)
     }
     const abort = () => finish(new DOMException('Stopped', 'AbortError'))
-    const timer = setTimeout(() => finish(new Error('Compilation exceeded 45 seconds')), 45_000)
+    const timer = setTimeout(() => finish(new Error('Biên dịch quá 45 giây')), 45_000)
     signal.addEventListener('abort', abort, { once: true })
-    worker.onerror = () => finish(new Error('Compiler could not start. Reload the page.'))
+    worker.onerror = () => finish(new Error('Không khởi động được trình biên dịch. Tải lại trang.'))
     worker.onmessage = ({ data }) => finish(data.error ? new Error(data.error) : undefined, data.bundle)
     if (signal.aborted) abort()
     else worker.postMessage(source)

@@ -12,19 +12,19 @@ function Layout() {
         <>
           <SideList title="UI kit">
             <SideLink to="/kit">Showcase</SideLink>
-            <SideLink to="/kit/docs">Overview</SideLink>
+            <SideLink to="/kit/docs">Tổng quan</SideLink>
             {/* The guidelines are the kit's other half: the colours, type and
                 easings every component below is drawn from. They keep their own
                 top-level route, and this is where they are looked for. */}
-            <SideLink to="/guidelines">Guidelines</SideLink>
+            <SideLink to="/guidelines">Nguyên tắc</SideLink>
           </SideList>
           {(
             [
-              ['Components', 'component'],
-              ['Hooks', 'hook'],
-              ['Functions', 'function'],
-              ['Values', 'value'],
-              ['Types', 'type']
+              ['Component', 'component'],
+              ['Hook', 'hook'],
+              ['Hàm', 'function'],
+              ['Giá trị', 'value'],
+              ['Kiểu', 'type']
             ] as const
           ).map(
             ([title, kind]) =>

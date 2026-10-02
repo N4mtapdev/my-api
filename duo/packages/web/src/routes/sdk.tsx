@@ -13,7 +13,7 @@ function Page() {
     <div {...stylex.props(styles.wrap)}>
       {/* Rendered, not blank: the forward is instant with scripting, and this is
           what is left of the page when a crawler or a reader arrives without it. */}
-      <p {...stylex.props(styles.note)}>Taking you to the SDK reference</p>
+      <p {...stylex.props(styles.note)}>Đang đưa bạn tới tham chiếu SDK</p>
       <Link to="/docs/sdk" {...stylex.props(styles.link)}>
         /docs/sdk
       </Link>

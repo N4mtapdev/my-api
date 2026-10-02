@@ -94,7 +94,7 @@ async function put(text: string) {
  * that does nothing visible reads as a button that did nothing. It is also why
  * a failed copy stays silent rather than claiming success.
  */
-export function CopyButton({ text, label = 'Copy code' }: { text: string; label?: string }) {
+export function CopyButton({ text, label = 'Chép mã' }: { text: string; label?: string }) {
   const still = useReducedMotion()
   const [done, setDone] = useState(false)
   // Held in a ref so unmounting mid-confirmation cannot leave a timer to fire.
@@ -113,8 +113,8 @@ export function CopyButton({ text, label = 'Copy code' }: { text: string; label?
     <motion.button
       type="button"
       onClick={copy}
-      title={done ? 'Copied' : label}
-      aria-label={done ? 'Copied' : label}
+      title={done ? 'Đã chép' : label}
+      aria-label={done ? 'Đã chép' : label}
       // motion writes `tabIndex` itself for anything carrying a gesture prop,
       // a button included, and `useReducedMotion` is null on the server but a
       // boolean on the first client render: dropping `whileTap` under reduced

@@ -1,62 +1,62 @@
-# Lifecycle
+# Vòng đời
 
-What happens between the shell creating a frame and your app's first paint, and how the connection ends.
+Chuyện gì xảy ra giữa lúc shell tạo khung và khung hình đầu tiên của app, và cách kết nối kết thúc.
 
-## Connect, then render, then ready
+## Kết nối, rồi render, rồi ready
 
 ```ts
 import { os } from '@doan-labs/duo-sdk'
 
-await os.connect()          // hello → welcome → ack; resolves with os.view, os.owner, os.session filled
+await os.connect()          // hello → welcome → ack; xong thì os.view, os.owner, os.session đã có
 createRoot(document.body).render(<App />)
-requestAnimationFrame(() => os.ready())   // after the first frame painted
+requestAnimationFrame(() => os.ready())   // sau khi khung hình đầu tiên được vẽ
 ```
 
-`connect()` posts `hello` to the shell with the protocol version, the SDK version and the single-use nonce the frame received as `window.name`, retrying every second. The shell answers `welcome` with the view, the session and a transferred `MessagePort`, or `refused` when the SDK version is incompatible, the protocol is wrong or the frame is blocked. Every later message rides the port.
+`connect()` gửi `hello` tới shell kèm phiên bản giao thức, phiên bản SDK và nonce dùng một lần mà khung nhận được qua `window.name`, thử lại mỗi giây. Shell trả lời `welcome` với khung nhìn, session và một `MessagePort` chuyển giao, hoặc `refused` khi phiên bản SDK không tương thích, giao thức sai hoặc khung bị chặn. Mọi tin nhắn sau đó đi qua cổng này.
 
-Call `connect()` once, before rendering. Calling it again returns the same promise. `ready()` tells the shell the first frame is on glass so it can drop its launch cover; until then the person sees your icon.
+Gọi `connect()` một lần, trước khi render. Gọi thêm lần nữa vẫn trả về cùng promise cũ. `ready()` báo cho shell biết khung hình đầu đã lên kính để nó gỡ màn hình che lúc khởi động; trước đó người dùng chỉ thấy icon của app.
 
-## What `welcome` carries
-
-| | |
-| --- | --- |
-| `os.view` | The display this document is on. See [Displays and the fold](displays.md). |
-| `os.owner` | `{ epoch }` when this view is the designated owner of effects, otherwise `null`. |
-| `os.session.arg` | The argument another app or a link opened you with, if any. `os.session.onArg` fires when it changes. |
-| `os.session.migration` | `{ from }` when the owner should migrate data written by an earlier version. |
-| `os.storage.limits` | The limits below. |
-
-## Requests and errors
-
-Every SDK method is a request over the port with an id. Requests are answered in order, and a mutation is acknowledged only after the shell's database transaction completed. A request that gets no answer in five seconds is retried once with the same id, so the shell can deduplicate; if that also times out the promise rejects with `E_TIMEOUT`. A timeout does not prove a write failed: read back before writing again.
-
-Failures reject with `PlatformError`, whose `code` is one of:
-
-| Code | Meaning |
-| --- | --- |
-| `E_ARGS` | Bad key, oversized value, too many requests in flight. |
-| `E_QUOTA` | Storage or command quota exhausted. |
-| `E_RATE` | Rate limit; back off. |
-| `E_DENIED` | A permission the manifest does not declare. |
-| `E_STALE` | An owner-only call from a view that is no longer the owner. |
-| `E_TIMEOUT` | No answer after the retry. |
-| `E_CLOSED`, `E_GONE` | The view was revoked or the app removed. |
-| `E_PROTOCOL` | Malformed traffic; the shell closes the view. |
-| `E_STORAGE` | The database failed. |
-
-## Limits
+## `welcome` mang theo gì
 
 | | |
 | --- | --- |
-| Key | 128 bytes, printable characters |
-| Value | 256 KiB, strings only |
-| Keys per app | 4096 |
-| Persistent storage | 5 MiB per app |
-| Session storage | 64 KiB per session |
-| Command payload | 16 KiB; 32 commands waiting |
-| Requests in flight | 64; 200 per second sustained, 400 burst |
-| Message envelope | 300 KiB |
+| `os.view` | Màn hình mà tài liệu này đang chạy. Xem [Màn hình và nếp gấp](displays.md). |
+| `os.owner` | `{ epoch }` nếu khung nhìn này là chủ sở hữu các effect, ngược lại `null`. |
+| `os.session.arg` | Tham số mà app khác hoặc một link đã mở bạn, nếu có. `os.session.onArg` bắn ra khi nó đổi. |
+| `os.session.migration` | `{ from }` khi chủ sở hữu cần chuyển đổi dữ liệu do phiên bản cũ ghi. |
+| `os.storage.limits` | Các giới hạn dưới đây. |
 
-## Ending
+## Request và lỗi
 
-The shell sends `bye` with a reason (`closed`, `uninstalled`, `updating`, `error`, `revoked`) and closes the port. Pending promises reject with `E_CLOSED`. There is no hook to run code afterwards: anything that must survive lives in storage before it happens. A frame that throws an uncaught error reports it to the shell; Escape pressed inside the frame is forwarded and takes the person home.
+Mọi phương thức SDK là một request qua cổng với một id. Các request được trả lời đúng thứ tự, và một thao tác ghi chỉ được xác nhận sau khi transaction của cơ sở dữ liệu shell hoàn tất. Request không nhận được trả lời trong năm giây được thử lại một lần với cùng id, để shell có thể khử trùng lặp; nếu lần thử lại cũng hết giờ, promise từ chối với `E_TIMEOUT`. Hết giờ không chứng minh việc ghi đã thất bại: đọc lại trước khi ghi tiếp.
+
+Lỗi từ chối với `PlatformError`, trong đó `code` là một trong:
+
+| Mã | Ý nghĩa |
+| --- | --- |
+| `E_ARGS` | Key sai, giá trị quá lớn, quá nhiều request đang chờ. |
+| `E_QUOTA` | Hạn mức storage hoặc lệnh đã cạn. |
+| `E_RATE` | Bị giới hạn tốc độ; cần chậm lại. |
+| `E_DENIED` | Một quyền mà manifest không khai báo. |
+| `E_STALE` | Lệnh chỉ dành cho chủ sở hữu được gọi từ khung không còn là chủ sở hữu. |
+| `E_TIMEOUT` | Không có trả lời sau lần thử lại. |
+| `E_CLOSED`, `E_GONE` | Khung nhìn bị thu hồi hoặc app bị gỡ. |
+| `E_PROTOCOL` | Dữ liệu trao đổi sai dạng; shell đóng khung nhìn. |
+| `E_STORAGE` | Cơ sở dữ liệu gặp sự cố. |
+
+## Giới hạn
+
+| | |
+| --- | --- |
+| Key | 128 byte, chỉ ký tự in được |
+| Giá trị | 256 KiB, chỉ chuỗi |
+| Key mỗi app | 4096 |
+| Storage bền vững | 5 MiB mỗi app |
+| Storage phiên | 64 KiB mỗi phiên |
+| Payload lệnh | 16 KiB; 32 lệnh chờ cùng lúc |
+| Request đang bay | 64; 200/giây duy trì, 400 đột phát |
+| Phong bì tin nhắn | 300 KiB |
+
+## Kết thúc
+
+Shell gửi `bye` kèm lý do (`closed`, `uninstalled`, `updating`, `error`, `revoked`) rồi đóng cổng. Các promise đang chờ từ chối với `E_CLOSED`. Không có hook nào để chạy code sau đó: thứ gì phải sống sót thì đưa vào storage trước khi chuyện đó xảy ra. Khung bị lỗi chưa bắt sẽ báo lên shell; phím Escape bấm trong khung được chuyển tiếp và đưa người dùng về màn hình chính.

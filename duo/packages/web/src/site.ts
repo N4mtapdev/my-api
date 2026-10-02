@@ -38,7 +38,7 @@ export const MORE = [
   { to: '/simulator', label: 'Simulator' },
   { to: '/publish', label: 'Đóng góp app' },
   { to: '/guidelines', label: 'Hướng dẫn' },
-  { to: '/changelog', label: 'Changelog' }
+  { to: '/changelog', label: 'Lịch sử phiên bản' }
 ] as const
 
 /** The studio behind Duo. */

@@ -1,30 +1,30 @@
-# Permissions
+# Quyền
 
-An app can use exactly what its manifest declares. There is no runtime prompt and no settings screen: the catalog owner reviews the list, the store row shows it, and the shell enforces it.
+App chỉ dùng được đúng những gì manifest khai báo. Không có prompt lúc chạy và không có màn hình cài đặt: chủ catalog review danh sách, dòng trong store hiển thị nó, và shell thi hành nó.
 
-## The table
+## Bảng quyền
 
-| Name | Kind | What it grants |
+| Tên | Loại | Cấp được gì |
 | --- | --- | --- |
-| `geolocation` | browser feature | `navigator.geolocation` inside the frame. The browser or OS still shows its own prompt. |
-| `clipboard-read` | browser feature | Reading the clipboard. |
-| `clipboard-write` | browser feature | Writing the clipboard. |
-| `photos` | host service | `os.photos.list()`, `os.photos.get(id)`, `os.photos.add(blob)`: the simulator's photo library. `add` is owner-only. |
+| `geolocation` | tính năng trình duyệt | `navigator.geolocation` trong khung. Trình duyệt hoặc hệ điều hành vẫn hiện prompt riêng của nó. |
+| `clipboard-read` | tính năng trình duyệt | Đọc clipboard. |
+| `clipboard-write` | tính năng trình duyệt | Ghi clipboard. |
+| `photos` | dịch vụ của máy chủ | `os.photos.list()`, `os.photos.get(id)`, `os.photos.add(blob)`: thư viện ảnh của simulator. `add` chỉ dành cho chủ sở hữu. |
 
-Browser features are delegated through the frame's `allow` attribute, which names every policy-controlled feature and sets each to `'none'` unless declared. Host services are bridge methods the shell gates by the manifest: an undeclared call fails with `E_DENIED` before any argument is read.
+Tính năng trình duyệt được ủy quyền qua thuộc tính `allow` của khung, liệt kê mọi tính năng kiểm soát theo chính sách và đặt từng cái về `'none'` trừ khi được khai báo. Dịch vụ của máy chủ là các phương thức bridge mà shell chặn theo manifest: lệnh gọi chưa khai báo thất bại với `E_DENIED` trước khi bất kỳ tham số nào được đọc.
 
-Camera and microphone are always denied. Opaque-origin capture is not available to apps yet; the shell's own Camera app is a shell component, not an installable one. Display capture, fullscreen, payment, USB, MIDI, autoplay, wake lock and XR are denied too.
+Camera và microphone luôn bị từ chối. Bắt hình ảnh từ origin mờ chưa khả dụng cho app; app Camera của shell là một component của shell, không phải app cài được. Chụp màn hình, fullscreen, thanh toán, USB, MIDI, autoplay, wake lock và XR cũng bị từ chối.
 
-## Network
+## Mạng
 
 ```json
 "network": ["https://api.example.com", "https://tiles.example.org:8443"]
 ```
 
-Exact origins: scheme, host, optional port. No paths, no wildcards, no credentials. `build` writes them into the document's Content Security Policy as `connect-src` and `media-src`, so the browser refuses a connection to any origin you did not declare. Requests leave with `Origin: null` and no credentials; the API has to allow `*`.
+Origin chính xác: scheme, host, port tùy chọn. Không path, không wildcard, không thông tin đăng nhập. `build` ghi chúng vào Content Security Policy của tài liệu thành `connect-src` và `media-src`, nên trình duyệt từ chối kết nối tới bất kỳ origin nào bạn chưa khai báo. Request đi ra với `Origin: null` và không kèm thông tin đăng nhập; API phía kia phải cho phép `*`.
 
-In a development build a loopback `http://` origin is accepted so you can talk to a local server.
+Bản development chấp nhận origin `http://` loopback để bạn nói chuyện với server chạy trên máy mình.
 
-## What the sandbox does on its own
+## Sandbox tự làm gì
 
-Independent of anything you declare, the frame runs with `sandbox="allow-scripts"` and no `allow-same-origin`. It cannot read the shell's document or storage, cannot reach another app, cannot open frames, workers or forms, and cannot load a script or style that was not in the built document. Its policy is fixed when the frame is created and hashed into the release, so the document that was reviewed is the document that runs.
+Độc lập với mọi thứ bạn khai báo, khung chạy với `sandbox="allow-scripts"` và không có `allow-same-origin`. Nó không đọc được tài liệu hay storage của shell, không với tới app khác, không mở được khung, worker hay form, và không nạp được script hay style nào không nằm trong tài liệu đã build. Chính sách của nó được cố định lúc khung được tạo và băm vào bản phát hành, nên tài liệu đã được review chính là tài liệu được chạy.

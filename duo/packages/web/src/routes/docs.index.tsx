@@ -6,7 +6,7 @@ import { PageTop, Reveal } from '../page-parts'
 import { color, ease, font, radius } from '../tokens.stylex'
 
 export const Route = createFileRoute('/docs/')({
-  head: () => ({ meta: [{ title: 'Documentation · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Tài liệu · Duo' }] }),
   component: Index
 })
 
@@ -14,9 +14,9 @@ function Index() {
   return (
     <Prose>
       <PageTop
-        eyebrow="Documentation"
-        title="Build for a phone that folds"
-        lead="Everything from the first command to a catalog people can install from. Start at the top; the reference for every export is on the SDK and UI kit pages."
+        eyebrow="Tài liệu"
+        title="Viết app cho chiếc điện thoại gập"
+        lead="Từ lệnh đầu tiên đến một catalog người dùng cài được. Đọc theo thứ tự từ trên xuống; tham chiếu từng export nằm ở trang SDK và UI kit."
       />
       {groups.map((g, i) => (
         // A group at a time rather than a row at a time: 30-odd staggered rows

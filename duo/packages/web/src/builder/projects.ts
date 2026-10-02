@@ -4,7 +4,7 @@ import type { Project } from './types'
 export function newProject(): Project {
   return {
     id: crypto.randomUUID(),
-    name: 'Untitled app',
+    name: 'App chưa đặt tên',
     messages: [],
     current: 0,
     revisions: [{ id: crypto.randomUUID(), at: Date.now(), source: example }]
@@ -15,7 +15,7 @@ function database(): Promise<IDBDatabase> {
     const request = indexedDB.open('duo-builder', 1)
     request.onupgradeneeded = () => request.result.createObjectStore('projects', { keyPath: 'id' })
     request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(new Error('Local storage is unavailable. Download your source before leaving.'))
+    request.onerror = () => reject(new Error('Bộ nhớ cục bộ không khả dụng. Tải mã nguồn về trước khi rời trang.'))
   })
 }
 export async function listProjects(): Promise<Project[]> {
@@ -24,7 +24,7 @@ export async function listProjects(): Promise<Project[]> {
     return await new Promise((resolve, reject) => {
       const request = db.transaction('projects').objectStore('projects').getAll()
       request.onsuccess = () => resolve(request.result)
-      request.onerror = () => reject(new Error('Could not read local projects'))
+      request.onerror = () => reject(new Error('Không đọc được dự án trên máy'))
     })
   } finally {
     db.close()
@@ -36,7 +36,7 @@ export async function saveProject(project: Project) {
     await new Promise<void>((resolve, reject) => {
       const tx = db.transaction('projects', 'readwrite')
       tx.oncomplete = () => resolve()
-      tx.onerror = tx.onabort = () => reject(new Error('Could not save locally. Download your source before leaving.'))
+      tx.onerror = tx.onabort = () => reject(new Error('Không lưu được trên máy. Tải mã nguồn về trước khi rời trang.'))
       tx.objectStore('projects').put(project)
     })
   } finally {

@@ -5,7 +5,7 @@ import type { Message, Source } from './types'
 
 export async function prompt(source: Source, messages: Message[]): Promise<ChatMessage[]> {
   const response = await fetch(runtimeURL, { credentials: 'omit' })
-  if (!response.ok) throw new Error('Duo reference unavailable')
+  if (!response.ok) throw new Error('Không lấy được tham chiếu Duo')
   const runtime = await response.json()
   return [
     {

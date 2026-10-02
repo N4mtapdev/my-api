@@ -1,82 +1,82 @@
-# Displays and the fold
+# Màn hình và nếp gấp
 
-Duo has a 387 point cover and a 790 point inner display, both 850 tall. The inner display can hold one app full width or two side by side. Your app runs on whichever is lit, and while the phone folds the other display already runs a copy, so the handover has no remount and no flash.
+Duo có màn hình ngoài 387 điểm và màn hình trong 790 điểm, cùng cao 850. Màn hình trong chứa một app tràn bề rộng hoặc hai app đứng cạnh nhau. App của bạn chạy trên màn nào đang sáng, và trong lúc máy gập thì màn hình kia vẫn đang chạy một bản sao, nên việc bàn giao không phải remount và không chớp hình.
 
-## The view
+## Khung nhìn
 
 ```ts
 os.view          // { display, placement, width, height, visible, active, focused, angle }
-os.onView(cb)    // one event per frame at most, only on change
+os.onView(cb)    // tối đa một sự kiện mỗi khung hình, chỉ khi có thay đổi
 
 // React
-const view = useDisplay()   // from @doan-labs/duo-uikit
+const view = useDisplay()   // từ @doan-labs/duo-uikit
 ```
 
-| Field | Values | Use it for |
+| Trường | Giá trị | Dùng cho |
 | --- | --- | --- |
-| `display` | `cover`, `inner` | Behaviour that differs per glass, such as a pocket layout. |
-| `placement` | `full`, `left`, `right` | Which half of the inner display a split view occupies. |
-| `width`, `height` | points | Layout. A split half is as narrow as the cover, so lay out by the box, not by `display`. |
-| `angle` | 0 to 180 | The hinge, live. 0 is closed, 180 flat. |
-| `visible` | | Whether this view is on glass right now. |
-| `active` | | Whether this view is the one the person is using. |
-| `focused` | | Whether it has keyboard focus. |
+| `display` | `cover`, `inner` | Hành vi khác nhau theo từng mặt kính, ví dụ bố cục bỏ túi. |
+| `placement` | `full`, `left`, `right` | Nửa nào của màn hình trong mà khung split đang chiếm. |
+| `width`, `height` | điểm | Dàn trang. Một nửa split hẹp như màn hình ngoài, nên dàn theo hộp, đừng dàn theo `display`. |
+| `angle` | 0 đến 180 | Góc bản lề, cập nhật sống. 0 là gập kín, 180 là mở phẳng. |
+| `visible` | | Khung nhìn này có đang trên kính không. |
+| `active` | | Có phải khung nhìn mà người dùng đang tương tác không. |
+| `focused` | | Có giữ tiêu điểm bàn phím không. |
 
-## Design for the cover first
+## Thiết kế cho màn hình ngoài trước
 
-A layout that reads at 387 points has room to breathe unfolded: a list becomes a list beside its detail, a toolbar spreads out, a chart gets its axis labels back. The reverse never works. Never hide a feature on the cover; the person may never unfold the phone for it.
+Bố cục đọc tốt ở 387 điểm thì khi mở ra có nơi để thở: danh sách thành danh sách đứng cạnh phần chi tiết, thanh công cụ trải ra, biểu đồ lấy lại nhãn trục. Chiều ngược không bao giờ ổn. Đừng bao giờ giấu một tính năng nào khỏi màn hình ngoài; người dùng có thể chẳng bao giờ mở máy ra để tìm nó.
 
-The kit's components collapse themselves at cover width. Yours should too.
+Component của kit tự co lại ở độ rộng màn hình ngoài. Component của bạn cũng nên vậy.
 
-## Your app runs twice
+## App của bạn chạy hai bản
 
-Each display is its own document with its own React tree. Module state is not shared. What both copies must agree on lives in the shell:
+Mỗi màn hình là một tài liệu riêng với cây React riêng. Trạng thái module không dùng chung. Thứ mà cả hai bản phải thống nhất nằm trong shell:
 
-- `os.storage`: persistent, private to the app id, survives everything.
-- `os.session`: ephemeral, shared by every view of this open app, gone when the app closes.
+- `os.storage`: bền vững, riêng tư theo app id, sống sót qua mọi thứ.
+- `os.session`: tạm thời, dùng chung giữa mọi khung nhìn của app đang mở, biến mất khi app đóng.
 
-Both are revisioned key-value spaces; see [Storage](storage.md).
+Cả hai là không gian key-value có đánh số phiên bản; xem [Storage](storage.md).
 
-## One owner
+## Một chủ sở hữu duy nhất
 
-The shell names one view the **owner**: the first to connect, sticky until that view closes, identified by an epoch.
+Shell chỉ định một khung nhìn làm **chủ sở hữu**: người kết nối đầu tiên, giữ vai đến khi khung đó đóng, xác định bằng một epoch.
 
 ```ts
-os.owner                       // { epoch } or null
-os.onOwner(cb)                 // handover when the owner closes
+os.owner                       // { epoch } hoặc null
+os.onOwner(cb)                 // bàn giao khi chủ sở hữu đóng
 
-os.commands.send('refresh', '')          // any view; resolves when the owner acknowledged
-os.commands.onCommand(async (c) => …)    // runs in the owner only
-os.widget.set('small', { lines: [{ text: 'Tide 1.2 m', role: 'value' }] })   // owner only
+os.commands.send('refresh', '')          // khung nào cũng gửi được; xong khi chủ sở hữu xác nhận
+os.commands.onCommand(async (c) => …)    // chỉ chạy ở chủ sở hữu
+os.widget.set('small', { lines: [{ text: 'Thủy triều 1.2 m', role: 'value' }] })   // chỉ chủ sở hữu
 ```
 
-The mirror draws everything and starts nothing: no sound, no network request, no timer of its own. Intent that must happen once travels as a command; the owner runs it and acknowledges, and the sender's promise resolves. A command is retried until acknowledged and deduplicated by id, so an owner handover in the middle does not lose or double it. Owner-only calls from a view that lost ownership fail with `E_STALE`.
+Bản chiếu vẽ lại tất cả nhưng không khởi động gì: không âm thanh, không gọi mạng, không bộ đếm của riêng nó. Ý định chỉ được xảy ra một lần đi dưới dạng lệnh; chủ sở hữu chạy nó và xác nhận, promise của bên gửi mới hoàn tất. Lệnh được thử lại đến khi được xác nhận và khử trùng lặp theo id, nên việc bàn giao quyền sở hữu giữa chừng không làm mất hay nhân đôi lệnh. Lệnh chỉ dành cho chủ sở hữu mà gọi từ khung đã mất quyền sẽ thất bại với `E_STALE`.
 
-Test it: open your app, fold the phone all the way, unfold it. The same content, the same scroll position, once.
+Thử là biết: mở app, gập máy hết cỡ, mở ra. Cùng nội dung, cùng vị trí cuộn, đúng một lần.
 
-## Widgets
+## Widget
 
-Declare `widgets` in the manifest and publish a snapshot from the owner. The shell draws it and shows its age; no app code runs on the home screen.
+Khai báo `widgets` trong manifest và phát hành snapshot từ chủ sở hữu. Shell vẽ nó và hiển thị tuổi của ảnh chụp; không có mã app nào chạy trên màn hình chính.
 
 ```ts
 os.widget.set('medium', {
   lines: [
-    { text: 'Next high tide', role: 'label' },
+    { text: 'Thủy triều cao tiếp theo', role: 'label' },
     { text: '14:32', role: 'value' },
-    { text: 'in 2 h 10 min', role: 'caption' }
+    { text: 'trong 2 giờ 10 phút', role: 'caption' }
   ],
   tint: 'glass',
-  arg: 'tide=next'     // handed to os.session.arg when the widget opens the app
+  arg: 'tide=next'     // chuyển vào os.session.arg khi widget mở app
 })
 ```
 
-Up to eight lines of 64 characters. `arg` is at most 256 characters.
+Tối đa tám dòng, mỗi dòng 64 ký tự. `arg` tối đa 256 ký tự.
 
-## Links between apps
+## Link giữa các app
 
 ```ts
-os.open('labs.doan.ipduo.maps', 'q=tides')   // by id, with an optional argument
+os.open('labs.doan.ipduo.maps', 'q=tides')   // theo id, kèm tham số tùy chọn
 os.home()
 ```
 
-The target receives the argument in `os.session.arg`. The shell owns the scheme; apps cannot register their own.
+App đích nhận tham số trong `os.session.arg`. Shell sở hữu scheme; app không tự đăng ký scheme riêng được.

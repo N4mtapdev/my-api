@@ -10,9 +10,9 @@ export default function Demo() {
       <Widget
         snapshot={{
           lines: [
-            { text: 'Steps', role: 'label' },
-            { text: '8,412', role: 'value' },
-            { text: opened ? `Opened ${opened}×` : 'Tap to open', role: 'caption' }
+            { text: 'Số bước', role: 'label' },
+            { text: '8.412', role: 'value' },
+            { text: opened ? `Đã mở ${opened}×` : 'Chạm để mở', role: 'caption' }
           ]
         }}
         updatedAt={Date.now() - 2 * 3600000}

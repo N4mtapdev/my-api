@@ -6,24 +6,24 @@ import { Button } from '../layout'
 import { color, ease } from '../tokens.stylex'
 
 export const Route = createFileRoute('/apps')({
-  head: () => ({ meta: [{ title: 'Apps · Duo' }] }),
+  head: () => ({ meta: [{ title: 'Ứng dụng · Duo' }] }),
   component: Page
 })
 
 function Page() {
   return (
     <Block labelledBy="apps-title">
-      <Cap>Apps</Cap>
-      <Headline as="h1" id="apps-title" lines={['Built for both displays', 'and the fold between them.']} />
+      <Cap>Ứng dụng</Cap>
+      <Headline as="h1" id="apps-title" lines={['Sinh ra cho cả hai màn hình', 'và nếp gấp ở giữa.']} />
       <Lede>
-        Official apps ship in the simulator and publish to the Duo catalog; community apps arrive as pull requests,
-        reviewed and published the same way. Everything is MIT licensed and installs through the Store.{' '}
+        App chính thức có sẵn trong simulator và phát hành lên catalog của Duo; app cộng đồng được gửi qua pull
+        request, review và phát hành đúng quy trình đó. Tất cả giấy phép MIT, cài qua App Store.{' '}
         <Link to="/publish" {...stylex.props(styles.link)}>
-          How to add yours.
+          Cách thêm app của bạn.
         </Link>
       </Lede>
       <div {...stylex.props(styles.action)}>
-        <Button to="/publish">Submit your app</Button>
+        <Button to="/publish">Gửi app của bạn</Button>
       </div>
       <Browser />
     </Block>

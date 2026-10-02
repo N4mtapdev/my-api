@@ -8,7 +8,7 @@ export const Route = createFileRoute('/docs/$')({
     if (!d) throw notFound()
     return d
   },
-  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? 'Docs'} · Duo` }] }),
+  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? 'Tài liệu'} · Duo` }] }),
   component: Page
 })
 

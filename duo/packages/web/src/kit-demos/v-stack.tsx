@@ -3,11 +3,11 @@ import { Placeholder, Row, Section, Title, VStack } from '@doan-labs/duo-uikit'
 export default function Demo() {
   return (
     <VStack as="main">
-      <Title as="h1">Stack</Title>
+      <Title as="h1">Ngăn xếp</Title>
       <Section>
-        <Row label="Header stays put" />
+        <Row label="Phần đầu đứng yên" />
       </Section>
-      <Placeholder>The placeholder takes what is left</Placeholder>
+      <Placeholder>Placeholder chiếm phần còn lại</Placeholder>
     </VStack>
   )
 }
