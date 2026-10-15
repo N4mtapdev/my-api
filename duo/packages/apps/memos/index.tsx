@@ -27,15 +27,15 @@ const MemoRow = ({ memo, n }: { memo: Memo; n: number }) => {
   return (
     <Row xstyle={[styles.darkRow]}>
       <div {...stylex.props(styles.grow)}>
-        <div {...stylex.props(styles.name)}>Recording {n}</div>
+        <div {...stylex.props(styles.name)}>Bản ghi {n}</div>
         <Text as="div" size="caption">
-          {memo.at.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit' })} · {mmss(memo.len)}
+          {memo.at.toLocaleTimeString('vi', { hour: 'numeric', minute: '2-digit' })} · {mmss(memo.len)}
         </Text>
       </div>
       {/* biome-ignore lint/a11y/useMediaCaption: a voice memo has no transcript */}
       <audio ref={a} src={memo.url} />
       <Button type="button" onClick={() => (a.current!.paused ? a.current!.play() : a.current!.pause())}>
-        ▶ Play
+        ▶ Phát
       </Button>
     </Row>
   )
@@ -132,7 +132,7 @@ export const Memos = (_: { os: Os }) => {
 
   return (
     <Screen>
-      <Title>Voice Memos</Title>
+      <Title>Ghi âm</Title>
       <div {...stylex.props(styles.deck)}>
         <canvas ref={cv} {...stylex.props(styles.wave)} />
         <div ref={clock} {...stylex.props(styles.clock)}>
@@ -141,9 +141,11 @@ export const Memos = (_: { os: Os }) => {
         <button type="button" {...stylex.props(styles.rec)} onClick={toggle}>
           <i {...stylex.props(styles.dot, on && styles.dotOn)} />
         </button>
-        {denied && <Placeholder xstyle={[styles.note]}>Microphone unavailable. Allow access and reopen.</Placeholder>}
+        {denied && (
+          <Placeholder xstyle={[styles.note]}>Không dùng được micro. Cho quyền truy cập rồi mở lại.</Placeholder>
+        )}
       </div>
-      <Title xstyle={[styles.hdrSm]}>All Recordings</Title>
+      <Title xstyle={[styles.hdrSm]}>Tất cả bản ghi</Title>
       <Section>
         {list.map((m, i) => (
           <MemoRow key={m.url} memo={m} n={list.length - i} />

@@ -52,13 +52,13 @@ function useWebcam(facing: Facing = 'user') {
 const Unavailable = () => (
   <Placeholder xstyle={[styles.msg]}>
     <img src={ICONS.Camera} alt="" {...stylex.props(shared.phImg)} />
-    Camera unavailable. Allow access and reopen.
+    Không dùng được máy ảnh. Hãy cho phép truy cập rồi mở lại.
   </Placeholder>
 )
 
 const two = (n: number) => String(Math.floor(n)).padStart(2, '0')
 
-const MODES = ['VIDEO', 'PHOTO', 'PORTRAIT'] as const
+const MODES = ['VIDEO', 'ẢNH', 'CHÂN DUNG'] as const
 type Mode = (typeof MODES)[number]
 
 /** A round glyph button; `on` tints it yellow like a lit toggle. */
@@ -89,7 +89,7 @@ export const Camera = ({ os }: { os: Os }) => {
   const [land, setLand] = useState(true)
   const [facing, setFacing] = useState<Facing>('user')
   const { video, denied } = useWebcam(facing)
-  const [mode, setMode] = useState<Mode>('PHOTO')
+  const [mode, setMode] = useState<Mode>('ẢNH')
   const [flash, setFlash] = useState(false)
   const [recing, setRecing] = useState(false)
   const [clock, setClock] = useState('00:00')
@@ -185,7 +185,7 @@ export const Camera = ({ os }: { os: Os }) => {
   const shutterBtn = (
     <button
       type="button"
-      aria-label={recing ? 'Stop recording' : mode === 'VIDEO' ? 'Record' : 'Take photo'}
+      aria-label={recing ? 'Dừng ghi' : mode === 'VIDEO' ? 'Quay' : 'Chụp ảnh'}
       {...stylex.props(styles.shutter, mode === 'VIDEO' && styles.shutterVideo, recing && styles.shutterRec)}
       onClick={shutter}
     />
@@ -193,7 +193,7 @@ export const Camera = ({ os }: { os: Os }) => {
   const thumb: ReactNode = (
     <button
       type="button"
-      aria-label="Last photo"
+      aria-label="Ảnh gần nhất"
       {...stylex.props(styles.thumb)}
       onClick={() => os.shots.length && os.open('Photos')}
     >
@@ -201,9 +201,11 @@ export const Camera = ({ os }: { os: Os }) => {
     </button>
   )
   const flipBtn = (
-    <Tog sym="flip" label="Switch camera" onClick={() => setFacing(facing === 'user' ? 'environment' : 'user')} />
+    <Tog sym="flip" label="Đổi camera" onClick={() => setFacing(facing === 'user' ? 'environment' : 'user')} />
   )
-  const boltBtn = <Tog sym={tog.bolt ? 'bolt' : 'boltOff'} label="Flash" on={tog.bolt} onClick={() => flip('bolt')} />
+  const boltBtn = (
+    <Tog sym={tog.bolt ? 'bolt' : 'boltOff'} label="Đèn flash" on={tog.bolt} onClick={() => flip('bolt')} />
+  )
   const liveBtn = <Tog sym="live" label="Live Photo" on={tog.live} onClick={() => flip('live')} />
   const zoomChip = (
     <button type="button" data-zoom {...stylex.props(styles.zl)} onClick={() => zoom(z >= 2 ? 1 : z * 2)}>
@@ -236,19 +238,19 @@ export const Camera = ({ os }: { os: Os }) => {
       {land ? (
         <>
           <div {...stylex.props(styles.corner, styles.tl)}>
-            <Tog sym="aspect" label="Aspect ratio" on={tog.four} onClick={() => flip('four')} />
+            <Tog sym="aspect" label="Tỉ lệ khung hình" on={tog.four} onClick={() => flip('four')} />
           </div>
           <div {...stylex.props(styles.corner, styles.tr)}>
-            <Tog sym="grid" label="Grid" on={tog.grid} onClick={() => flip('grid')} />
+            <Tog sym="grid" label="Lưới" on={tog.grid} onClick={() => flip('grid')} />
             {flipBtn}
           </div>
           <div {...stylex.props(styles.corner, styles.ml)}>
-            <Tog sym="filters" label="Filters" on={tog.filters} onClick={() => flip('filters')} />
+            <Tog sym="filters" label="Bộ lọc" on={tog.filters} onClick={() => flip('filters')} />
             {liveBtn}
           </div>
           <div {...stylex.props(styles.corner, styles.bl)}>{thumb}</div>
           <div {...stylex.props(styles.rail)}>
-            <Tog sym="exposure" label="Exposure" on={tog.exposure} onClick={() => flip('exposure')} />
+            <Tog sym="exposure" label="Phơi sáng" on={tog.exposure} onClick={() => flip('exposure')} />
             <div {...stylex.props(styles.railMid)}>
               {zoomChip}
               {shutterBtn}
@@ -261,7 +263,7 @@ export const Camera = ({ os }: { os: Os }) => {
         <>
           <div {...stylex.props(styles.topBar)}>
             {boltBtn}
-            <Tog sym="up" label="More controls" onClick={() => flip('exposure')} />
+            <Tog sym="up" label="Thêm điều khiển" onClick={() => flip('exposure')} />
             {liveBtn}
           </div>
           <div {...stylex.props(styles.bottom)}>

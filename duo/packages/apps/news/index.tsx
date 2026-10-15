@@ -43,7 +43,7 @@ const Comments = ({ id }: { id: string }) => {
           </div>
         ))
       ) : (
-        <Placeholder xstyle={[styles.pad20]}>Loading comments…</Placeholder>
+        <Placeholder xstyle={[styles.pad20]}>Đang tải bình luận…</Placeholder>
       )}
     </div>
   )
@@ -55,7 +55,7 @@ const StoryPage = ({ s, back, os }: { s: Story; back: () => void; os: Os }) => (
     <Title xstyle={[typography.headline]}>
       <button type="button" {...stylex.props(shared.bk)} onClick={back}>
         <Sym name="back" size={20} />
-        Today
+        Hôm nay
       </button>
       {s.url && (
         <button
@@ -63,7 +63,7 @@ const StoryPage = ({ s, back, os }: { s: Story; back: () => void; os: Os }) => (
           {...stylex.props(typography.subheadline, styles.openBtn)}
           onClick={() => os.open('Safari', s.url)}
         >
-          Open
+          Mở
         </button>
       )}
     </Title>
@@ -72,10 +72,10 @@ const StoryPage = ({ s, back, os }: { s: Story; back: () => void; os: Os }) => (
       <div {...stylex.props(styles.head)}>
         <div {...stylex.props(typography.title2)}>{s.title}</div>
         <Text as="div" size="caption" xstyle={[styles.mt8]}>
-          {s.author} · {s.points} points · {s.num_comments} comments
+          {s.author} · {s.points} điểm · {s.num_comments} bình luận
         </Text>
       </div>
-      <Title xstyle={[typography.title3]}>Discussion</Title>
+      <Title xstyle={[typography.title3]}>Thảo luận</Title>
       <Comments id={s.objectID} />
     </Screen>
   </VStack>
@@ -94,18 +94,18 @@ const Feed = ({ os }: { os: Os }) => {
       })
     return () => ac.abort()
   }, [])
-  if (!hits) return <Placeholder>Loading Today…</Placeholder>
-  if (hits === 'error') return <Placeholder>Could not reach the news service.</Placeholder>
+  if (!hits) return <Placeholder>Đang tải tin hôm nay…</Placeholder>
+  if (hits === 'error') return <Placeholder>Không kết nối được dịch vụ tin tức.</Placeholder>
   const [lead, ...rest] = hits
   const open = (s: Story) => push((back) => <StoryPage s={s} back={back} os={os} />)
   return (
     <div>
       {lead && (
         <div {...stylex.props(styles.lead, styles.tint(art(lead.title, 46)))} onClick={() => open(lead)}>
-          <div {...stylex.props(typography.caption2, styles.kicker)}>TOP STORY</div>
+          <div {...stylex.props(typography.caption2, styles.kicker)}>TIN NỔI BẬT</div>
           <div {...stylex.props(typography.title3, styles.leadTitle)}>{lead.title}</div>
           <div {...stylex.props(typography.caption1, styles.leadMeta)}>
-            {lead.points} points · {lead.num_comments} comments
+            {lead.points} điểm · {lead.num_comments} bình luận
           </div>
         </div>
       )}
@@ -114,7 +114,7 @@ const Feed = ({ os }: { os: Os }) => {
           <div {...stylex.props(styles.tx)}>
             <b {...stylex.props(typography.subheadline, styles.title)}>{s.title}</b>
             <p {...stylex.props(typography.footnote, styles.meta)}>
-              {s.author} · {s.points} points · {s.num_comments} comments
+              {s.author} · {s.points} điểm · {s.num_comments} bình luận
             </p>
           </div>
           <div {...stylex.props(styles.thumb, styles.tint(art(s.title)))} />
@@ -129,9 +129,9 @@ export const News = ({ os }: { os: Os }) => (
     <Page
       title={
         <>
-          Today
+          Hôm nay
           <Title as="span" variant="accessory">
-            {new Date().toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric' })}
+            {new Date().toLocaleDateString('vi', { weekday: 'long', month: 'long', day: 'numeric' })}
           </Title>
         </>
       }

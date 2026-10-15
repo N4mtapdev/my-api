@@ -84,11 +84,11 @@ const List = () => {
 
 const Detail = ({ t, name, base, d, back }: { t: string; name: string; base: number; d: number; back: () => void }) => {
   const stats: [string, number][] = [
-    ['Open', base * 0.994],
-    ['High', base * 1.012],
-    ['Low', base * 0.981],
-    ['Vol', 41.2],
-    ['Mkt Cap', base * 15.6],
+    ['Mở', base * 0.994],
+    ['Cao', base * 1.012],
+    ['Thấp', base * 0.981],
+    ['KLGD', 41.2],
+    ['Vốn hóa', base * 15.6],
     ['P/E', 29.4]
   ]
   return (
@@ -96,7 +96,7 @@ const Detail = ({ t, name, base, d, back }: { t: string; name: string; base: num
       <Title xstyle={[typography.headline]}>
         <button type="button" {...stylex.props(shared.bk)} onClick={back}>
           <Sym name="back" size={20} />
-          Stocks
+          Chứng khoán
         </button>
       </Title>
       <Screen>
@@ -142,9 +142,9 @@ export const Stocks = () => (
     <Page
       title={
         <>
-          Stocks
+          Chứng khoán
           <Title as="span" variant="accessory">
-            {new Date().toLocaleDateString('en', { month: 'long', day: 'numeric' })}
+            {new Date().toLocaleDateString('vi-VN', { month: 'long', day: 'numeric' })}
           </Title>
         </>
       }

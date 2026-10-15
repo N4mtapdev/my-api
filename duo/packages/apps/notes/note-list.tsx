@@ -24,7 +24,7 @@ export function NoteList({
   onPick: (n: Note) => void
 }) {
   const { hydrating } = useNotes()
-  if (!notes.length) return <div {...stylex.props(styles.empty)}>{hydrating ? 'Loading…' : 'No Notes'}</div>
+  if (!notes.length) return <div {...stylex.props(styles.empty)}>{hydrating ? 'Đang tải…' : 'Không có ghi chú'}</div>
   return (
     <div {...stylex.props(styles.groups)}>
       {group(notes).map(({ name, notes }) => (
@@ -43,8 +43,8 @@ function NoteRow({ note: n, q, sel, onPick }: { note: Note; q: string; sel?: str
   const [body] = useNoteText(n)
   if (q && !body.toLowerCase().includes(q.toLowerCase())) return null
   const [first, ...rest] = body.split('\n')
-  const title = first || 'New Note'
-  const preview = rest.join(' ').trim() || 'No additional text'
+  const title = first || 'Ghi chú mới'
+  const preview = rest.join(' ').trim() || 'Không có nội dung thêm'
   return (
     <button
       type="button"

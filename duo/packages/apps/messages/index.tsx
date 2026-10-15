@@ -13,22 +13,22 @@ import { useEffect, useRef, useState } from 'react'
 import { styles } from './styles.ts'
 
 const CHATS: [string, string[]][] = [
-  ['Jony', ['The chamfer catches the strip light beautifully.', 'Did you ship the titanium yet?']],
-  ['Mum', ['Call me when you land ❤️']],
-  ['Ada Lovelace', ['The Analytical Engine weaves algebraic patterns.', 'Send me the render when it finishes?']],
+  ['Jony', ['Mặt vát hắt đèn dải đẹp thật sự.', 'Đã xuất xưởng phần titan chưa?']],
+  ['Mẹ', ['Đáp máy gọi cho mẹ nhé ❤️']],
+  ['Ada Lovelace', ['Máy Giải tích dệt những hoạ tiết đại số.', 'Render xong gửi mình nhé?']],
   ['Kim Minh', ['quán cà phê 8h nhé', 'mang laptop đi']],
-  ['Blender Foundation', ['Cycles 5.2 is out. AgX by default.']]
+  ['Blender Foundation', ['Cycles 5.2 đã ra mắt. AgX là mặc định.']]
 ]
-const WHEN = ['9:41', 'Yesterday', 'Mon', 'Sun', '12/03']
+const WHEN = ['9:41', 'Hôm qua', 'T2', 'CN', '12/03']
 const REPLIES = [
-  'Haha, fair.',
-  'On it 👍',
-  'Sending it over now.',
-  'Let me check and get back to you.',
-  'Nice — that actually looks great.',
-  'Can we talk later? In a meeting.',
+  'Haha, công nhận.',
+  'Đang làm 👍',
+  'Gửi ngay đây.',
+  'Để mình kiểm tra rồi báo lại.',
+  'Đẹp — nhìn thật sự ổn đấy.',
+  'Nói sau được không? Đang họp.',
   '😂',
-  'Agreed.'
+  'Đồng ý.'
 ]
 
 export const Messages = ({ os }: { os: Os }) => (
@@ -40,7 +40,7 @@ export const Messages = ({ os }: { os: Os }) => (
 function Chats({ os }: { os: Os }) {
   const { push } = useNav()
   return (
-    <Page title="Messages">
+    <Page title="Nhắn tin">
       <div>
         {CHATS.map(([who, msgs], i) => (
           <div

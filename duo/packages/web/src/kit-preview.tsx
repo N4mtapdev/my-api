@@ -99,7 +99,7 @@ export function KitPreview({ name }: { name: string }) {
                     onClick={() => setOpen((o) => !o)}
                     {...stylex.props(styles.toggle, open && styles.toggleOpen)}
                   >
-                    {open ? 'Collapse code' : 'Expand code'}
+                    {open ? 'Thu gọn mã' : 'Mở rộng mã'}
                   </button>
                 )}
               </div>

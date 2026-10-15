@@ -574,7 +574,7 @@ export const api: ApiEntry[] = [
     "file": "packages/uikit/app.ts",
     "line": 6,
     "doc": "",
-    "signature": "type App = {\n  id?: string\n  icon?: string\n  name: string\n  light?: boolean\n  /** Draws under the status stack, edge to edge, and pads its own top; the shell adds no band. */\n  edge?: boolean\n  /** On the cover, keeps the right column free for the status stack, which stays whole; the shell adds no band. */\n  rail?: boolean\n  view: ComponentType<{ os: Os }>\n  /** Invented data behind a static screen: the tile shows a dot and the app a 'Mockup' pill. */\n  mock?: boolean\n  /** Names of the apps inside, when this tile is a folder rather than an app. */\n  folder?: string[]\n}",
+    "signature": "type App = {\n  id?: string\n  icon?: string\n  name: string\n  /** Vietnamese display label; `name` stays the identity icons and lookups go by. */\n  label?: string\n  light?: boolean\n  /** Draws under the status stack, edge to edge, and pads its own top; the shell adds no band. */\n  edge?: boolean\n  /** On the cover, keeps the right column free for the status stack, which stays whole; the shell adds no band. */\n  rail?: boolean\n  view: ComponentType<{ os: Os }>\n  /** Invented data behind a static screen: the tile shows a dot and the app a 'Mockup' pill. */\n  mock?: boolean\n  /** Names of the apps inside, when this tile is a folder rather than an app. */\n  folder?: string[]\n}",
     "members": [
       {
         "name": "id",
@@ -593,6 +593,12 @@ export const api: ApiEntry[] = [
         "type": "string",
         "optional": false,
         "doc": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true,
+        "doc": "Vietnamese display label; `name` stays the identity icons and lookups go by."
       },
       {
         "name": "light",

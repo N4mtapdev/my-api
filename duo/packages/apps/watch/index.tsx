@@ -9,8 +9,8 @@ import { styles } from './styles.ts'
 const now = () => {
   const d = new Date()
   return {
-    t: d.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false }),
-    d: `${d.toLocaleDateString('en', { weekday: 'short' })} ${d.getDate()}`.toUpperCase()
+    t: d.toLocaleTimeString('vi', { hour: '2-digit', minute: '2-digit', hour12: false }),
+    d: `${d.toLocaleDateString('vi', { weekday: 'short' })} ${d.getDate()}`.toUpperCase()
   }
 }
 
@@ -39,16 +39,16 @@ export const Watch = (_: { os: Os }) => {
       <div {...stylex.props(styles.center)}>
         <div {...stylex.props(styles.name)}>Apple Watch Ultra</div>
         <Text as="div" size="caption">
-          Connected · 78%
+          Đã kết nối · 78%
         </Text>
       </div>
-      <Title xstyle={[styles.hdrSm]}>My Watch</Title>
+      <Title xstyle={[styles.hdrSm]}>Đồng hồ của tôi</Title>
       <Section>
-        <Row name="Notifications" right="›" />
-        <Row name="App Layout" right="Grid ›" />
-        <Row name="Complications" right="4 ›" />
-        <Row name="Wrist Detection" right={<Toggle aria-label="Wrist Detection" defaultChecked />} />
-        <Row name="Theatre Mode" right={<Toggle aria-label="Theatre Mode" />} />
+        <Row name="Thông báo" right="›" />
+        <Row name="Bố cục app" right="Lưới ›" />
+        <Row name="Biến phức tạp" right="4 ›" />
+        <Row name="Phát hiện cổ tay" right={<Toggle aria-label="Phát hiện cổ tay" defaultChecked />} />
+        <Row name="Chế độ rạp chiếu" right={<Toggle aria-label="Chế độ rạp chiếu" />} />
       </Section>
     </Screen>
   )

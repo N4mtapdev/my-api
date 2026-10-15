@@ -50,11 +50,11 @@ export async function photoService(method: string, p: Record<string, unknown>) {
     await image.decode()
   } catch {
     URL.revokeObjectURL(url)
-    throw new PlatformError('E_ARGS', 'Invalid photo')
+    throw new PlatformError('E_ARGS', 'Ảnh không hợp lệ')
   }
   if (image.naturalWidth * image.naturalHeight > 40_000_000) {
     URL.revokeObjectURL(url)
-    throw new PlatformError('E_ARGS', 'Photo too large')
+    throw new PlatformError('E_ARGS', 'Ảnh quá lớn')
   }
   const photo = { id: crypto.randomUUID(), takenAt: Date.now(), width: image.naturalWidth, height: image.naturalHeight }
   photos.set(photo.id, { photo, url })

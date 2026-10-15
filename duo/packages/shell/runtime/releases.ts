@@ -21,8 +21,9 @@ export async function boundedFetch(
   // Static hosts canonicalise paths (`+` → `%2B`, `app.html` → `app`) with redirects, so follow them
   // but never off the origin we asked; every byte is hash-checked by the caller anyway.
   const response = await fetch(url, { redirect: 'follow', credentials: 'omit', signal: AbortSignal.timeout(30000) })
-  if (new URL(response.url).origin !== new URL(url, location.href).origin) throw new Error('Download left its origin')
-  if (!response.ok || !response.body) throw new Error(`Download failed (${response.status})`)
+  if (new URL(response.url).origin !== new URL(url, location.href).origin)
+    throw new Error('Bản tải về vượt ra ngoài origin cho phép')
+  if (!response.ok || !response.body) throw new Error(`Tải về thất bại (${response.status})`)
   const reader = response.body.getReader()
   const chunks: Uint8Array[] = []
   let bytes = 0
@@ -31,7 +32,7 @@ export async function boundedFetch(
       const { value, done } = await reader.read()
       if (done) break
       bytes += value.length
-      if (bytes > bound) throw new Error('Download exceeds declared size')
+      if (bytes > bound) throw new Error('Bản tải về vượt dung lượng khai báo')
       chunks.push(value)
       progress?.(bytes)
     }
@@ -57,17 +58,17 @@ export async function download(
   const url = new URL(base, location.href)
   if (!url.pathname.endsWith('/')) url.pathname += '/'
   const metadata = await boundedFetch(new URL('release.json', url).href, 64 * 1024)
-  if (listed && (await digest(metadata)) !== listed.sha256) throw new Error('Release metadata hash mismatch')
+  if (listed && (await digest(metadata)) !== listed.sha256) throw new Error('Hash metadata bản phát hành không khớp')
   const parsed: unknown = JSON.parse(new TextDecoder().decode(metadata))
   if (!releaseValid(parsed, dev) || !supports(parsed.build.sdk, dev)) throw new Error(REQUIRES_PLATFORM)
   const release: Release = parsed
   if (release.manifest.id !== id || (listed && releaseId(release) !== listed.release))
-    throw new Error('Release identity mismatch')
+    throw new Error('Danh tính bản phát hành không khớp')
   if (listed && url.origin !== location.origin && release.manifest.permissions?.length)
-    throw new Error('Device permissions are not enabled for external developer catalogs')
+    throw new Error('Danh mục nhà phát triển ngoài chưa được cấp quyền thiết bị')
   const total = release.files.reduce((sum, file) => sum + file.bytes, 0)
   if (total > RELEASE_HARD || release.files.find((f) => f.path === 'app.html')!.bytes > BUNDLE_HARD)
-    throw new Error('App exceeds the bundle limit')
+    throw new Error('App vượt giới hạn dung lượng gói')
   const files = new Map<string, Uint8Array<ArrayBuffer>>()
   let received = 0
   for (const file of release.files) {
@@ -77,7 +78,7 @@ export async function download(
       (count) => progress?.((received + count) / total)
     )
     if (data.length !== file.bytes || (await digest(data)) !== file.sha256)
-      throw new Error(`Hash or size mismatch: ${file.path}`)
+      throw new Error(`Hash hoặc dung lượng không khớp: ${file.path}`)
     received += data.length
     files.set(file.path, data)
   }
@@ -87,7 +88,7 @@ export async function download(
     joined.set(data, offset)
     offset += data.length
   }
-  if ((await digest(joined)).slice(0, 8) !== release.build.hash) throw new Error('Build hash mismatch')
+  if ((await digest(joined)).slice(0, 8) !== release.build.hash) throw new Error('Hash bản build không khớp')
   const html = new TextDecoder('utf-8', { fatal: true }).decode(files.get('app.html'))
   await verifyDocument(html, release)
   return {
@@ -103,7 +104,7 @@ export async function download(
 export async function verifyDocument(html: string, release: Release) {
   const document = new DOMParser().parseFromString(html, 'text/html')
   if (document.head.firstElementChild?.getAttribute('http-equiv')?.toLowerCase() !== 'content-security-policy')
-    throw new PlatformError('E_PROTOCOL', 'App document has no leading policy')
+    throw new PlatformError('E_PROTOCOL', 'Tài liệu app không có phần chính sách mở đầu')
   const scripts = [...document.querySelectorAll('script')]
   const styles = [...document.querySelectorAll('style')]
   if (
@@ -114,7 +115,7 @@ export async function verifyDocument(html: string, release: Release) {
     styles[1]!.id !== 'duo-dynamic' ||
     styles[1]!.textContent !== ''
   )
-    throw new PlatformError('E_PROTOCOL', 'App document must use the single-file builder')
+    throw new PlatformError('E_PROTOCOL', 'Tài liệu app phải dựng bằng trình dựng một tệp')
   const hash64 = async (value: string) =>
     btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))))
   const expected = documentPolicy(
@@ -123,5 +124,5 @@ export async function verifyDocument(html: string, release: Release) {
     release.manifest.network
   )
   if (document.head.firstElementChild.getAttribute('content') !== expected)
-    throw new PlatformError('E_PROTOCOL', 'Document policy does not match its declared network and content hashes')
+    throw new PlatformError('E_PROTOCOL', 'Chính sách tài liệu không khớp hash mạng và nội dung đã khai báo')
 }

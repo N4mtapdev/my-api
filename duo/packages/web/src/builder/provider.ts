@@ -86,7 +86,9 @@ export async function completion(
     })
   } catch {
     if (combined.aborted) throw new Error(signal.aborted ? 'Đã dừng' : 'Provider phản hồi quá lâu (3 phút)')
-    throw new Error('Không kết nối được endpoint này. Kiểm tra URL, kết nối và việc provider có hỗ trợ CORS từ trình duyệt không.')
+    throw new Error(
+      'Không kết nối được endpoint này. Kiểm tra URL, kết nối và việc provider có hỗ trợ CORS từ trình duyệt không.'
+    )
   }
   if (!response.ok) {
     void response.body?.cancel()
@@ -147,7 +149,8 @@ export async function completion(
     }
     buffer += decoder.decode()
     if (!streaming) consume(buffer)
-    if (!complete || !output.trim()) throw new Error('Luồng phản hồi của provider kết thúc khi chưa có phản hồi hoàn chỉnh')
+    if (!complete || !output.trim())
+      throw new Error('Luồng phản hồi của provider kết thúc khi chưa có phản hồi hoàn chỉnh')
     return output
   } finally {
     await reader.cancel().catch(() => {})

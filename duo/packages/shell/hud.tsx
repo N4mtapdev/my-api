@@ -126,7 +126,7 @@ function Hud({
     <div {...stylex.props(styles.ui)}>
       {title && (
         <>
-          <h1 {...stylex.props(styles.h1)}>iPhone Duo</h1>
+          <h1 {...stylex.props(styles.h1)}>N4mtapdev</h1>
           <p {...stylex.props(styles.p)}>7.6″ inner display. 5.4″ outer. Grade&nbsp;5 titanium.</p>
         </>
       )}
@@ -136,14 +136,14 @@ function Hud({
               phone and ran into the device, and half of it named gestures a
               touch screen does not have. */}
           <span {...stylex.props(styles.hintWide)}>
-            Tap the screen to use it · Press the buttons on the frame · Drag outside to orbit · Wheel to zoom
+            Chạm màn hình để dùng · Bấm nút trên khung · Kéo ra ngoài để xoay · Lăn chuột để thu phóng
           </span>
-          <span {...stylex.props(styles.hintNarrow)}>Tap the screen to use it · Drag to turn</span>
+          <span {...stylex.props(styles.hintNarrow)}>Chạm màn hình để dùng · Kéo để xoay</span>
         </div>
       )}
       {/* The HUD floats under the device; its padding drags the frameless window. */}
       <div {...stylex.props(styles.liquid, styles.hud)} data-tauri-drag-region="">
-        <label {...stylex.props(styles.child, styles.label)} title="Hinge angle">
+        <label {...stylex.props(styles.child, styles.label)} title="Góc bản lề">
           <svg {...stylex.props(styles.svg)} viewBox="0 0 20 20" aria-hidden="true">
             <path d="M3 16 L10 4 L17 16" />
             <path d="M6.4 16 A6 6 0 0 0 13.6 16" opacity="0.6" />
@@ -156,7 +156,7 @@ function Hud({
             step="1"
             value={Math.round(s.target)}
             onChange={(e) => events.angle(Number(e.currentTarget.value))}
-            aria-label="Hinge angle"
+            aria-label="Góc bản lề"
           />
           <span
             {...stylex.props(styles.deg)}
@@ -170,7 +170,7 @@ function Hud({
         <button
           type="button"
           {...stylex.props(styles.child, styles.button)}
-          title={closed ? 'Open' : 'Close'}
+          title={closed ? 'Mở' : 'Đóng'}
           onClick={events.toggle}
         >
           <svg {...stylex.props(styles.svg)} viewBox="0 0 20 20" aria-hidden="true">
@@ -186,7 +186,7 @@ function Hud({
             <path d="M10 3 V17" opacity="0.5" />
           </svg>
         </button>
-        <button type="button" {...stylex.props(styles.child, styles.button)} title="Flip" onClick={events.flip}>
+        <button type="button" {...stylex.props(styles.child, styles.button)} title="Lật" onClick={events.flip}>
           <svg {...stylex.props(styles.svg, styles.turn(s.yaw))} viewBox="0 0 20 20" aria-hidden="true">
             <path d="M15.5 6.5 A6.5 6.5 0 0 0 4 8.2" />
             <path d="M4 4.5 V8.5 H8" />
@@ -198,7 +198,7 @@ function Hud({
         <button
           type="button"
           {...stylex.props(styles.child, styles.button, !s.away && styles.buttonOff)}
-          title="Reset view"
+          title="Đặt lại góc nhìn"
           disabled={!s.away}
           onClick={events.reset}
         >

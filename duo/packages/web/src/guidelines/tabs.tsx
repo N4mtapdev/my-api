@@ -46,7 +46,7 @@ export function Tabs({ tabs, open, onOpen }: { tabs: Tab[]; open: string; onOpen
 
   return (
     <div {...stylex.props(styles.strip)}>
-      <div ref={strip} role="tablist" aria-label="Guidelines sections" onKeyDown={move} {...stylex.props(styles.list)}>
+      <div ref={strip} role="tablist" aria-label="Các mục hướng dẫn" onKeyDown={move} {...stylex.props(styles.list)}>
         {tabs.map((t) => {
           const on = t.id === open
           return (

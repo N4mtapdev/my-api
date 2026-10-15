@@ -143,9 +143,9 @@ export function Tile({
     >
       <div {...stylex.props(styles.iconWrap, hot && styles.iconWrapHot, shake && styles.shake)}>
         <Icon ref={icon} a={a} size={dock ? styles.iconDock : undefined} pressed={pressed} hot={hot} />
-        {a.mock && <span {...stylex.props(styles.mockDot)} title="Mockup" />}
+        {a.mock && <span {...stylex.props(styles.mockDot)} title="Bản mẫu" />}
       </div>
-      {a.name}
+      {a.label ?? a.name}
     </div>
   )
 }

@@ -247,7 +247,7 @@ function NowTile({ onExpand }: { onExpand: () => void }) {
     <div {...stylex.props(styles.tile, styles.playing)}>
       <div {...stylex.props(styles.playHead)} onClick={onExpand}>
         <div {...stylex.props(styles.playText)}>
-          <b {...stylex.props(styles.playTitle)}>{d.started ? name : 'Not Playing'}</b>
+          <b {...stylex.props(styles.playTitle)}>{d.started ? name : 'Không phát gì'}</b>
           {d.started && <div {...stylex.props(styles.playSub)}>{who}</div>}
         </div>
         <span {...stylex.props(styles.dim)}>
@@ -271,7 +271,7 @@ function Media({ level, onLevel }: { level: number; onLevel: (v: number) => void
       <div {...stylex.props(styles.cover, d.started && styles.coverArt(`url(${cover})`))} onClick={() => d.toggle()} />
       <div {...stylex.props(styles.playHead)}>
         <div {...stylex.props(styles.playText)}>
-          <b {...stylex.props(styles.mTitle)}>{d.started ? name : 'Not Playing'}</b>
+          <b {...stylex.props(styles.mTitle)}>{d.started ? name : 'Không phát gì'}</b>
           {d.started && <div {...stylex.props(styles.playSub)}>{who}</div>}
         </div>
         <span {...stylex.props(styles.dim)}>
@@ -301,12 +301,24 @@ function Media({ level, onLevel }: { level: number; onLevel: (v: number) => void
 function Network() {
   const t = useToggles()
   const rows = [
-    ['airplane', 'Airplane Mode', colors.orange, <Sym key="a" name="airplane" size={18} />, t.airplane ? 'On' : 'Off'],
-    ['drop', 'AirDrop', colors.blueDark, <Sym key="d" name="bluetooth" size={18} />, t.drop ? 'Contacts Only' : 'Off'],
-    ['wifi', 'Wi-Fi', colors.blueDark, <Sym key="w" name="wifi" size={18} />, t.wifi ? NETWORK : 'Off'],
-    ['bt', 'Bluetooth', colors.blueDark, <Bluetooth key="b" size={18} />, t.bt ? 'On' : 'Off'],
-    ['cell', 'Cellular Data', colors.green, <Sym key="c" name="antenna" size={18} />, t.cell ? 'On' : 'Off'],
-    ['hotspot', 'Personal Hotspot', colors.green, <Sym key="h" name="iphone" size={18} />, t.hotspot ? 'On' : 'Off']
+    [
+      'airplane',
+      'Chế độ máy bay',
+      colors.orange,
+      <Sym key="a" name="airplane" size={18} />,
+      t.airplane ? 'Bật' : 'Tắt'
+    ],
+    ['drop', 'AirDrop', colors.blueDark, <Sym key="d" name="bluetooth" size={18} />, t.drop ? 'Chỉ danh bạ' : 'Tắt'],
+    ['wifi', 'Wi-Fi', colors.blueDark, <Sym key="w" name="wifi" size={18} />, t.wifi ? NETWORK : 'Tắt'],
+    ['bt', 'Bluetooth', colors.blueDark, <Bluetooth key="b" size={18} />, t.bt ? 'Bật' : 'Tắt'],
+    ['cell', 'Dữ liệu di động', colors.green, <Sym key="c" name="antenna" size={18} />, t.cell ? 'Bật' : 'Tắt'],
+    [
+      'hotspot',
+      'Điểm phát sóng cá nhân',
+      colors.green,
+      <Sym key="h" name="iphone" size={18} />,
+      t.hotspot ? 'Bật' : 'Tắt'
+    ]
   ] as const satisfies readonly (readonly [keyof Toggles, string, string, ReactNode, string])[]
   return (
     <div {...stylex.props(styles.card, styles.list)}>
@@ -445,7 +457,7 @@ export function ControlCenter({
           onClick={() => flip('focus')}
         >
           <Sym name="moon" size={22} />
-          <span {...stylex.props(styles.focusLabel)}>Focus</span>
+          <span {...stylex.props(styles.focusLabel)}>Tập trung</span>
         </div>
       )
     },

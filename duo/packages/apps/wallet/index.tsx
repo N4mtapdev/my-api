@@ -32,7 +32,7 @@ export const Wallet = () => {
   const height = (top < 0 ? (PASSES.length - 1) * STEP : (PASSES.length - 2) * STEP + 178) + 158
   return (
     <Screen>
-      <LargeTitle>Wallet</LargeTitle>
+      <LargeTitle>Ví</LargeTitle>
       <div {...stylex.props(styles.cards, styles.height(height))}>
         {PASSES.map(([name, bg, fg], i) => {
           // Pulled-out card sits at the top and everything under it drops clear.
@@ -44,7 +44,7 @@ export const Wallet = () => {
               onClick={() => setTop(top === i ? -1 : i)}
             >
               <div {...stylex.props(styles.nm)}>{name}</div>
-              <div {...stylex.props(styles.kind)}>{i ? 'Apple Pay' : 'Balance $1,284.10'}</div>
+              <div {...stylex.props(styles.kind)}>{i ? 'Apple Pay' : 'Số dư $1,284.10'}</div>
               <div {...stylex.props(styles.no)}>{`•••• ${4000 + i * 1111}`}</div>
             </div>
           )
@@ -57,9 +57,9 @@ export const Wallet = () => {
       </div>
       {paying && (
         <div {...stylex.props(styles.pay)}>
-          <div {...stylex.props(styles.payHint)}>Double-Click to Pay</div>
+          <div {...stylex.props(styles.payHint)}>Nhấn đúp để thanh toán</div>
           <div {...stylex.props(styles.mono)}>💳</div>
-          <div {...stylex.props(styles.payTitle)}>Hold Near Reader</div>
+          <div {...stylex.props(styles.payTitle)}>Giữ gần đầu đọc</div>
         </div>
       )}
     </Screen>

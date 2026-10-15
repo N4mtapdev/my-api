@@ -6,9 +6,17 @@ import { Block, Cap, Headline, Lede, Rise, Stagger, TextLink } from './parts'
 const MID = '@media (max-width: 1068px)'
 
 const API = [
-  { area: 'Màn hình', sig: 'useDisplay()', text: 'Màn hình nào, rộng bao nhiêu, góc bản lề và trạng thái focus - tất cả theo thời gian thực.' },
+  {
+    area: 'Màn hình',
+    sig: 'useDisplay()',
+    text: 'Màn hình nào, rộng bao nhiêu, góc bản lề và trạng thái focus - tất cả theo thời gian thực.'
+  },
   { area: 'Lưu trữ', sig: 'useKV()', text: 'Bộ nhớ bền, có phiên bản và riêng tư cho từng app.' },
-  { area: 'Giao diện', sig: 'os.commands', text: 'Một app, hai giao diện: một bên giữ màn hình, các bên còn lại gửi lệnh cho nhau.' },
+  {
+    area: 'Giao diện',
+    sig: 'os.commands',
+    text: 'Một app, hai giao diện: một bên giữ màn hình, các bên còn lại gửi lệnh cho nhau.'
+  },
   { area: 'Liên kết', sig: 'os.open()', text: 'Mở sang app khác ngay trên máy, kèm theo tham số.' }
 ]
 
@@ -25,8 +33,8 @@ export function Sdk() {
         </Rise>
         <Rise>
           <Lede>
-            Nhỏ đến mức đọc hết trong một phút mà vẫn đủ viết một app thật. Phần còn lại chỉ là React và những thứ
-            bạn vốn đã quen. <TextLink to="/docs/sdk">Xem trang SDK</TextLink> để có client đầy đủ.
+            Nhỏ đến mức đọc hết trong một phút mà vẫn đủ viết một app thật. Phần còn lại chỉ là React và những thứ bạn
+            vốn đã quen. <TextLink to="/docs/sdk">Xem trang SDK</TextLink> để có client đầy đủ.
           </Lede>
         </Rise>
       </Stagger>

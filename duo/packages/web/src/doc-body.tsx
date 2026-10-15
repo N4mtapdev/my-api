@@ -46,7 +46,7 @@ export function DocBody({ doc }: { doc: Doc }) {
         )}
         {render(body, ctx)}
       </motion.div>
-      <nav aria-label="Pages" {...stylex.props(styles.pager)}>
+      <nav aria-label="Trang" {...stylex.props(styles.pager)}>
         {prev ? (
           <Link to="/docs/$" params={{ _splat: prev.slug }} {...stylex.props(styles.pageLink)}>
             <span {...stylex.props(styles.pageLabel)}>

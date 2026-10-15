@@ -38,7 +38,7 @@ export function useSelection() {
   const v = useKV(os.session, 'view')
   const d = useKV(os.session, 'date')
   const side = useKV(os.session, 'sidebar')
-  const view = (VIEWS as readonly string[]).includes(v.value ?? '') ? (v.value as View) : 'Month'
+  const view = (VIEWS as readonly string[]).includes(v.value ?? '') ? (v.value as View) : 'Tháng'
   const date = d.value ? new Date(`${d.value}T00:00`) : new Date()
   return {
     view,

@@ -5,22 +5,20 @@ import * as stylex from '@stylexjs/stylex'
 import { useEffect, useRef, useState } from 'react'
 import { styles } from './styles.ts'
 
-const ASKS: [string, string][] = [
-  ['What is the weather?', 'It is 16° and partly cloudy in San Francisco, with a high of 18° today.'],
-  ['Open Freeform', 'Opening Freeform.'],
-  [
-    'How wide is iPhone Duo?',
-    'Unfolded it measures 164.6 mm across — 80.4 mm of usable display either side of the hinge.'
-  ],
-  ['Set a timer for 5 minutes', 'Five minutes, starting now.'],
-  ['Play something', 'Here is a station based on what you have been listening to.']
+// The third slot names an app to open after answering, so the copy stays free of parsing.
+const ASKS: [string, string, string?][] = [
+  ['Hôm nay trời thế nào?', 'Ở San Francisco 16°, có mây rải rác, cao nhất 18° hôm nay.'],
+  ['Mở Freeform', 'Đang mở Freeform.', 'Freeform'],
+  ['iPhone Duo rộng bao nhiêu?', 'Mở ra là 164,6 mm - mỗi bên bản lề 80,4 mm màn hình dùng được.'],
+  ['Bật hẹn giờ 5 phút', '5 phút, bắt đầu ngay bây giờ.'],
+  ['Phát gì đó đi', 'Đây là kênh phát dựa trên những gì bạn đang nghe.']
 ]
 
 /** Lazy, like `beep`'s: constructing one before a gesture gets it suspended. */
 let ac: AudioContext | undefined
 
 export const Siri = ({ os }: { os: Os }) => {
-  const [said, setSaid] = useState('What can I help you with?')
+  const [said, setSaid] = useState('Tôi có thể giúp gì cho bạn?')
   const [answer, setAnswer] = useState<string | null>(null)
   const orb = useRef<HTMLDivElement>(null)
   const stream = useRef<MediaStream>(undefined)
@@ -61,14 +59,14 @@ export const Siri = ({ os }: { os: Os }) => {
     []
   )
 
-  const ask = ([q, a]: [string, string]) => {
+  const ask = ([q, a, app]: [string, string, string?]) => {
     setSaid(q)
     setAnswer(null)
     beep([880, 1320], 0.1, 0.05)
     timers.current.push(
       window.setTimeout(() => {
         setAnswer(a)
-        if (q.startsWith('Open ')) timers.current.push(window.setTimeout(() => os.open(q.slice(5)), 700))
+        if (app) timers.current.push(window.setTimeout(() => os.open(app), 700))
       }, 520)
     )
   }
@@ -79,7 +77,7 @@ export const Siri = ({ os }: { os: Os }) => {
       <div
         ref={orb}
         {...stylex.props(styles.orb)}
-        onClick={() => (raf.current ? hush() : listen().catch(() => setSaid('Microphone unavailable.')))}
+        onClick={() => (raf.current ? hush() : listen().catch(() => setSaid('Không dùng được micro.')))}
       />
       <div {...stylex.props(styles.said)}>{said}</div>
       <div {...stylex.props(styles.out)}>

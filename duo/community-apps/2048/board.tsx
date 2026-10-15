@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { CELL_COUNT, SIZE, type Direction, type Tile } from './game.ts'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
+import { CELL_COUNT, type Direction, SIZE, type Tile } from './game.ts'
 import { styles, tileGeometry, tileStyle } from './styles.ts'
 
 export type ViewDimensions = { display: 'inner' | 'cover'; width: number; height: number }

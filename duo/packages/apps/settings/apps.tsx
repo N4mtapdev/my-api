@@ -10,13 +10,13 @@ import { Sym } from '@doan-labs/duo-uikit/sym.tsx'
 import { colors } from '@doan-labs/duo-uikit/tokens.stylex.ts'
 import * as stylex from '@stylexjs/stylex'
 import { useState, useSyncExternalStore } from 'react'
-import { Glyph, Head, Hero, Link, Note, PERM_GLYPH, Row, Section, size, version } from './parts.tsx'
+import { Glyph, Head, Hero, Link, Note, PERM_GLYPH, PERM_LABEL, Row, Section, size, version } from './parts.tsx'
 import { styles } from './styles.ts'
 
 const LANE: Record<string, string> = {
-  official: 'Duo catalog',
-  community: 'Community',
-  development: 'Local preview'
+  official: 'Danh mục Duo',
+  community: 'Cộng đồng',
+  development: 'Xem trước tại máy'
 }
 
 const useRows = (store: Store) => useSyncExternalStore(store.subscribe, store.snapshot).rows
@@ -31,7 +31,7 @@ const Icon = ({ row, big }: { row: StoreRow; big?: boolean }) => {
 }
 
 export function AppsPage({ os }: { os: Os }) {
-  if (!os.store) return <Note>Apps are unavailable: this device has no storage to install into.</Note>
+  if (!os.store) return <Note>Không dùng được Ứng dụng: máy này không có bộ nhớ để cài vào.</Note>
   return <Installed os={os} store={os.store} />
 }
 
@@ -40,16 +40,16 @@ function Installed({ os, store }: { os: Os; store: Store }) {
   const busy = rows.filter((row) => row.progress !== undefined)
   return (
     <>
-      <Hero name="grid" bg={colors.indigo} title="Apps">
-        Manage the apps installed on this Duo: what each one is allowed to reach, how much room it takes and whether it
-        stays.
+      <Hero name="grid" bg={colors.indigo} title="Ứng dụng">
+        Quản lý các app đã cài trên máy Duo này: mỗi app được phép với tới gì, chiếm bao nhiêu dung lượng và có ở lại
+        không.
       </Hero>
       {rows.length === 0 ? (
-        <Note>Nothing is installed yet. Open the App Store to get an app.</Note>
+        <Note>Chưa cài gì cả. Mở App Store để lấy một app.</Note>
       ) : (
         <>
           <Head>
-            {rows.length} installed · {size(rows.reduce((n, row) => n + (row.bytes ?? 0), 0))}
+            {rows.length} app đã cài · {size(rows.reduce((n, row) => n + (row.bytes ?? 0), 0))}
           </Head>
           <Section>
             {rows.map((row) => (
@@ -66,8 +66,8 @@ function Installed({ os, store }: { os: Os; store: Store }) {
         </>
       )}
       <Note>
-        Only installed releases are listed. The rest of the home screen is baked into the shell itself and has nothing
-        to uninstall. {busy.length > 0 && 'An app is being written to storage; its row updates when it settles.'}
+        Chỉ liệt kê các bản phát hành đã cài. Phần còn lại của màn hình chính được nướng sẵn trong shell, không gỡ được.{' '}
+        {busy.length > 0 && 'Đang ghi một app vào bộ nhớ; hàng của nó sẽ cập nhật khi xong.'}
       </Note>
     </>
   )
@@ -80,7 +80,7 @@ function Installed({ os, store }: { os: Os; store: Store }) {
 function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
   const row = useRows(store).find((r) => r.id === id)
   const [confirming, setConfirming] = useState(false)
-  if (!row?.installed) return <Note>This app is no longer installed.</Note>
+  if (!row?.installed) return <Note>App này không còn được cài.</Note>
   const working = row.progress !== undefined
   const remove = () => void store.remove(row.id)
   return (
@@ -91,24 +91,28 @@ function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
         <div {...stylex.props(typography.body, styles.heroText)}>{row.author}</div>
       </div>
       <Section>
-        <Row label="Version" detail={version(row.installed)} />
-        <Row label="Size" detail={size(row.bytes)} />
-        <Row label="Source" detail={LANE[row.lane] ?? row.lane} />
+        <Row label="Phiên bản" detail={version(row.installed)} />
+        <Row label="Dung lượng" detail={size(row.bytes)} />
+        <Row label="Nguồn" detail={LANE[row.lane] ?? row.lane} />
       </Section>
-      <Head>Device access</Head>
+      <Head>Truy cập thiết bị</Head>
       <Section>
         {row.permissions.length ? (
           row.permissions.map((name) => (
-            <Row key={name} icon={<Glyph name={PERM_GLYPH[name] ?? 'lock'} bg={colors.blue} />} label={name} />
+            <Row
+              key={name}
+              icon={<Glyph name={PERM_GLYPH[name] ?? 'lock'} bg={colors.blue} />}
+              label={PERM_LABEL[name] ?? name}
+            />
           ))
         ) : (
-          <Row icon={<Glyph name="lock" bg={colors.grey} />} label="No device access" />
+          <Row icon={<Glyph name="lock" bg={colors.grey} />} label="Không truy cập thiết bị" />
         )}
       </Section>
       <Note>
         {row.development
-          ? 'A local preview. Removing it clears this preview’s private data.'
-          : 'Runs in its own sandbox: no camera, no microphone, no embedded pages. Its storage never leaves this device.'}
+          ? 'Bản xem trước tại máy. Gỡ đi sẽ xóa dữ liệu riêng của bản xem trước này.'
+          : 'Chạy trong sandbox riêng: không máy ảnh, không micrô, không trang nhúng. Bộ nhớ của nó không bao giờ rời máy này.'}
       </Note>
       <Section>
         <button
@@ -117,7 +121,7 @@ function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
           onClick={() => os.open(row.name)}
           disabled={working}
         >
-          Open {row.name}
+          Mở {row.name}
         </button>
         {row.recovery && (
           <button
@@ -127,7 +131,7 @@ function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
             disabled={working}
           >
             <Sym name="undo" size={15} />
-            Restore previous version
+            Khôi phục phiên bản trước
           </button>
         )}
       </Section>
@@ -141,17 +145,17 @@ function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
               onClick={remove}
               disabled={working}
             >
-              Delete “{row.name}”
+              Xóa “{row.name}”
             </button>
             <button
               type="button"
               {...stylex.props(shared.row, styles.row, styles.action, styles.centred)}
               onClick={() => setConfirming(false)}
             >
-              Cancel
+              Hủy
             </button>
           </Section>
-          <Note>Deleting this app also deletes its data. Reinstalling starts it empty.</Note>
+          <Note>Xóa app cũng xóa luôn dữ liệu của nó. Cài lại sẽ khởi động trắng.</Note>
         </>
       ) : (
         <Section>
@@ -162,7 +166,7 @@ function Detail({ id, os, store }: { id: string; os: Os; store: Store }) {
             disabled={working}
           >
             <Sym name="trash" size={15} />
-            Remove App
+            Gỡ ứng dụng
           </button>
         </Section>
       )}

@@ -62,21 +62,22 @@ const UTILITIES = ['Calculator', 'Voice Memos', 'Shortcuts', 'Podcasts', 'Books'
 /** Left half — the cover display, rows 3 to 6. */
 export const LEFT: App[] = [
   { name: 'FaceTime', mock: true, view: FaceTime },
-  { name: 'Calendar', id: 'labs.doan.ipduo.calendar', ...RELEASE },
-  { name: 'Photos', id: 'labs.doan.ipduo.photos', light: true, ...RELEASE },
-  { name: 'Camera', view: Camera },
-  { name: 'Mail', mock: true, light: true, view: Mail },
-  { name: 'Clock', id: 'labs.doan.ipduo.clock', ...RELEASE },
-  { name: 'Notes', id: 'labs.doan.ipduo.notes', light: true, ...RELEASE },
-  { name: 'Maps', light: true, edge: true, view: Maps },
+  { name: 'Calendar', label: 'Lịch', id: 'labs.doan.ipduo.calendar', ...RELEASE },
+  { name: 'Photos', label: 'Ảnh', id: 'labs.doan.ipduo.photos', light: true, ...RELEASE },
+  { name: 'Camera', label: 'Máy ảnh', view: Camera },
+  { name: 'Mail', label: 'Thư', mock: true, light: true, view: Mail },
+  { name: 'Clock', label: 'Đồng hồ', id: 'labs.doan.ipduo.clock', ...RELEASE },
+  { name: 'Notes', label: 'Ghi chú', id: 'labs.doan.ipduo.notes', light: true, ...RELEASE },
+  { name: 'Maps', label: 'Bản đồ', light: true, edge: true, view: Maps },
   { name: 'TV', mock: true, view: Tv },
-  { name: 'News', id: 'labs.doan.ipduo.news', light: true, ...RELEASE },
-  { name: 'Health', mock: true, light: true, view: Health },
-  { name: 'Wallet', mock: true, view: Wallet },
+  { name: 'News', label: 'Tin tức', id: 'labs.doan.ipduo.news', light: true, ...RELEASE },
+  { name: 'Health', label: 'Sức khỏe', mock: true, light: true, view: Health },
+  { name: 'Wallet', label: 'Ví', mock: true, view: Wallet },
   { name: 'Siri', mock: true, view: Siri },
   // `edge`: the sidebar's material runs to the top corner, so each column pads its own status band.
   {
     name: 'Settings',
+    label: 'Cài đặt',
     light: true,
     edge: true,
     view: (props) => createElement(Settings, { ...props, host: SETTINGS_HOST })
@@ -85,30 +86,30 @@ export const LEFT: App[] = [
 
 /** Right half — only on the inner display, rows 1 to 6. */
 export const RIGHT: App[] = [
-  { name: 'Weather', id: 'labs.doan.ipduo.weather', edge: true, ...RELEASE },
-  { name: 'Stocks', mock: true, view: Stocks },
-  { name: 'Find My', mock: true, light: true, view: FindMy },
-  { name: 'Home', mock: true, view: Home },
-  { name: 'Fitness', mock: true, view: Fitness },
+  { name: 'Weather', label: 'Thời tiết', id: 'labs.doan.ipduo.weather', edge: true, ...RELEASE },
+  { name: 'Stocks', label: 'Cổ phiếu', mock: true, view: Stocks },
+  { name: 'Find My', label: 'Tìm', mock: true, light: true, view: FindMy },
+  { name: 'Home', label: 'Nhà', mock: true, view: Home },
+  { name: 'Fitness', label: 'Thể dục', mock: true, view: Fitness },
   { name: 'Watch', mock: true, view: Watch },
-  { name: 'Reminders', id: 'labs.doan.ipduo.reminders', light: true, ...RELEASE },
-  { name: 'Files', mock: true, light: true, view: Files },
-  { name: 'Preview', mock: true, light: true, view: Preview },
+  { name: 'Reminders', label: 'Nhắc việc', id: 'labs.doan.ipduo.reminders', light: true, ...RELEASE },
+  { name: 'Files', label: 'Tệp', mock: true, light: true, view: Files },
+  { name: 'Preview', label: 'Xem trước', mock: true, light: true, view: Preview },
   // A folder opens on the home screen, never as a scene; springboard/grid.ts reads what it holds.
-  { name: 'Utilities', folder: UTILITIES, view: () => null },
-  { name: 'Contacts', mock: true, light: true, view: Contacts },
+  { name: 'Utilities', label: 'Tiện ích', folder: UTILITIES, view: () => null },
+  { name: 'Contacts', label: 'Liên hệ', mock: true, light: true, view: Contacts },
   { name: 'iTunes Store', mock: true, light: true, view: Itunes },
   { name: 'Freeform', id: 'labs.doan.ipduo.freeform', light: true, ...RELEASE },
-  { name: 'Tips', mock: true, light: true, view: Tips },
+  { name: 'Tips', label: 'Mẹo', mock: true, light: true, view: Tips },
   // Baked apps never import the shell, so the Store gets its link opener as a prop.
   { name: 'App Store', light: true, view: (props) => createElement(AppStore, { ...props, openExternal }) }
 ]
 
 export const DOCK: App[] = [
-  { name: 'Phone', mock: true, view: Phone },
+  { name: 'Phone', label: 'Điện thoại', mock: true, view: Phone },
   { name: 'Safari', light: true, rail: true, view: Safari },
-  { name: 'Messages', mock: true, light: true, view: Messages },
-  { name: 'Music', view: Music }
+  { name: 'Messages', label: 'Tin nhắn', mock: true, light: true, view: Messages },
+  { name: 'Music', label: 'Nhạc', view: Music }
 ]
 
 /** Everything openable by name, including what only lives inside Utilities. */
@@ -116,11 +117,11 @@ export const APPS: App[] = [
   ...LEFT,
   ...RIGHT,
   ...DOCK,
-  { name: 'Calculator', id: 'labs.doan.ipduo.calculator', ...RELEASE },
-  { name: 'Voice Memos', view: Memos },
-  { name: 'Shortcuts', mock: true, light: true, view: Shortcuts },
-  { name: 'Podcasts', mock: true, light: true, view: Podcasts },
-  { name: 'Books', mock: true, light: true, view: Books },
+  { name: 'Calculator', label: 'Máy tính', id: 'labs.doan.ipduo.calculator', ...RELEASE },
+  { name: 'Voice Memos', label: 'Ghi âm', view: Memos },
+  { name: 'Shortcuts', label: 'Phím tắt', mock: true, light: true, view: Shortcuts },
+  { name: 'Podcasts', label: 'Podcasts', mock: true, light: true, view: Podcasts },
+  { name: 'Books', label: 'Sách', mock: true, light: true, view: Books },
   { name: 'YouTube', mock: true, light: true, view: YouTube }
 ]
 

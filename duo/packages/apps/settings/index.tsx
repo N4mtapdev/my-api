@@ -59,7 +59,7 @@ export function Settings({ os, host }: { os: Os; host: SettingsHost }) {
           </Nav>
         ) : (
           <Nav>
-            <Page title="Settings">
+            <Page title="Cài đặt">
               <Folded groups={groups} open={deep} />
             </Page>
           </Nav>
@@ -80,12 +80,12 @@ function rootList(os: Os, host: SettingsHost, sw: Switches): Group[] {
       rows: [
         {
           id: 'airplane',
-          label: 'Airplane Mode',
+          label: 'Chế độ máy bay',
           glyph: 'airplane',
           tint: colors.orange,
           control: (
             <Toggle
-              aria-label="Airplane Mode"
+              aria-label="Chế độ máy bay"
               checked={sw.airplane}
               onChange={() => host.flip('airplane')}
               xstyle={styles.sw}
@@ -97,7 +97,7 @@ function rootList(os: Os, host: SettingsHost, sw: Switches): Group[] {
           label: 'Wi‑Fi',
           glyph: 'wifi',
           tint: colors.blue,
-          detail: sw.wifi ? host.network : 'Off',
+          detail: sw.wifi ? host.network : 'Tắt',
           page: () => (
             <Radio host={host} name="wifi" label="Wi‑Fi" glyph="wifi" tint={colors.blue}>
               <Section>
@@ -107,7 +107,9 @@ function rootList(os: Os, host: SettingsHost, sw: Switches): Group[] {
                   detail={<Sym name="check" size={15} />}
                 />
               </Section>
-              <Note>One network, and no radio to scan with. The status stacks on both displays name this one.</Note>
+              <Note>
+                Chỉ một mạng và không có radio để quét. Dải trạng thái trên cả hai màn hình đều nêu tên mạng này.
+              </Note>
             </Radio>
           )
         },
@@ -116,42 +118,42 @@ function rootList(os: Os, host: SettingsHost, sw: Switches): Group[] {
           label: 'Bluetooth',
           glyph: 'bluetooth',
           tint: colors.blue,
-          detail: sw.bt ? 'On' : 'Off',
+          detail: sw.bt ? 'Bật' : 'Tắt',
           page: () => (
             <Radio host={host} name="bt" label="Bluetooth" glyph="bluetooth" tint={colors.blue}>
-              <Note>No devices are paired, and nothing here can pair one.</Note>
+              <Note>Chưa ghép thiết bị nào và không thể ghép từ đây.</Note>
             </Radio>
           )
         },
         {
           id: 'cell',
-          label: 'Cellular',
+          label: 'Dữ liệu di động',
           glyph: 'antenna',
           tint: colors.green,
-          detail: sw.cell ? 'On' : 'Off',
+          detail: sw.cell ? 'Bật' : 'Tắt',
           page: () => (
-            <Radio host={host} name="cell" label="Cellular Data" glyph="antenna" tint={colors.green}>
-              <Note>No SIM is installed. The bars in the status stack follow this switch.</Note>
+            <Radio host={host} name="cell" label="Dữ liệu di động" glyph="antenna" tint={colors.green}>
+              <Note>Không có SIM. Số vạch sóng trong dải trạng thái theo công tắc này.</Note>
             </Radio>
           )
         }
       ],
-      note: 'Airplane Mode drags the three radios down with it, as it does in Control Center.'
+      note: 'Chế độ máy bay kéo cả ba radio xuống cùng, như trong Trung tâm điều khiển.'
     },
     {
       rows: [
         {
           id: 'general',
-          label: 'General',
+          label: 'Cài đặt chung',
           glyph: 'gear',
           tint: colors.grey,
           detail: SOFTWARE,
           page: () => <GeneralPage os={os} host={host} />
         },
-        { id: 'battery', label: 'Battery', glyph: 'battery', tint: colors.green, detail: `${host.battery}%` },
+        { id: 'battery', label: 'Pin', glyph: 'battery', tint: colors.green, detail: `${host.battery}%` },
         {
           id: 'privacy',
-          label: 'Privacy & Security',
+          label: 'Quyền riêng tư & Bảo mật',
           glyph: 'privacy',
           tint: colors.blue,
           page: () => <PrivacyPage os={os} />
@@ -159,7 +161,7 @@ function rootList(os: Os, host: SettingsHost, sw: Switches): Group[] {
       ]
     },
     {
-      rows: [{ id: 'apps', label: 'Apps', glyph: 'grid', tint: colors.indigo, page: () => <AppsPage os={os} /> }]
+      rows: [{ id: 'apps', label: 'Ứng dụng', glyph: 'grid', tint: colors.indigo, page: () => <AppsPage os={os} /> }]
     }
   ]
 }
@@ -188,12 +190,12 @@ function Folded({ groups, open }: { groups: Group[]; open?: Dest }) {
               <Sym name="person" size={26} />
             </span>
           }
-          label="Apple Account"
-          subtitle="Sign in to use iCloud, the App Store and more"
+          label="Tài khoản Apple"
+          subtitle="Đăng nhập để dùng iCloud, App Store và hơn thế nữa"
           xstyle={styles.accountRow}
         />
       </Section>
-      <Note>Nothing signs in here. The App Store installs without an account.</Note>
+      <Note>Không có gì đăng nhập ở đây. App Store cài đặt không cần tài khoản.</Note>
       {groups.map((group, i) => (
         // Positional: the root list is written out above, not keyed data, and never reorders.
         // biome-ignore lint/suspicious/noArrayIndexKey: the groups are literal
@@ -248,7 +250,7 @@ function Radio({
           <Toggle aria-label={label} checked={sw[name]} onChange={() => host.flip(name)} xstyle={styles.sw} />
         </Row>
       </Section>
-      {sw.airplane && <Note>Airplane Mode is on. Turning this back on leaves Airplane Mode on, as iOS does.</Note>}
+      {sw.airplane && <Note>Chế độ máy bay đang bật. Bật lại mục này vẫn giữ Chế độ máy bay bật, như trên iOS.</Note>}
       {sw[name] && children}
     </>
   )
@@ -256,9 +258,9 @@ function Radio({
 
 /** What each radio pane covers, in the line iPadOS prints under the pane's name. */
 const ABOUT = {
-  wifi: 'The network this Duo is on, and the switch both status stacks follow.',
-  bt: 'The Bluetooth radio, and whatever this Duo has paired with it.',
-  cell: 'Cellular data for this Duo, and the bars the status stacks draw from it.'
+  wifi: 'Mạng mà máy Duo này đang dùng, cùng công tắc mà cả hai dải trạng thái theo.',
+  bt: 'Radio Bluetooth và những gì máy Duo này đã ghép với nó.',
+  cell: 'Dữ liệu di động của máy Duo này và số vạch sóng dải trạng thái vẽ theo nó.'
 } satisfies Partial<Record<keyof Switches, string>>
 
 /**
@@ -277,8 +279,8 @@ function PrivacyPage({ os }: { os: Os }) {
     for (const name of row.permissions) granted.set(name, [...(granted.get(name) ?? []), row.name])
   return (
     <>
-      <Hero name="privacy" bg={colors.blue} title="Privacy & Security">
-        What the apps on this Duo are allowed to reach, and what the device refuses to anyone.
+      <Hero name="privacy" bg={colors.blue} title="Quyền riêng tư & Bảo mật">
+        Những gì các app trên máy Duo này được phép với tới, và những gì máy từ chối với mọi app.
       </Hero>
       <Section>
         {granted.size ? (
@@ -291,20 +293,20 @@ function PrivacyPage({ os }: { os: Os }) {
             />
           ))
         ) : (
-          <Row icon={<Glyph name="lock" bg={colors.grey} />} label="No app requests device access" />
+          <Row icon={<Glyph name="lock" bg={colors.grey} />} label="Không app nào xin quyền truy cập" />
         )}
       </Section>
       <Note>
-        A permission is declared in the app’s manifest and shown on its App Store page before you install it. Nothing
-        here hands one out afterwards; removing the app is how you take it back.
+        Quyền được khai báo trong manifest của app và hiện trên trang App Store trước khi bạn cài. Chỗ này không cấp
+        thêm quyền nào sau đó; gỡ app là cách lấy lại quyền.
       </Note>
       <Section>
-        <Row icon={<Glyph name="privacy" bg={colors.red} />} label="Camera" detail="Denied to every app" />
-        <Row icon={<Glyph name="volume" bg={colors.red} />} label="Microphone" detail="Denied to every app" />
+        <Row icon={<Glyph name="privacy" bg={colors.red} />} label="Máy ảnh" detail="Từ chối với mọi app" />
+        <Row icon={<Glyph name="volume" bg={colors.red} />} label="Micrô" detail="Từ chối với mọi app" />
       </Section>
       <Note>
-        Installed apps run in an opaque sandbox, which browsers refuse capture to outright. The Camera app you can open
-        from the home screen is baked into the shell, not installed, and is not covered by this.
+        App đã cài chạy trong sandbox khép kín, thứ mà trình duyệt từ chối cho quay màn hình hẳn hoi. App Máy ảnh mở từ
+        màn hình chính được nướng sẵn trong shell, không phải app cài, nên không thuộc diện này.
       </Note>
     </>
   )

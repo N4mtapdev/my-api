@@ -259,7 +259,7 @@ export function Switcher({ ctl, onClose }: { ctl: Scenes; onClose: () => void })
           {...stylex.props(styles.label)}
         >
           <img src={e.a.icon ?? ICONS[e.a.name] ?? ''} alt="" {...stylex.props(styles.icon)} />
-          {e.a.name}
+          {e.a.label ?? e.a.name}
         </div>
       ))}
     </div>

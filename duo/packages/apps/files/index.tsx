@@ -15,13 +15,13 @@ const FILES: Node_[] = [
         n: 'Freeform',
         i: '📁',
         kids: [
-          { n: 'Hinge sketch', i: '🖼', size: '1.2 MB' },
-          { n: 'Rail chamfer', i: '🖼', size: '840 KB' }
+          { n: 'Bản sketch bản lề', i: '🖼', size: '1.2 MB' },
+          { n: 'Vát cạnh ray', i: '🖼', size: '840 KB' }
         ]
       },
-      { n: 'Keynote', i: '📁', kids: [{ n: 'Duo launch.key', i: '📊', size: '48.3 MB' }] },
+      { n: 'Keynote', i: '📁', kids: [{ n: 'Ra mắt Duo.key', i: '📊', size: '48.3 MB' }] },
       {
-        n: 'Screens',
+        n: 'Ảnh chụp màn hình',
         i: '📁',
         kids: [
           { n: 'inner@2x.png', i: '🖼', size: '2.1 MB' },
@@ -32,14 +32,14 @@ const FILES: Node_[] = [
     ]
   },
   {
-    n: 'On My iPhone',
+    n: 'Trên iPhone của tôi',
     i: '📱',
     kids: [
-      { n: 'Voice Memos', i: '📁', kids: [{ n: 'Recording 1.m4a', i: '🎙', size: '2.8 MB' }] },
-      { n: 'Downloads', i: '📁', kids: [{ n: 'iPhone_Duo.usdz', i: '🧊', size: '8.1 MB' }] }
+      { n: 'Ghi âm', i: '📁', kids: [{ n: 'Bản ghi 1.m4a', i: '🎙', size: '2.8 MB' }] },
+      { n: 'Tải xuống', i: '📁', kids: [{ n: 'iPhone_Duo.usdz', i: '🧊', size: '8.1 MB' }] }
     ]
   },
-  { n: 'Recently Deleted', i: '🗑', kids: [] }
+  { n: 'Đã xóa gần đây', i: '🗑', kids: [] }
 ]
 
 /** A folder as an icon grid, or a file as its emoji and size. */
@@ -65,16 +65,10 @@ const Node = ({ node, back }: { node: Node_; back: () => void }) => {
       ) : (
         <Placeholder>
           {node.size ? <div {...stylex.props(styles.bigIcon)}>{node.i}</div> : ''}
-          {node.size ?? 'Empty'}
+          {node.size ?? 'Trống'}
         </Placeholder>
       )}
-      {kids.length ? (
-        <Text
-          as="div"
-          size="caption"
-          xstyle={[styles.count]}
-        >{`${kids.length} item${kids.length > 1 ? 's' : ''}`}</Text>
-      ) : null}
+      {kids.length ? <Text as="div" size="caption" xstyle={[styles.count]}>{`${kids.length} mục`}</Text> : null}
     </Page>
   )
 }
@@ -82,8 +76,8 @@ const Node = ({ node, back }: { node: Node_; back: () => void }) => {
 const Browse = () => {
   const { push } = useNav()
   return (
-    <Page title="Browse">
-      <div {...stylex.props(styles.sec)}>LOCATIONS</div>
+    <Page title="Duyệt">
+      <div {...stylex.props(styles.sec)}>ĐỊA ĐIỂM</div>
       {FILES.map((f) => (
         <Row key={f.n} onClick={() => push((b) => <Node node={f} back={b} />)}>
           <span {...stylex.props(styles.locIcon)}>{f.i}</span>

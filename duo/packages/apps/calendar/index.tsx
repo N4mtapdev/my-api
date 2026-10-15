@@ -12,7 +12,7 @@ import { styles } from './styles.ts'
 import { TimeGrid } from './time-grid.tsx'
 import { YearView } from './year-view.tsx'
 
-const STEP = { Day: 1, Week: 7 }
+const STEP = { Ngày: 1, Tuần: 7 }
 
 export const Calendar = () => {
   // The box decides, not the display: a split half is as narrow as the cover and drops the sidebar.
@@ -31,9 +31,9 @@ export const Calendar = () => {
   const shift = (n: number) => {
     setDir(n)
     setDate(
-      view === 'Month'
+      view === 'Tháng'
         ? addMonths(date, n)
-        : view === 'Year'
+        : view === 'Năm'
           ? new Date(date.getFullYear() + n, 0, 1)
           : addDays(date, n * STEP[view])
     )
@@ -55,13 +55,16 @@ export const Calendar = () => {
   }
   // The page on screen. Month and Year redraw whole; Day and Week keep the scroller
   // they are in, so paging replays the slide without throwing you back to the morning.
-  const stamp = view === 'Month' ? monthYear(date) : view === 'Year' ? String(date.getFullYear()) : ymd(date)
+  const stamp = view === 'Tháng' ? monthYear(date) : view === 'Năm' ? String(date.getFullYear()) : ymd(date)
   const title =
-    view === 'Year'
+    view === 'Năm'
       ? String(date.getFullYear())
-      : view === 'Day'
-        ? date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-        : monthYear(view === 'Week' ? week(date)[3]! : date)
+      : view === 'Ngày'
+        ? date.toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' })
+        : monthYear(view === 'Tuần' ? week(date)[3]! : date)
+  // In Vietnamese the month name is “tháng 10 2026”: everything but the year goes bold.
+  const head = title.split(' ').slice(0, -1).join(' ')
+  const tail = title.split(' ').at(-1)
   const hits =
     query?.trim() &&
     events
@@ -78,7 +81,7 @@ export const Calendar = () => {
           toggle={toggle}
           date={date}
           today={today}
-          setDate={(d) => jump(d, view === 'Year' ? 'Month' : view)}
+          setDate={(d) => jump(d, view === 'Năm' ? 'Tháng' : view)}
           hide={() => setSidebar(false)}
         />
       )}
@@ -86,9 +89,9 @@ export const Calendar = () => {
         <div {...stylex.props(styles.topBar)}>
           <div {...stylex.props(styles.barSide)}>
             {wide && !sidebar && (
-              <IconButton name="sidebar" aria-label="Show sidebar" onClick={() => setSidebar(true)} />
+              <IconButton name="sidebar" aria-label="Hiện thanh bên" onClick={() => setSidebar(true)} />
             )}
-            <IconButton name="plus" size={14} aria-label="New event" onClick={plus} />
+            <IconButton name="plus" size={14} aria-label="Sự kiện mới" onClick={plus} />
           </div>
           {/* The field takes the bar rather than floating over it: at this width there is
               room for the views or for a search, and never for both at once. */}
@@ -97,8 +100,8 @@ export const Calendar = () => {
           ) : (
             <TextField
               type="search"
-              aria-label="Search events"
-              placeholder="Search"
+              aria-label="Tìm sự kiện"
+              placeholder="Tìm kiếm"
               value={query}
               autoFocus
               onChange={(e) => setQuery(e.target.value)}
@@ -110,52 +113,52 @@ export const Calendar = () => {
             <IconButton
               name={query === null ? 'search' : 'close'}
               size={query === null ? 17 : 13}
-              aria-label={query === null ? 'Search' : 'Close search'}
+              aria-label={query === null ? 'Tìm kiếm' : 'Đóng tìm kiếm'}
               onClick={() => setQuery(query === null ? '' : null)}
             />
           </div>
         </div>
         <div {...stylex.props(styles.titleRow, !wide && styles.titleRowSm)}>
           <h1 {...stylex.props(styles.title, !wide && styles.titleSm)}>
-            {view === 'Day' || view === 'Year' ? (
+            {view === 'Ngày' || view === 'Năm' ? (
               <b>{title}</b>
             ) : (
               <>
-                <b>{title.split(' ')[0]}</b> {title.split(' ')[1]}
+                <b>{head}</b> {tail}
               </>
             )}
           </h1>
           <div {...stylex.props(styles.nav)}>
-            <IconButton name="back" size={11} variant="round" aria-label="Previous" onClick={() => shift(-1)} />
+            <IconButton name="back" size={11} variant="round" aria-label="Trước" onClick={() => shift(-1)} />
             <button type="button" onClick={() => jump(today)} {...stylex.props(styles.todayBtn)}>
-              Today
+              Hôm nay
             </button>
-            <IconButton name="forward" size={11} variant="round" aria-label="Next" onClick={() => shift(1)} />
+            <IconButton name="forward" size={11} variant="round" aria-label="Sau" onClick={() => shift(1)} />
           </div>
         </div>
         {hits ? (
           <div {...stylex.props(styles.results, styles.anim, styles.rise)}>
-            {hits.length === 0 && <span {...stylex.props(styles.dim)}>No Results</span>}
+            {hits.length === 0 && <span {...stylex.props(styles.dim)}>Không có kết quả</span>}
             {hits.map((e) => (
               <button
                 type="button"
                 key={e.id}
                 onClick={() => {
-                  jump(new Date(e.start), 'Day')
+                  jump(new Date(e.start), 'Ngày')
                   setDraft(e)
                 }}
                 {...stylex.props(styles.result)}
               >
                 <i {...stylex.props(styles.dot, styles.tint(colors.get(e.calendar)))} />
-                <span {...stylex.props(styles.chipTitle)}>{e.title || 'New Event'}</span>
+                <span {...stylex.props(styles.chipTitle)}>{e.title || 'Sự kiện mới'}</span>
                 <span {...stylex.props(styles.dim)}>
-                  {new Date(e.start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  {new Date(e.start).toLocaleDateString('vi-VN', { day: 'numeric', month: 'short', year: 'numeric' })}
                   {!e.allDay && ` ${time(e.start)}`}
                 </span>
               </button>
             ))}
           </div>
-        ) : view === 'Month' ? (
+        ) : view === 'Tháng' ? (
           <MonthView
             key={stamp}
             month={startOfMonth(date)}
@@ -167,22 +170,22 @@ export const Calendar = () => {
             colors={colors}
             onPick={setDate}
             onNew={(d) => compose(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9))}
-            onOpen={(d) => jump(d, 'Day')}
+            onOpen={(d) => jump(d, 'Ngày')}
             onEvent={setDraft}
           />
-        ) : view === 'Year' ? (
+        ) : view === 'Năm' ? (
           <YearView
             key={stamp}
             year={date.getFullYear()}
             today={today}
             dir={dir}
-            onMonth={(d) => jump(d, 'Month')}
-            onDay={(d) => jump(d, 'Day')}
+            onMonth={(d) => jump(d, 'Tháng')}
+            onDay={(d) => jump(d, 'Ngày')}
           />
         ) : (
           <TimeGrid
             key={view}
-            days={view === 'Week' ? week(date) : [date]}
+            days={view === 'Tuần' ? week(date) : [date]}
             today={today}
             events={visible}
             colors={colors}

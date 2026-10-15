@@ -178,11 +178,11 @@ export function launchFrame(
   function armReady() {
     clearTimeout(readyTimer)
     if (launch.state === 'connected' && view.info.visible)
-      readyTimer = setTimeout(() => fail('App did not become ready'), 10000)
+      readyTimer = setTimeout(() => fail('App chưa sẵn sàng'), 10000)
   }
   function receive(data: unknown) {
     if (launch.state === 'revoked') return
-    if (!record(data) || !envelope(data)) return fail('Invalid message')
+    if (!record(data) || !envelope(data)) return fail('Tin nhắn không hợp lệ')
     if ('ev' in data) {
       if (data.ev === 'ack' && launch.state === 'bootstrapping') {
         clearTimeout(helloTimer)
@@ -191,7 +191,7 @@ export function launchFrame(
         session.deliver()
         return
       }
-      if (launch.state !== 'connected' && launch.state !== 'ready') return fail('Message before acknowledgement')
+      if (launch.state !== 'connected' && launch.state !== 'ready') return fail('Tin nhắn đến trước xác nhận')
       if (data.ev === 'ready') {
         if (launch.state === 'ready') return
         clearTimeout(readyTimer)
@@ -203,12 +203,12 @@ export function launchFrame(
           .catch((error) => fail(String(error)))
       } else if (data.ev === 'key' && record(data.p) && data.p.key === 'Escape') hooks.home()
       else if (data.ev === 'error' && launch.state !== 'ready')
-        fail(record(data.p) ? String(data.p.message) : 'App error')
-      else if (data.ev !== 'error') fail('Unexpected app event')
+        fail(record(data.p) ? String(data.p.message) : 'Lỗi app')
+      else if (data.ev !== 'error') fail('Sự kiện app không mong đợi')
       return
     }
     if (!requestValid(data) || (launch.state !== 'connected' && launch.state !== 'ready'))
-      return fail('Invalid request')
+      return fail('Yêu cầu không hợp lệ')
     const req = data
     if (results.has(req.id)) {
       launch.port?.postMessage(results.get(req.id))
@@ -219,7 +219,7 @@ export function launchFrame(
     tokens = Math.min(LIMITS.burst, tokens + ((now - refilled) * LIMITS.rate) / 1000)
     refilled = now
     let early: PlatformError | undefined
-    if (inflight.size >= LIMITS.inflight) early = new PlatformError('E_ARGS', 'Too many requests')
+    if (inflight.size >= LIMITS.inflight) early = new PlatformError('E_ARGS', 'Quá nhiều yêu cầu đồng thời')
     else if (tokens < 1) early = new PlatformError('E_RATE', String(Math.ceil(((1 - tokens) * 1000) / LIMITS.rate)))
     else tokens--
     if (early) {
@@ -262,11 +262,11 @@ export function launchFrame(
     )
       return
     if (launch.state !== 'bootstrapping') {
-      if (launch.state !== 'created') fail('Handshake already acknowledged')
+      if (launch.state !== 'created') fail('Bắt tay đã được xác nhận trước đó')
       return
     }
     if (event.data.protocol !== PROTOCOL || event.data.sdk !== session.bundle.release.build.sdk)
-      return fail('Protocol or SDK mismatch')
+      return fail('Giao thức hoặc SDK không khớp')
     if (!supports(event.data.sdk as string, !!src)) return fail(REQUIRES_PLATFORM, 'E_INCOMPATIBLE')
     launch.port?.close()
     const channel = new MessageChannel()
@@ -274,7 +274,7 @@ export function launchFrame(
     channel.port1.onmessage = (e) => {
       if (launch.port === channel.port1) receive(e.data)
     }
-    channel.port1.onmessageerror = () => fail('Unreadable message')
+    channel.port1.onmessageerror = () => fail('Không đọc được tin nhắn')
     frame.contentWindow!.postMessage(
       {
         t: 'welcome',
@@ -296,7 +296,7 @@ export function launchFrame(
   function start() {
     clearInterval(waiting)
     state('bootstrapping')
-    helloTimer = setTimeout(() => fail('App did not connect'), 10000)
+    helloTimer = setTimeout(() => fail('App không kết nối được'), 10000)
     if (src) frame.src = src
     else frame.srcdoc = session.bundle.html
     container.append(frame)
@@ -307,7 +307,7 @@ export function launchFrame(
   frame.dataset.session = session.id
   frame.dataset.generation = String(launch.generation)
   frame.onload = () => {
-    if (loaded) fail('App navigated')
+    if (loaded) fail('App đã điều hướng')
     loaded = true
   }
   addEventListener('message', hello)

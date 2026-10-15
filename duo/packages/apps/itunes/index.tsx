@@ -35,7 +35,7 @@ const Buy = ({ label }: { label: string }) => {
 
 export const Itunes = () => (
   <Screen>
-    <LargeTitle>Music</LargeTitle>
+    <LargeTitle>Nhạc</LargeTitle>
     <div {...stylex.props(styles.shelf)}>
       {CHART.slice(0, 4).map(([t, a]) => (
         <div key={t} {...stylex.props(styles.poster)}>
@@ -48,9 +48,9 @@ export const Itunes = () => (
       ))}
     </div>
     <Title xstyle={[styles.hdr18]}>
-      Top Songs
+      Bảng xếp hạng
       <Title as="span" variant="accessory">
-        See All
+        Xem tất cả
       </Title>
     </Title>
     {CHART.map(([t, a, p], i) => (

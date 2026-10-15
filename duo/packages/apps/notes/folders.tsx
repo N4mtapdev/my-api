@@ -18,13 +18,13 @@ export const Folders = () => {
   return (
     <div {...stylex.props(styles.side)}>
       <div {...stylex.props(styles.sideHdr)}>
-        <span {...stylex.props(styles.gold)}>Edit</span>
+        <span {...stylex.props(styles.gold)}>Sửa</span>
         <span {...stylex.props(styles.gold, styles.sideIcons)}>
           <button
             type="button"
             {...stylex.props(styles.gold, styles.flat, shared.press)}
             onClick={() => setNaming(true)}
-            aria-label="New folder"
+            aria-label="Thư mục mới"
           >
             <Sym name="newFolder" size={18} />
           </button>
@@ -33,7 +33,7 @@ export const Folders = () => {
       </div>
       <div {...stylex.props(styles.scroll)}>
         <Section name="iCloud" />
-        <Row name="Notes" count={notes.filter((n) => !n.folder).length} on={!current} pick={() => setCurrent()} />
+        <Row name="Ghi chú" count={notes.filter((n) => !n.folder).length} on={!current} pick={() => setCurrent()} />
         {folders.map((f) => (
           <Row
             key={f.id}
@@ -49,8 +49,8 @@ export const Folders = () => {
             <input
               // biome-ignore lint/a11y/noAutofocus: the row exists only to be typed into
               autoFocus
-              aria-label="Folder name"
-              placeholder="New Folder"
+              aria-label="Tên thư mục"
+              placeholder="Thư mục mới"
               {...stylex.props(styles.input)}
               onBlur={(e) => create(e.currentTarget.value)}
               onKeyDown={(e) => {

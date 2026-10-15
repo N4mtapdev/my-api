@@ -4,11 +4,11 @@ import { boundedFetch, digest, download } from './releases.ts'
 
 export const development = new Map<string, { bundle: StoredRelease; src: string }>()
 export async function loadDevelopment(origin: string) {
-  if (!networkOrigin(origin, true)) throw new Error('Development URL must be an HTTPS or loopback HTTP origin')
+  if (!networkOrigin(origin, true)) throw new Error('URL phát triển phải là origin HTTPS hoặc HTTP loopback')
   const bytes = await boundedFetch(`${origin}/release.json`, 64 * 1024)
   const release: unknown = JSON.parse(new TextDecoder().decode(bytes))
-  if (!releaseValid(release, true)) throw new Error('Invalid development release')
-  if (release.manifest.permissions?.length) throw new Error('Device permissions are deferred for local previews')
+  if (!releaseValid(release, true)) throw new Error('Bản phát triển không hợp lệ')
+  if (release.manifest.permissions?.length) throw new Error('Quyền thiết bị tạm dừng cho bản xem trước cục bộ')
   const base = `${origin}/apps/${release.manifest.id}/${releaseId(release)}/`
   const bundle = await download(
     base,

@@ -70,7 +70,7 @@ export const Maps = (_: { os: Os }) => {
           ) : (
             <button
               type="button"
-              aria-label="Show sidebar"
+              aria-label="Hiện thanh bên"
               onClick={() => setAside(true)}
               {...stylex.props(styles.control, styles.alone, styles.reveal)}
             >

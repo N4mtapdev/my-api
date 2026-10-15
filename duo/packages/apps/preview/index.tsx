@@ -27,7 +27,7 @@ const Viewer = ({ name, pages, back }: { name: string; pages: number; back: () =
       <Title xstyle={[styles.hdr17]}>
         <button type="button" {...stylex.props(shared.bk)} onClick={back}>
           <Sym name="back" size={20} />
-          Files
+          Tệp
         </button>
         <Title as="span" variant="accessory">
           <Button type="button" onClick={() => setZ(Math.max(0.6, z - 0.2))}>
@@ -54,7 +54,7 @@ const Viewer = ({ name, pages, back }: { name: string; pages: number; back: () =
             ‹ Prev
           </Button>
           <Button type="button" onClick={() => step(1)}>
-            Next ›
+            Tiếp ›
           </Button>
         </div>
       </Screen>
@@ -66,8 +66,8 @@ const Recents = ({ os }: { os: Os }) => {
   const { push } = useNav()
   const shots = os.shots.map((_src, i): [string, string, number] => [`Camera ${i + 1}.jpg`, '📷', 1])
   return (
-    <Page title="Files">
-      <div {...stylex.props(styles.sec)}>RECENTS</div>
+    <Page title="Tệp">
+      <div {...stylex.props(styles.sec)}>GẦN ĐÂY</div>
       {[...DOCS, ...shots].map(([n, e, pages]) => (
         <Row key={n} onClick={() => push((b) => <Viewer name={n} pages={pages} back={b} />)}>
           <span {...stylex.props(styles.emoji)}>{e}</span>

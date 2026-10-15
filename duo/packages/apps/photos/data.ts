@@ -46,55 +46,55 @@ export function useLibrary() {
   return { pics: pics ?? [], loading: pics === undefined }
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const MONTHS = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12']
 const LONG = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
+  'Tháng 1',
+  'Tháng 2',
+  'Tháng 3',
+  'Tháng 4',
+  'Tháng 5',
+  'Tháng 6',
+  'Tháng 7',
+  'Tháng 8',
+  'Tháng 9',
+  'Tháng 10',
+  'Tháng 11',
+  'Tháng 12'
 ]
-const day = (t: number) => `${new Date(t).getDate()} ${MONTHS[new Date(t).getMonth()]}`
-/** "28 Feb – 8 Sep 2026", the way the toolbar subtitle reads. */
+const day = (t: number) => `${new Date(t).getDate()}/${new Date(t).getMonth() + 1}`
+/** "28/2 – 8/9 2026", the way the toolbar subtitle reads. */
 export const range = (pics: Pic[]) => {
   if (!pics.length) return ''
   const a = Math.min(...pics.map((p) => p.takenAt))
   const b = Math.max(...pics.map((p) => p.takenAt))
   const ya = new Date(a).getFullYear()
   const yb = new Date(b).getFullYear()
-  return `${day(a)}${ya === yb ? '' : ` ${ya}`} – ${day(b)} ${yb}`
+  return `${day(a)}${ya === yb ? '' : `/${ya}`} – ${day(b)}/${yb}`
 }
 export const month = (t: number) => `${LONG[new Date(t).getMonth()]} ${new Date(t).getFullYear()}`
 export const year = (t: number) => String(new Date(t).getFullYear())
 
 export type View = 'years' | 'months' | 'all'
 export const VIEWS: [View, string][] = [
-  ['years', 'Years'],
-  ['months', 'Months'],
-  ['all', 'All Photos']
+  ['years', 'Năm'],
+  ['months', 'Tháng'],
+  ['all', 'Tất cả ảnh']
 ]
 
 export type Item = { id: string; name: string; sym: keyof typeof SYM; lock?: boolean }
 /** Only the sidebar rows that show something real. */
 export const SIDEBAR: { name?: string; items: Item[] }[] = [
-  { items: [{ id: 'library', name: 'Library', sym: 'library' }] },
+  { items: [{ id: 'library', name: 'Thư viện', sym: 'library' }] },
   {
-    name: 'Pinned',
+    name: 'Đã ghim',
     items: [
-      { id: 'favorites', name: 'Favorites', sym: 'heart' },
-      { id: 'saved', name: 'Recently Saved', sym: 'saved' },
-      { id: 'deleted', name: 'Recently Deleted', sym: 'trashOutline', lock: true }
+      { id: 'favorites', name: 'Yêu thích', sym: 'heart' },
+      { id: 'saved', name: 'Lưu gần đây', sym: 'saved' },
+      { id: 'deleted', name: 'Xóa gần đây', sym: 'trashOutline', lock: true }
     ]
   }
 ]
-export const itemName = (id: string) => SIDEBAR.flatMap((s) => s.items).find((i) => i.id === id)?.name ?? 'Library'
+export const itemName = (id: string) => SIDEBAR.flatMap((s) => s.items).find((i) => i.id === id)?.name ?? 'Thư viện'
 
 /** What a sidebar item shows. Albums without a real source stay empty, like a fresh library. */
 export function filter(id: string, pics: Pic[], fav: Set<string>, del: Set<string>, q: string) {

@@ -16,8 +16,8 @@ function Page() {
       <Cap>Ứng dụng</Cap>
       <Headline as="h1" id="apps-title" lines={['Sinh ra cho cả hai màn hình', 'và nếp gấp ở giữa.']} />
       <Lede>
-        App chính thức có sẵn trong simulator và phát hành lên catalog của Duo; app cộng đồng được gửi qua pull
-        request, review và phát hành đúng quy trình đó. Tất cả giấy phép MIT, cài qua App Store.{' '}
+        App chính thức có sẵn trong simulator và phát hành lên catalog của Duo; app cộng đồng được gửi qua pull request,
+        review và phát hành đúng quy trình đó. Tất cả giấy phép MIT, cài qua App Store.{' '}
         <Link to="/publish" {...stylex.props(styles.link)}>
           Cách thêm app của bạn.
         </Link>

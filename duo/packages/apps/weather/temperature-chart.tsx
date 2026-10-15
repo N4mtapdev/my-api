@@ -24,10 +24,10 @@ export function TemperatureChart({ forecast, day, unit }: { forecast: Forecast; 
     <svg
       viewBox="0 0 350 165"
       role="img"
-      aria-label={`Hourly temperature chart for ${date}, from ${temperature(low + 2, unit)} to ${temperature(high - 2, unit)}`}
+      aria-label={`Biểu đồ nhiệt độ theo giờ ngày ${date}, từ ${temperature(low + 2, unit)} đến ${temperature(high - 2, unit)}`}
       {...stylex.props(styles.chart)}
     >
-      <title>Hourly temperatures</title>
+      <title>Nhiệt độ theo giờ</title>
       {[low, (low + high) / 2, high].map((value) => (
         <g key={value}>
           <line x1="0" x2="300" y1={y(value)} y2={y(value)} {...stylex.props(styles.grid)} />

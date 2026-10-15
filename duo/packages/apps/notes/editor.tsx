@@ -47,14 +47,14 @@ export function NotePane({
   // The palette is a mode the pencil button enters, not furniture.
   const [marking, setMarking] = useState(false)
   const palette = usePresence(marking)
-  if (!note) return <div {...stylex.props(styles.pane, styles.none, shared.swap)}>No Note Selected</div>
+  if (!note) return <div {...stylex.props(styles.pane, styles.none, shared.swap)}>Chưa chọn ghi chú</div>
   return (
     <div {...stylex.props(styles.pane, shared.swap)}>
       <div {...stylex.props(styles.tools)}>
         <span {...stylex.props(styles.round, shared.press)}>
           <Sym name="expand" size={14} />
         </span>
-        <button type="button" {...stylex.props(styles.round, shared.press)} onClick={compose} aria-label="New note">
+        <button type="button" {...stylex.props(styles.round, shared.press)} onClick={compose} aria-label="Ghi chú mới">
           <Sym name="compose" size={15} />
         </button>
         <span {...stylex.props(styles.group)}>
@@ -68,12 +68,12 @@ export function NotePane({
             {...stylex.props(styles.flat, shared.press, marking && styles.gold)}
             onClick={() => setMarking(!marking)}
             aria-pressed={marking}
-            aria-label="Markup"
+            aria-label="Đánh dấu"
           >
             <Sym name="markup" size={16} />
           </button>
           <Sym name="share" size={15} />
-          <button type="button" {...stylex.props(styles.flat, shared.press)} onClick={trash} aria-label="Delete note">
+          <button type="button" {...stylex.props(styles.flat, shared.press)} onClick={trash} aria-label="Xóa ghi chú">
             <Sym name="trash" size={15} />
           </button>
           <i {...stylex.props(styles.double)}>
@@ -89,7 +89,7 @@ export function NotePane({
       {palette.mounted && (
         <div
           role="toolbar"
-          aria-label="Markup tools"
+          aria-label="Công cụ đánh dấu"
           {...stylex.props(styles.palette, animations.float, palette.closing && animations.floatOut)}
         >
           <i {...stylex.props(styles.flat, styles.dim)}>
@@ -147,13 +147,13 @@ export function NoteSheet({
       <Title xstyle={[styles.hdrMd]}>
         <button type="button" {...stylex.props(shared.bk, styles.gold)} onClick={back}>
           <Sym name="back" size={20} />
-          Notes
+          Ghi chú
         </button>
         <Title as="span" variant="accessory" xstyle={[styles.gold]}>
-          <button type="button" {...stylex.props(styles.flat, styles.gold)} onClick={trash} aria-label="Delete note">
+          <button type="button" {...stylex.props(styles.flat, styles.gold)} onClick={trash} aria-label="Xóa ghi chú">
             <Sym name="trash" size={19} />
           </button>
-          <button type="button" {...stylex.props(styles.flat, styles.gold)} onClick={compose} aria-label="New note">
+          <button type="button" {...stylex.props(styles.flat, styles.gold)} onClick={compose} aria-label="Ghi chú mới">
             <Sym name="compose" size={19} />
           </button>
           <Sym name="more" size={19} />
@@ -169,10 +169,10 @@ function NoteEditor({ note, ink }: { note: Note; ink?: number }) {
   return (
     <>
       <div role="status" aria-live="polite" {...stylex.props(styles.save)}>
-        {state?.status === 'error' ? `Not saved (${state.error})` : longStamp(note)}
+        {state?.status === 'error' ? `Chưa lưu (${state.error})` : longStamp(note)}
       </div>
       <textarea
-        aria-label="Note text"
+        aria-label="Nội dung ghi chú"
         {...stylex.props(styles.ta, ink !== undefined && styles.tint(INKS[ink]!))}
         value={body}
         onChange={(e) => put(e.target.value)}

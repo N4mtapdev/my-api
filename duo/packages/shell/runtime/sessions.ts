@@ -142,7 +142,7 @@ export class Session {
     if (this.commandDone.has(p.cmdId)) return Promise.resolve()
     const existing = this.commands.get(p.cmdId)
     if (existing) return existing.promise
-    if (this.commands.size >= LIMITS.commands) throw new PlatformError('E_ARGS', 'Command queue full')
+    if (this.commands.size >= LIMITS.commands) throw new PlatformError('E_ARGS', 'Hàng đợi lệnh đã đầy')
     let resolve!: () => void, reject!: (e: Error) => void
     const promise = new Promise<void>((yes, no) => {
       resolve = yes
@@ -183,7 +183,7 @@ export async function session(id: string, arg?: string, force = false) {
       const bundle = development.get(id)?.bundle ?? (await getRelease(app.current))
       if (!bundle || (!development.has(id) && bundle.release.manifest.id !== id)) {
         await lease(id, app.generation, 0)
-        throw new PlatformError('E_STORAGE', 'Installed release missing')
+        throw new PlatformError('E_STORAGE', 'Bản phát hành đã cài không còn')
       }
       return new Session(app, bundle)
     })()

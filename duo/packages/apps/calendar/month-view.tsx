@@ -31,7 +31,7 @@ const isWeekend = (i: number) => i > 4
 
 /** Apple names the month on its first day, so the edges of the sheet still read. */
 const label = (d: Date) =>
-  d.getDate() === 1 ? `${d.getDate()} ${d.toLocaleDateString('en', { month: 'short' })}` : d.getDate()
+  d.getDate() === 1 ? `${d.getDate()} ${d.toLocaleDateString('vi-VN', { month: 'short' })}` : d.getDate()
 
 export function MonthView({
   month,
@@ -87,7 +87,12 @@ export function MonthView({
                   onKeyDown={(e) => e.key === 'Enter' && onNew(d)}
                   role="button"
                   tabIndex={0}
-                  aria-label={d.toDateString()}
+                  aria-label={d.toLocaleDateString('vi-VN', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
                   {...stylex.props(
                     styles.cell,
                     styles.colAt(i),
@@ -134,7 +139,7 @@ export function MonthView({
                     type="button"
                     key={p.e.id}
                     onClick={() => onEvent(p.e)}
-                    title={p.e.title || 'New Event'}
+                    title={p.e.title || 'Sự kiện mới'}
                     {...stylex.props(
                       styles.item,
                       styles.slot(p.col, p.span, p.lane + 2),
@@ -144,7 +149,7 @@ export function MonthView({
                   >
                     {/* Apple rings a timed event and fills a bar; the ring keeps the row's ink light. */}
                     {!bar && <i {...stylex.props(styles.ringDot, styles.ring(tint))} />}
-                    <span {...stylex.props(styles.chipTitle)}>{p.e.title || 'New Event'}</span>
+                    <span {...stylex.props(styles.chipTitle)}>{p.e.title || 'Sự kiện mới'}</span>
                   </button>
                 )
               })}
@@ -156,7 +161,7 @@ export function MonthView({
                     onClick={() => onOpen(days[i]!)}
                     {...stylex.props(styles.item, styles.more, styles.slot(i, 1, lanes + 1))}
                   >
-                    {n} more
+                    +{n}
                   </button>
                 ) : null
               )}

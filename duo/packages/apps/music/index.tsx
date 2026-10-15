@@ -205,7 +205,7 @@ export const Music = (_: { os: Os }) => {
         </div>
         <Eq live={d.playing} />
       </div>
-      <Title xstyle={[styles.hdr]}>Up Next</Title>
+      <Title xstyle={[styles.hdr]}>Tiếp theo</Title>
       <Section xstyle={[styles.queue]}>
         {TRACKS.map((t, k) => (
           <Row

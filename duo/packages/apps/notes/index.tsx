@@ -39,7 +39,7 @@ export const Notes = (_: { os: Os }) => {
   }
   const model: Model = {
     notes,
-    title: folders.find((f) => f.id === folder)?.name ?? 'Notes',
+    title: folders.find((f) => f.id === folder)?.name ?? 'Ghi chú',
     sel,
     pick,
     compose: () => pick(add(folder)),
@@ -97,14 +97,14 @@ const Columns = ({ m }: { m: Model }) => {
           <div>
             <div {...stylex.props(styles.listTitle)}>{m.title}</div>
             <Text as="div" size="caption" xstyle={[styles.listCount]}>
-              {m.notes.length} {m.notes.length === 1 ? 'Note' : 'Notes'}
+              {m.notes.length} ghi chú
             </Text>
           </div>
           <button
             type="button"
             {...stylex.props(styles.round, styles.push, shared.press)}
             onClick={m.compose}
-            aria-label="New note"
+            aria-label="Ghi chú mới"
           >
             <Sym name="compose" size={15} />
           </button>
@@ -113,7 +113,7 @@ const Columns = ({ m }: { m: Model }) => {
           <Sym name="search" size={13} />
           <input
             {...stylex.props(styles.searchIn)}
-            placeholder="Search"
+            placeholder="Tìm kiếm"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
@@ -141,7 +141,12 @@ const Stack = ({ m }: { m: Model }) => (
         {m.title}
         <Title as="span" variant="accessory" xstyle={[styles.gold]}>
           <Sym name="more" size={19} />
-          <button type="button" {...stylex.props(styles.gold, styles.flat)} onClick={m.compose} aria-label="New note">
+          <button
+            type="button"
+            {...stylex.props(styles.gold, styles.flat)}
+            onClick={m.compose}
+            aria-label="Ghi chú mới"
+          >
             <Sym name="compose" size={19} />
           </button>
         </Title>

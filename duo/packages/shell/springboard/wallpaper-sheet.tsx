@@ -44,7 +44,7 @@ export function WallpaperSheet({ onClose }: { onClose: () => void }) {
   return (
     <div data-wallpapers {...stylex.props(styles.scrim)} onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div {...stylex.props(shared.glass, styles.sheet)}>
-        <div {...stylex.props(styles.title)}>Wallpaper</div>
+        <div {...stylex.props(styles.title)}>Hình nền</div>
         <div {...stylex.props(styles.strip)}>
           {papers.map((url) => (
             <div

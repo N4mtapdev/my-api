@@ -8,10 +8,10 @@ import { useState } from 'react'
 import { styles } from './styles.ts'
 
 export const DEVICES: [string, string, number, number][] = [
-  ['iPhone Duo', 'This device · Apple Park', 37.3349, -122.009],
-  ['MacBook Pro', 'Home · 2 min ago', 37.7749, -122.4194],
-  ['AirPods Pro', 'Studio · 1 hr ago', 37.8044, -122.2712],
-  ['Apple Watch', 'With Jony · 14 min ago', 51.5074, -0.1278]
+  ['iPhone Duo', 'Thiết bị này · Apple Park', 37.3349, -122.009],
+  ['MacBook Pro', 'Nhà · 2 phút trước', 37.7749, -122.4194],
+  ['AirPods Pro', 'Studio · 1 giờ trước', 37.8044, -122.2712],
+  ['Apple Watch', 'Cùng Jony · 14 phút trước', 51.5074, -0.1278]
 ]
 
 const osm = (lat: number, lon: number, z = 0.06) =>
@@ -23,11 +23,11 @@ export const FindMy = (_: { os: Os }) => {
   return (
     <Screen xstyle={[shared.column, styles.flush]}>
       <div {...stylex.props(styles.mapw)}>
-        <iframe title="map" src={osm(lat, lon)} />
+        <iframe title="bản đồ" src={osm(lat, lon)} />
         <div {...stylex.props(styles.pin)} />
       </div>
       <Screen>
-        <Title>Devices</Title>
+        <Title>Thiết bị</Title>
         <Section xstyle={[styles.white]}>
           {DEVICES.map(([name, where], i) => (
             <Row key={name} xstyle={[i === sel && styles.selected]} onClick={() => setSel(i)}>
@@ -47,7 +47,7 @@ export const FindMy = (_: { os: Os }) => {
                   beep([1046, 1568, 2093], 0.5, 0.07)
                 }}
               >
-                Play Sound
+                Phát âm thanh
               </Button>
             </Row>
           ))}
@@ -55,8 +55,8 @@ export const FindMy = (_: { os: Os }) => {
         <Section>
           <Row>
             <Sym name="location" size={18} />
-            Share My Location
-            <Toggle aria-label="Share My Location" defaultChecked />
+            Chia sẻ vị trí của tôi
+            <Toggle aria-label="Chia sẻ vị trí của tôi" defaultChecked />
           </Row>
         </Section>
       </Screen>

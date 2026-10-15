@@ -10,9 +10,9 @@ import { Fragment, useState } from 'react'
 import { styles } from './styles.ts'
 
 const SHELVES: [string, string[]][] = [
-  ['Featured', ['Severance', 'For All Mankind', 'Silo', 'Ted Lasso', 'Foundation']],
-  ['Documentaries', ['Big Buck Bunny', 'Costa Rica 4K', 'Tears of Steel', 'Sintel', 'Elephants Dream']],
-  ['Continue Watching', ['Slow Horses', 'Pachinko', 'The Morning Show', 'Shrinking']]
+  ['Nổi bật', ['Severance', 'For All Mankind', 'Silo', 'Ted Lasso', 'Foundation']],
+  ['Tài liệu', ['Big Buck Bunny', 'Costa Rica 4K', 'Tears of Steel', 'Sintel', 'Elephants Dream']],
+  ['Xem tiếp', ['Slow Horses', 'Pachinko', 'The Morning Show', 'Shrinking']]
 ]
 /** YouTube's ids, copied: a title picks its trailer by hue, so the order has to match. */
 const VIDEOS = ['aqz-KE-bpKQ', 'LXb3EKWsInQ', 'jNQXAC9IVRw', 'dQw4w9WgXcQ', '9bZkp7q19f0']
@@ -31,12 +31,12 @@ const Show = ({ title, mirror, onClose }: { title: string; mirror?: boolean; onC
       <Screen>
         <Title>{title}</Title>
         <Text as="div" size="caption" xstyle={[styles.meta]}>
-          {2018 + (hue(title) % 8)} · {1 + (hue(title) % 4)} seasons · Apple TV+
+          {2018 + (hue(title) % 8)} · {1 + (hue(title) % 4)} mùa · Apple TV+
         </Text>
         <div {...stylex.props(styles.artTxt)}>
           <p {...stylex.props(styles.para)}>
-            Sample catalogue entry. The trailer above is a real embed; artwork is generated from the title so nothing
-            here needs a network round-trip to look designed.
+            Mẫu trong danh mục. Trailer phía trên là nhúng thật; hình bìa được tạo từ tiêu đề nên không cần gọi mạng để
+            trông chỉn chu.
           </p>
         </div>
       </Screen>
@@ -52,7 +52,7 @@ export const Tv = ({ os }: { os: Os }) => {
   return (
     <Screen xstyle={[styles.flush]}>
       <Screen>
-        <LargeTitle>Watch Now</LargeTitle>
+        <LargeTitle>Xem ngay</LargeTitle>
         {SHELVES.map(([name, titles]) => (
           <Fragment key={name}>
             <Title xstyle={[styles.hdr18]}>{name}</Title>

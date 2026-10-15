@@ -111,7 +111,7 @@ export const Podcasts = (_: { os: Os }) => {
   return (
     <Screen xstyle={[styles.root]}>
       <Screen>
-        <LargeTitle>Listen Now</LargeTitle>
+        <LargeTitle>Nghe ngay</LargeTitle>
         <div {...stylex.props(styles.shelf)}>
           {SHOWS.map(([s, w], si) => (
             <div key={s} {...stylex.props(styles.poster)} onClick={() => start(FIRST[si]!)}>

@@ -117,7 +117,7 @@ const Reader = ({ i, back }: { i: number; back: () => void }) => {
 
 export const Books = () => (
   <Nav>
-    <Page title="Library">
+    <Page title="Thư viện">
       <Shelf />
     </Page>
   </Nav>

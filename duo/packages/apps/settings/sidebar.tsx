@@ -18,16 +18,16 @@ export function Sidebar({ groups, current, pick }: { groups: Group[]; current: s
     ? [{ rows: groups.flatMap((g) => g.rows).filter((r) => r.label.toLowerCase().includes(needle)) }]
     : groups
   return (
-    <nav aria-label="Settings" {...stylex.props(styles.side)}>
+    <nav aria-label="Cài đặt" {...stylex.props(styles.side)}>
       <div {...stylex.props(styles.sideScroll)}>
         <div {...stylex.props(styles.account)}>
           <span {...stylex.props(shared.rowIc, styles.tint(colors.grey), styles.avatar)}>
             <Sym name="person" size={26} />
           </span>
           <span>
-            <div {...stylex.props(typography.headline)}>Apple Account</div>
+            <div {...stylex.props(typography.headline)}>Tài khoản Apple</div>
             <div {...stylex.props(typography.footnote, styles.accountSub)}>
-              Sign in to use iCloud and the App Store. Nothing signs in here.
+              Đăng nhập để dùng iCloud và App Store. Không có gì đăng nhập ở đây.
             </div>
           </span>
         </div>
@@ -42,7 +42,7 @@ export function Sidebar({ groups, current, pick }: { groups: Group[]; current: s
           </div>
         ))}
         {found[0]?.rows.length === 0 && (
-          <p {...stylex.props(shared.sub, styles.empty)}>No setting matches “{query.trim()}”.</p>
+          <p {...stylex.props(shared.sub, styles.empty)}>Không có mục cài đặt nào khớp “{query.trim()}”.</p>
         )}
       </div>
       <div {...stylex.props(styles.find)}>
@@ -50,8 +50,8 @@ export function Sidebar({ groups, current, pick }: { groups: Group[]; current: s
         <input
           type="search"
           value={query}
-          placeholder="Search"
-          aria-label="Search Settings"
+          placeholder="Tìm kiếm"
+          aria-label="Tìm trong Cài đặt"
           onChange={(e) => setQuery(e.target.value)}
           {...stylex.props(styles.findField)}
         />

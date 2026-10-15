@@ -64,7 +64,7 @@ const Detail = ({ name, tel, back, os }: { name: string; tel: string; back: () =
     <Title xstyle={[styles.hdr17]}>
       <button type="button" {...stylex.props(shared.bk)} onClick={back}>
         <Sym name="back" size={20} />
-        Contacts
+        Liên hệ
       </button>
     </Title>
     <Screen>
@@ -73,18 +73,20 @@ const Detail = ({ name, tel, back, os }: { name: string; tel: string; back: () =
         <div {...stylex.props(styles.name)}>{name}</div>
       </div>
       <div {...stylex.props(styles.acts)}>
-        <Act label="call" glyph="📞" onClick={() => os.open('Phone')} />
-        <Act label="message" glyph="💬" onClick={() => os.open('Messages')} />
+        <Act label="gọi" glyph="📞" onClick={() => os.open('Phone')} />
+        <Act label="nhắn tin" glyph="💬" onClick={() => os.open('Messages')} />
         <Act label="video" glyph="🎥" onClick={() => os.open('FaceTime')} />
-        <Act label="mail" glyph="✉️" onClick={() => os.open('Mail')} />
+        <Act label="thư" glyph="✉️" onClick={() => os.open('Mail')} />
       </div>
       <Section xstyle={[styles.white]}>
         <Row>
           <div>
             <Text as="div" size="caption">
-              mobile
+              Di động
             </Text>
-            <div {...stylex.props(styles.blue)}>{tel}</div>
+            <Text as="div" size="body" xstyle={[styles.blue]}>
+              {tel}
+            </Text>
           </div>
         </Row>
         <Row>
@@ -92,20 +94,20 @@ const Detail = ({ name, tel, back, os }: { name: string; tel: string; back: () =
             <Text as="div" size="caption">
               email
             </Text>
-            <div {...stylex.props(styles.blue)}>{`${name.split(' ')[0]!.toLowerCase()}@icloud.com`}</div>
+            <Text as="div" size="body" xstyle={[styles.blue]}>{`${name.split(' ')[0]!.toLowerCase()}@icloud.com`}</Text>
           </div>
         </Row>
       </Section>
       <Section xstyle={[styles.white]}>
         <Row>
-          Send Message
+          Gửi tin nhắn
           <span {...stylex.props(shared.rowR)}>›</span>
         </Row>
         <Row>
-          Share Contact
+          Chia sẻ liên hệ
           <span {...stylex.props(shared.rowR)}>›</span>
         </Row>
-        <Row xstyle={[styles.red]}>Block this Caller</Row>
+        <Row xstyle={[styles.red]}>Chặn người gọi này</Row>
       </Section>
     </Screen>
   </VStack>
@@ -133,7 +135,7 @@ const List = ({ os }: { os: Os }) => {
       </Row>
     )
   }
-  return <Page title="Contacts">{rows}</Page>
+  return <Page title="Liên hệ">{rows}</Page>
 }
 
 export const Contacts = ({ os }: { os: Os }) => (

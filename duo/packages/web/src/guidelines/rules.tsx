@@ -50,9 +50,15 @@ export function Rules() {
 
       <h3 {...stylex.props(styles.h3)}>Và các quy tắc iOS vẫn có hiệu lực</h3>
       <ul {...stylex.props(styles.ul)}>
-        <li {...stylex.props(styles.li)}>Điều hướng là một ngăn xếp với nút back bên trái; phím Escape về màn hình chính.</li>
-        <li {...stylex.props(styles.li)}>Nhập liệu phải dùng được trên màn hình ngoài: ghi chú, tìm kiếm, nhắn tin, ở 387 điểm.</li>
-        <li {...stylex.props(styles.li)}>Thời lượng chuyển động theo chuẩn iOS. Push mất cỡ 380 ms; không thứ gì nảy hai lần.</li>
+        <li {...stylex.props(styles.li)}>
+          Điều hướng là một ngăn xếp với nút back bên trái; phím Escape về màn hình chính.
+        </li>
+        <li {...stylex.props(styles.li)}>
+          Nhập liệu phải dùng được trên màn hình ngoài: ghi chú, tìm kiếm, nhắn tin, ở 387 điểm.
+        </li>
+        <li {...stylex.props(styles.li)}>
+          Thời lượng chuyển động theo chuẩn iOS. Push mất cỡ 380 ms; không thứ gì nảy hai lần.
+        </li>
         <li {...stylex.props(styles.li)}>
           Widget là ảnh chụp trạng thái mà shell vẽ ra, kèm thời điểm chụp. Nó không phải khung nhìn sống của app.
         </li>

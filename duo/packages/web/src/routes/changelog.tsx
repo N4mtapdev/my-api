@@ -17,7 +17,12 @@ export const Route = createFileRoute('/changelog')({
 })
 
 const ORDER = ['sdk', 'uikit', 'shell', 'cli'] as const
-const LABEL: Record<(typeof ORDER)[number], string> = { sdk: 'SDK', uikit: 'UI kit', shell: 'Shell (lõi máy)', cli: 'CLI' }
+const LABEL: Record<(typeof ORDER)[number], string> = {
+  sdk: 'SDK',
+  uikit: 'UI kit',
+  shell: 'Shell (lõi máy)',
+  cli: 'CLI'
+}
 
 /**
  * The package name is this page's `h2`, so a CHANGELOG's own `# 1.0.0` drops a

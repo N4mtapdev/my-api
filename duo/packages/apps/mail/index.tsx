@@ -14,39 +14,34 @@ type Message = [who: string, subject: string, body: string, when: string]
 const MAIL: Message[] = [
   [
     'Jony',
-    'Re: chamfer width',
-    'Down to 0.55 mm. The hairline reads properly now — the rail stays near-black and only the bevel picks up the strip light.',
+    'Re: độ rộng vát cạnh',
+    'Hạ xuống còn 0,55 mm. Đường kẻ mảnh đã chuẩn — sống máy giữ sắc đen, chỉ mặt vát là hắt ánh đèn dải.',
     '9:12'
   ],
   [
     'Blender Foundation',
-    'Cycles 5.2 is out',
-    'AgX is the default view transform. Your compositor group will need the socket-driven Glare node; the old properties are gone.',
+    'Cycles 5.2 đã ra mắt',
+    'AgX là view transform mặc định. Nhóm compositor của bạn sẽ cần node Glare điều khiển qua socket; các thuộc tính cũ đã bỏ.',
     '8:40'
   ],
   [
     'App Store Connect',
-    'Your submission is in review',
-    'iPhone Duo 1.0 (build 41) has entered review. We will let you know when there is an update.',
-    'Yesterday'
+    'Bản gửi của bạn đang được xem xét',
+    'iPhone Duo 1.0 (build 41) đã vào hàng chờ xem xét. Chúng tôi sẽ báo khi có cập nhật.',
+    'Hôm qua'
   ],
   [
     'Ada Lovelace',
-    'On the Analytical Engine',
-    'The Engine weaves algebraic patterns just as the Jacquard loom weaves flowers and leaves. Notes appended.',
-    'Yesterday'
+    'Về Máy Giải tích',
+    'Máy dệt những hoạ tiết đại số y như khung cửi Jacquard dệt hoa với lá. Đã kèm ghi chú.',
+    'Hôm qua'
   ],
-  [
-    'Kim Minh',
-    'renders',
-    'gửi anh 4 tấm final nhé, hero với back đẹp nhất. macro hơi noisy, để em tăng sample.',
-    'Mon'
-  ],
+  ['Kim Minh', 'renders', 'gửi anh 4 tấm final nhé, hero với back đẹp nhất. macro hơi noisy, để em tăng sample.', 'T2'],
   [
     'TestFlight',
-    'iPhone Duo — build 40 expired',
-    'This build is no longer available for testing. Install the latest build to keep testing.',
-    'Mon'
+    'iPhone Duo — build 40 đã hết hạn',
+    'Build này không còn để kiểm thử. Cài bản build mới nhất để tiếp tục kiểm thử.',
+    'T2'
   ]
 ]
 
@@ -56,7 +51,7 @@ const Read = ({ m: [who, subj, body, when], back }: { m: Message; back: () => vo
     <Title xstyle={[styles.hdrMd]}>
       <button type="button" {...stylex.props(shared.bk)} onClick={back}>
         <Sym name="back" size={20} />
-        Inbox
+        Hộp thư
       </button>
       <Title as="span" variant="accessory" xstyle={[styles.actions]}>
         <Sym name="share" size={19} />
@@ -71,7 +66,7 @@ const Read = ({ m: [who, subj, body, when], back }: { m: Message; back: () => vo
           <div>
             <div {...stylex.props(styles.name)}>{who}</div>
             <Text as="div" size="caption">
-              to me
+              gửi tôi
             </Text>
           </div>
           <Text size="caption" xstyle={[styles.when]}>
@@ -81,7 +76,7 @@ const Read = ({ m: [who, subj, body, when], back }: { m: Message; back: () => vo
       </div>
       <div {...stylex.props(styles.artTxt)}>
         <p {...stylex.props(styles.para)}>{body}</p>
-        <p {...stylex.props(styles.para)}>Sent from my iPhone Duo — both panels, one wallpaper.</p>
+        <p {...stylex.props(styles.para)}>Gửi từ iPhone Duo của tôi — hai màn hình, một hình nền.</p>
       </div>
     </Screen>
   </VStack>
@@ -117,9 +112,9 @@ export const Mail = () => (
       <Page
         title={
           <>
-            Inbox
+            Hộp thư
             <Title as="span" variant="accessory">
-              {MAIL.length} messages
+              {MAIL.length} thư
             </Title>
           </>
         }

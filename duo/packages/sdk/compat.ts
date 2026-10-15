@@ -22,7 +22,7 @@ export function compatible(host: SemVer, app: SemVer): boolean {
 }
 
 export const HOST_SDK = '0.0.0'
-export const REQUIRES_PLATFORM = 'Requires a newer platform version'
+export const REQUIRES_PLATFORM = 'Cần phiên bản nền tảng mới hơn'
 export function supports(version: string, dev = false, host = HOST_SDK): boolean {
   const h = semver(host)
   const a = semver(version)

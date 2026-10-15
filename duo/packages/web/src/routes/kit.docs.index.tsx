@@ -25,8 +25,8 @@ function Index() {
         lead={
           <>
             <Code>@doan-labs/duo-uikit</Code>: component và token mà mọi app trên máy được dựng nên từ đó. Chúng sinh ra
-            đã hiểu màn hình ngoài lẫn màn hình trong, nên khung hình đọc tốt ở 387 điểm sẽ lớn lên thành không gian
-            đầy đủ khi máy được mở ra.
+            đã hiểu màn hình ngoài lẫn màn hình trong, nên khung hình đọc tốt ở 387 điểm sẽ lớn lên thành không gian đầy
+            đủ khi máy được mở ra.
           </>
         }
       />
@@ -40,8 +40,8 @@ function App() {
     <Screen>
       <Title>Field guide</Title>
       <Section>
-        <Row label="Display" detail={view.display} />
-        <Row label="Fold" detail={<Text value={view.angle} suffix="°" />} />
+        <Row label="Màn hình" detail={view.display} />
+        <Row label="Góc gập" detail={<Text value={view.angle} suffix="°" />} />
         <Row><Button onClick={save}>Continue</Button></Row>
       </Section>
     </Screen>
@@ -57,7 +57,7 @@ function App() {
         </Link>{' '}
         chạy mọi component trực tiếp, còn{' '}
         <a href={blob('examples/developer/main.tsx')} {...stylex.props(styles.link)}>
-          Developer gallery
+          Thư viện nhà phát triển
         </a>{' '}
         là một app cài được, render mọi export ở cả hai bề rộng màn hình.
       </p>
@@ -81,8 +81,8 @@ function App() {
         <a href={blob('packages/uikit/tokens.stylex.ts')} {...stylex.props(styles.link)}>
           tokens.stylex.ts
         </a>{' '}
-        dưới dạng biến StyleX. Dùng token, đừng dùng số cứng: hai màn hình có mật độ khác nhau, shell tự tinh chỉnh
-        bảng màu cho cả hai, và chính quy tắc đó khiến một lần sửa trong kit lan tới mọi app.
+        dưới dạng biến StyleX. Dùng token, đừng dùng số cứng: hai màn hình có mật độ khác nhau, shell tự tinh chỉnh bảng
+        màu cho cả hai, và chính quy tắc đó khiến một lần sửa trong kit lan tới mọi app.
       </p>
     </Prose>
   )

@@ -11,7 +11,7 @@ function Root() {
               nav.push((back) => (
                 <Page title="Chi tiết" back={back}>
                   <Section>
-                    <Row label="Pushed with" detail="useNav().push" />
+                    <Row label="Đẩy bằng" detail="useNav().push" />
                   </Section>
                 </Page>
               ))

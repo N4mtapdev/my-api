@@ -27,31 +27,34 @@ const Card = ({ name, glyph, act }: { name: string; glyph: string; act: () => vo
 
 export const Shortcuts = ({ os }: { os: Os }) => (
   <Screen>
-    <LargeTitle>Shortcuts</LargeTitle>
+    <LargeTitle>Phím tắt</LargeTitle>
     <div {...stylex.props(styles.scs)}>
       <Card
-        name="Open Wikipedia"
+        name="Mở Wikipedia"
         glyph="🌐"
         act={() => os.open('Safari', 'https://en.m.wikipedia.org/wiki/Special:Random')}
       />
-      <Card name="Take a Photo" glyph="📸" act={() => os.open('Camera')} />
-      <Card name="Play Music" glyph="🎧" act={() => os.open('Music')} />
-      <Card name="Today’s News" glyph="📰" act={() => os.open('News')} />
-      <Card name="Call Home" glyph="☎️" act={() => os.open('Phone')} />
-      <Card name="Find My Duo" glyph="📍" act={() => os.open('Find My')} />
-      <Card name="Start Sketch" glyph="✏️" act={() => os.open('Freeform')} />
-      <Card name="Go Home" glyph="🏠" act={() => os.home()} />
+      <Card name="Chụp ảnh" glyph="📸" act={() => os.open('Camera')} />
+      <Card name="Phát nhạc" glyph="🎧" act={() => os.open('Music')} />
+      <Card name="Tin tức hôm nay" glyph="📰" act={() => os.open('News')} />
+      <Card name="Gọi về nhà" glyph="☎️" act={() => os.open('Phone')} />
+      <Card name="Tìm Duo của tôi" glyph="📍" act={() => os.open('Find My')} />
+      <Card name="Bắt đầu vẽ" glyph="✏️" act={() => os.open('Freeform')} />
+      <Card name="Về Màn hình chính" glyph="🏠" act={() => os.home()} />
     </div>
-    <Title xstyle={[styles.hdrSm]}>Automations</Title>
+    <Title xstyle={[styles.hdrSm]}>Tự động hóa</Title>
     <Section>
       <Row>
-        When the phone unfolds<span {...stylex.props(shared.rowR)}>Open Freeform ›</span>
+        Khi điện thoại mở ra
+        <span {...stylex.props(shared.rowR)}>Mở Freeform ›</span>
       </Row>
       <Row>
-        At sunset<span {...stylex.props(shared.rowR)}>Dim Key Light ›</span>
+        Lúc hoàng hôn
+        <span {...stylex.props(shared.rowR)}>Giảm đèn Key Light ›</span>
       </Row>
       <Row>
-        When a render finishes<span {...stylex.props(shared.rowR)}>Play sound ›</span>
+        Khi bản render xong
+        <span {...stylex.props(shared.rowR)}>Phát âm thanh ›</span>
       </Row>
     </Section>
   </Screen>

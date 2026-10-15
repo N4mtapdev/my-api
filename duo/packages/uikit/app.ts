@@ -7,6 +7,8 @@ export type App = {
   id?: string
   icon?: string
   name: string
+  /** Vietnamese display label; `name` stays the identity icons and lookups go by. */
+  label?: string
   light?: boolean
   /** Draws under the status stack, edge to edge, and pads its own top; the shell adds no band. */
   edge?: boolean

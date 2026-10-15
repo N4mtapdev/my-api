@@ -16,6 +16,7 @@ real device instead of screenshots.
 
 Accepted 2026-09-18: the canonical public origin is
 `https://duo.doan-labs.com`. Host the website, browser simulator, first-party
+(canonical origin stays; visible brand is N4mtapdev).
 catalog and immutable app bundles as static files on this origin initially.
 Build locally or in CI; installation, app execution and persistence stay in
 the client. No custom application server is required for the MVP. This does
@@ -61,6 +62,7 @@ compatibility have already been verified.
 1. **Home.** The device, folding on scroll. Download links for the dmg, msi,
    AppImage, and Open in Browser.
 2. **Get started (after publication).** `npx @doan-labs/duo-cli create`, `npx @doan-labs/duo-cli dev`, and the `?dev=`
+CLI package name stays @doan-labs/duo-cli.
    link. Target: an app on the home screen in five minutes. The embedded
    simulator targets the reader's localhost app document, subject to browser
    network permissions and CORS. Development uses the production sandbox and SDK.
@@ -246,7 +248,7 @@ nothing is published, no host is chosen, no CI deploys it.
 
 Nav: Duo · Apps · SDK · Docs · Build an app · GitHub · theme toggle · Try Duo.
 Footer: Duo · GitHub · Docs · Apps · License, then the Doan mark with "Made by
-Doan Labs" (doan-labs.com), the small print, and the remaining pages in a
+N4mtapdev" (doan-labs.com), the small print, and the remaining pages in a
 second row so nothing is orphaned. The page scrolls through Lenis
 (`src/smooth-scroll.tsx`), off under reduced motion. Warm off-white by default, dark follows the
 system or the toggle; near-black sections use the dark theme class, so in dark
@@ -290,7 +292,7 @@ Headless Chromium (SwiftShader for WebGL), 2026-09-18, against
 | Run | Result |
 | --- | --- |
 | `bun scripts/check.mjs http://localhost:3011` | PASS (re-run after Lenis, the camera gate and the footer credit): 13 routes × 3 widths × 2 schemes, 78 screenshots, 35 links; theme toggle dark → light kept across reload (Lenis's `<html>` classes ignored); reduced motion hides nothing; posture Closed → mode "closed"; bridge painted `rgb(11, 11, 10)` behind the hero device; no-JS HTML carries the h1 and links |
-| `.cache/debug/web/camera.mjs` (Chrome's fake camera, auto-granted) | the camera frame is `waiting` until the scene scrolls in, then `mounted`; the Camera app shows the feed; no frame has an `h1`; footer reads "Made by Doan Labs" |
+| `.cache/debug/web/camera.mjs` (Chrome's fake camera, auto-granted) | the camera frame is `waiting` until the scene scrolls in, then `mounted`; the Camera app shows the feed; no frame has an `h1`; footer reads "Made by N4mtapdev" |
 | `.cache/debug/web/sections.mjs` (per-section screenshots, light and dark) | all three frames report the page background; no page errors |
 | `bun run typecheck` (root, then `packages/web`) | passes |
 | `bunx biome check` on the changed files | lint clean; six files under `src/home` await the formatter (hook inactive in this session; the pre-commit hook formats staged files) |

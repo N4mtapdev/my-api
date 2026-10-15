@@ -54,7 +54,7 @@ export function update(patch: Partial<Preferences>) {
   preferences = { ...preferences, ...patch }
   void os.storage.set(key, JSON.stringify(preferences)).catch(() => {
     const place = preferences.places.find((p) => p.id === preferences.selected)!
-    cache.set(place.id, { ...cache.get(place.id), loading: false, error: 'Preferences were not saved. Try again.' })
+    cache.set(place.id, { ...cache.get(place.id), loading: false, error: 'Không lưu được tùy chọn. Thử lại.' })
     emit()
   })
   swap()
@@ -120,7 +120,7 @@ export async function refresh(place: Place, force = false) {
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null)
     ])
-    if (!response.ok) throw new Error('Forecast service unavailable')
+    if (!response.ok) throw new Error('Dịch vụ dự báo không khả dụng')
     const data: Forecast = await response.json()
     if (Number.isFinite(quality?.current?.us_aqi)) data.aqi = quality.current.us_aqi
     if (
@@ -129,14 +129,14 @@ export async function refresh(place: Place, force = false) {
       !data.hourly?.time?.length ||
       !data.timezone
     )
-      throw new Error('Incomplete forecast')
+      throw new Error('Dữ liệu dự báo không đầy đủ')
     if (os.owner?.epoch !== epoch) return
     cache.set(place.id, { data, loading: false, fetched: Date.now() })
   } catch {
     cache.set(place.id, {
       ...prior,
       loading: false,
-      error: 'Unable to update weather. Check your connection and try again.'
+      error: 'Không cập nhật được thời tiết. Kiểm tra kết nối rồi thử lại.'
     })
   } finally {
     pending.delete(place.id)
@@ -146,7 +146,7 @@ export async function refresh(place: Place, force = false) {
         await os.storage.set(`forecast:${place.id}`, JSON.stringify(cache.get(place.id)))
         await publishWidget()
       } catch {
-        cache.set(place.id, { ...cache.get(place.id), loading: false, error: 'Weather could not be saved. Try again.' })
+        cache.set(place.id, { ...cache.get(place.id), loading: false, error: 'Không lưu được thời tiết. Thử lại.' })
         emit()
       }
     }
@@ -172,7 +172,7 @@ export async function search(query: string, signal: AbortSignal): Promise<Place[
     `https://geocoding-api.open-meteo.com/v1/search?${new URLSearchParams({ name: query, count: '8', language: 'en', format: 'json' })}`,
     { credentials: 'omit', signal: AbortSignal.any([signal, ownerAbort.signal, AbortSignal.timeout(15000)]) }
   )
-  if (!response.ok) throw new Error('Search unavailable')
+  if (!response.ok) throw new Error('Không tìm kiếm được')
   const data = await response.json()
   return (data.results || []).map(
     (p: { id: number; name: string; admin1?: string; country?: string; latitude: number; longitude: number }) => ({
@@ -192,21 +192,21 @@ export const clock = (
   time: number,
   timezone: string,
   options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit' }
-) => (Number.isFinite(time) ? new Date(time * 1000).toLocaleString('en-US', { ...options, timeZone: timezone }) : '—')
+) => (Number.isFinite(time) ? new Date(time * 1000).toLocaleString('vi-VN', { ...options, timeZone: timezone }) : '—')
 export type SymName = keyof typeof SYM
 /** SF Symbol and label for a WMO weather code. */
 export function condition(code: number, isDay = 1): [SymName, string] {
-  if (code === 0) return [isDay ? 'sun' : 'moonStars', isDay ? 'Sunny' : 'Clear']
-  if (code === 1 || code === 2) return [isDay ? 'cloudSun' : 'cloudMoon', 'Partly Cloudy']
-  if (code === 3) return ['cloud', 'Cloudy']
-  if (code === 45 || code === 48) return ['fog', 'Fog']
-  if (code >= 51 && code <= 57) return ['drizzle', 'Drizzle']
-  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return ['snow', 'Snow']
-  if (code >= 95) return ['storm', 'Thunderstorms']
-  if (code >= 80 && code <= 82) return [isDay ? 'sunRain' : 'moonRain', 'Showers']
-  if (code >= 65 || code === 82) return ['heavyRain', 'Heavy Rain']
-  if (code >= 61 && code <= 82) return ['rain', 'Rain']
-  return ['cloud', 'Unavailable']
+  if (code === 0) return [isDay ? 'sun' : 'moonStars', isDay ? 'Nắng' : 'Trời trong']
+  if (code === 1 || code === 2) return [isDay ? 'cloudSun' : 'cloudMoon', 'Nắng có mây']
+  if (code === 3) return ['cloud', 'Nhiều mây']
+  if (code === 45 || code === 48) return ['fog', 'Sương mù']
+  if (code >= 51 && code <= 57) return ['drizzle', 'Mưa phùn']
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return ['snow', 'Tuyết rơi']
+  if (code >= 95) return ['storm', 'Dông']
+  if (code >= 80 && code <= 82) return [isDay ? 'sunRain' : 'moonRain', 'Mưa rào']
+  if (code >= 65 || code === 82) return ['heavyRain', 'Mưa to']
+  if (code >= 61 && code <= 82) return ['rain', 'Mưa']
+  return ['cloud', 'Không khả dụng']
 }
 export type Scene = 'clear' | 'night' | 'cloudy' | 'cloudyNight' | 'rain' | 'storm' | 'snow' | 'fog'
 /** Which sky to paint. Precipitation wins over time of day, as in the real app. */
@@ -232,8 +232,8 @@ export function widgetSnapshot() {
     condition: data
       ? condition(data.current.weather_code!, data.current.is_day)[1]
       : entry?.error
-        ? 'Unavailable'
-        : 'Loading…',
+        ? 'Không khả dụng'
+        : 'Đang tải…',
     range: data
       ? `H:${temperature(data.daily.temperature_2m_max?.[0], preferences.unit)} L:${temperature(data.daily.temperature_2m_min?.[0], preferences.unit)}`
       : ''
@@ -251,7 +251,7 @@ async function publishWidget() {
     lines: [
       { role: 'label', text: value.name.slice(0, 64) },
       { role: 'value', text: value.temperature },
-      { role: 'caption', text: cache.get(place.id)?.error ? 'Offline · cached forecast' : value.condition },
+      { role: 'caption', text: cache.get(place.id)?.error ? 'Ngoại tuyến · dự báo đã lưu' : value.condition },
       { role: 'caption', text: value.range }
     ]
   })

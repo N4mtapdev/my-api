@@ -158,8 +158,8 @@ function NotFound() {
       <Eyebrow>Error 404</Eyebrow>
       <h1 {...stylex.props(styles.notFoundTitle)}>Trang này không có thật rồi.</h1>
       <p {...stylex.props(styles.notFoundText)}>
-        Có thể đường dẫn sai, hoặc trang đã đổi chỗ trong lúc nền tảng còn đang xây. Mở tài liệu lên là nơi bắt đầu
-        an toàn nhất.
+        Có thể đường dẫn sai, hoặc trang đã đổi chỗ trong lúc nền tảng còn đang xây. Mở tài liệu lên là nơi bắt đầu an
+        toàn nhất.
       </p>
       <div {...stylex.props(styles.actions)}>
         <Button to="/">Về trang chủ</Button>

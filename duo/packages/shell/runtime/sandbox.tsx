@@ -14,7 +14,7 @@ import { closeSession, session } from './sessions.ts'
 export function Sandbox({ id, os, wide, side }: { id: string; os: Os; wide: boolean; side?: 'left' | 'right' }) {
   const root = useRef<HTMLDivElement>(null)
   const live = useRef<ReturnType<typeof launchFrame> | undefined>(undefined)
-  const [status, setStatus] = useState('Connecting…')
+  const [status, setStatus] = useState('Đang kết nối…')
   const [attempt, setAttempt] = useState(0)
   const [error, setError] = useState(false)
   const placement = useRef(side)
@@ -77,7 +77,7 @@ export function Sandbox({ id, os, wide, side }: { id: string; os: Os; wide: bool
           {error && (
             <>
               <button type="button" onClick={() => setAttempt((n) => n + 1)}>
-                Try again
+                Thử lại
               </button>
               <button
                 type="button"
@@ -89,11 +89,11 @@ export function Sandbox({ id, os, wide, side }: { id: string; os: Os; wide: bool
                     .catch((e) => setStatus(String(e.message)))
                 }}
               >
-                Restore previous version
+                Khôi phục phiên bản trước
               </button>
-              <p>Restore keeps newer edits aside; they may be missing from the restored version.</p>
+              <p>Khôi phục để riêng các bản sửa mới hơn; bản sửa đó có thể thiếu trong phiên bản được khôi phục.</p>
               <button type="button" onClick={goHome}>
-                Close
+                Đóng
               </button>
             </>
           )}

@@ -112,14 +112,14 @@ export const Phone = () => {
     <Screen xstyle={[dark, styles.root]}>
       <div {...stylex.props(styles.panes)}>
         <Screen xstyle={[styles.pane, tab !== 0 && shared.hide]}>
-          <Title>Recents</Title>
+          <Title>Gần đây</Title>
           <Section xstyle={[styles.recents]}>
             {PEOPLE.map(([name, num], i) => (
               <Row key={name} xstyle={[styles.dark]} onClick={() => call(name)}>
                 <div>
                   <div {...stylex.props(styles.name, i % 3 === 0 && styles.missed)}>{name}</div>
                   <Text as="div" size="caption">
-                    {i % 2 ? 'mobile' : 'iPhone'} · {num}
+                    {i % 2 ? 'di động' : 'iPhone'} · {num}
                   </Text>
                 </div>
                 <span {...stylex.props(shared.rowR)}>
@@ -149,7 +149,7 @@ export const Phone = () => {
         </div>
       </div>
       <div {...stylex.props(styles.bar)}>
-        {['Recents', 'Keypad'].map((label, i) => (
+        {['Gần đây', 'Bàn phím'].map((label, i) => (
           <button
             key={label}
             type="button"

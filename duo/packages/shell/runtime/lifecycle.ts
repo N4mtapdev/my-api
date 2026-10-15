@@ -89,12 +89,12 @@ export async function migrateNotes(id: string) {
     let used = 0
     for (const [key, value] of legacy) {
       const k = key.slice(prefix.length)
-      if (!keyValid(k) || !valueValid(value)) throw new PlatformError('E_STORAGE', 'Legacy note exceeds storage limits')
+      if (!keyValid(k) || !valueValid(value)) throw new PlatformError('E_STORAGE', 'Ghi chú cũ vượt giới hạn lưu trữ')
       used += bytes(k) + bytes(value)
       await put(tx, 'appdata', [id, k], value)
     }
     if (used > LIMITS.storage || legacy.length > LIMITS.keys)
-      throw new PlatformError('E_STORAGE', 'Legacy notes exceed quota')
+      throw new PlatformError('E_STORAGE', 'Ghi chú cũ vượt hạn mức')
     await put(tx, 'meta', id, { rev: legacy.length, used })
     await put(tx, 'legacy', id, legacy)
     await put(tx, 'marks', id, { ...mark, migrated: true })
@@ -134,7 +134,7 @@ export async function install(
       if (current?.generation !== old?.generation || current?.state === 'removing') throw new PlatformError('E_STALE')
       const collision = await read<StoredRelease>(tx, 'releases', next)
       if (collision && collision.release.manifest.id !== id)
-        throw new PlatformError('E_STORAGE', 'Release identity collision')
+        throw new PlatformError('E_STORAGE', 'Trùng danh tính bản phát hành')
       await put(tx, 'releases', next, bundle)
       if (!current) {
         const mark = (await read<{ generation?: number }>(tx, 'marks', id)) ?? {}
@@ -188,7 +188,7 @@ export async function launchAttempt(id: string, force = false): Promise<Installe
     return transaction(['installed', 'leases'], 'readwrite', async (tx) => {
       const app = await authority(tx, id, initial.generation)
       if (app.attempts >= 2 && app.recovery && !force)
-        throw new PlatformError('E_CLOSED', 'Restore previous version or try again')
+        throw new PlatformError('E_CLOSED', 'Hãy khôi phục phiên bản trước hoặc thử lại')
       app.attempts++
       await writeAuthority(tx, app)
       await put(tx, 'leases', [id, tabId], { views: 1, heartbeat: Date.now() })
@@ -224,9 +224,9 @@ export async function restore(id: string) {
     await transaction([...STORES], 'readwrite', async (tx) => {
       const app = await authority(tx, id, initial.generation, true)
       if (!app.recovery || (await freshLeases(tx, id)))
-        throw new PlatformError('E_STALE', 'Close the app before restoring')
+        throw new PlatformError('E_STALE', 'Đóng app trước khi khôi phục')
       const saved = await read<Checkpoint>(tx, 'checkpoints', app.recovery.checkpoint)
-      if (!saved) throw new PlatformError('E_STORAGE', 'Recovery checkpoint missing')
+      if (!saved) throw new PlatformError('E_STORAGE', 'Không có điểm lưu khôi phục')
       tx.objectStore('recovery').delete(range(id))
       await put(tx, 'recovery', [id, app.current], await checkpoint(tx, id))
       await replaceData(tx, id, saved)

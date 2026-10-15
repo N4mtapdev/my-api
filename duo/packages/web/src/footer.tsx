@@ -86,7 +86,7 @@ export function Footer() {
       <div {...stylex.props(styles.base)}>
         <a href={DOAN} {...stylex.props(styles.link, styles.studio)}>
           <DoanMark />
-          Một thí nghiệm nhỏ của Doan Labs
+          Một thí nghiệm nhỏ của N4mtapdev
         </a>
         <p {...stylex.props(styles.fine)}>
           Thí nghiệm phi chính thức, không liên kết với Apple. iPhone là nhãn hiệu của Apple Inc.

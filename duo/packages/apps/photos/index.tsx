@@ -57,7 +57,7 @@ export const Photos = () => {
           {!wide && (
             <button
               type="button"
-              aria-label="Hide sidebar"
+              aria-label="Ẩn thanh bên"
               onClick={() => setSide(false)}
               {...stylex.props(styles.scrim, animations.fade)}
             />
@@ -72,7 +72,7 @@ export const Photos = () => {
           {!showSide && (
             <button
               type="button"
-              aria-label="Show sidebar"
+              aria-label="Hiện thanh bên"
               onClick={() => setSide(true)}
               {...stylex.props(styles.tool, shared.press)}
             >
@@ -81,12 +81,12 @@ export const Photos = () => {
           )}
           <div {...stylex.props(styles.heading)}>
             <div {...stylex.props(styles.title)}>{itemName(place)}</div>
-            <div {...stylex.props(styles.subtitle)}>{range(pics) || 'No Photos'}</div>
+            <div {...stylex.props(styles.subtitle)}>{range(pics) || 'Không có ảnh'}</div>
           </div>
           <div {...stylex.props(styles.pill, styles.wideOnly)}>
             <button
               type="button"
-              aria-label="Zoom out"
+              aria-label="Thu nhỏ"
               disabled={zoom === 0}
               onClick={() => setZoom(zoom - 1)}
               {...stylex.props(styles.pillBtn)}
@@ -95,7 +95,7 @@ export const Photos = () => {
             </button>
             <button
               type="button"
-              aria-label="Zoom in"
+              aria-label="Phóng to"
               disabled={zoom === ZOOM.length - 1}
               onClick={() => setZoom(zoom + 1)}
               {...stylex.props(styles.pillBtn)}
@@ -103,7 +103,7 @@ export const Photos = () => {
               <Sym name="plus" size={11} />
             </button>
           </div>
-          <div role="tablist" aria-label="View" {...stylex.props(styles.segments, styles.wideOnly)}>
+          <div role="tablist" aria-label="Kiểu xem" {...stylex.props(styles.segments, styles.wideOnly)}>
             {VIEWS.map(([id, name]) => (
               <button
                 key={id}
@@ -120,7 +120,7 @@ export const Photos = () => {
           <div {...stylex.props(styles.actions)}>
             <button
               type="button"
-              aria-label={fit ? 'Fill squares' : 'Show aspect ratios'}
+              aria-label={fit ? 'Lấp đầy ô vuông' : 'Hiện đúng tỉ lệ'}
               aria-pressed={!fit}
               onClick={() => setFit(!fit)}
               {...stylex.props(styles.tool, shared.press, styles.wideOnly)}
@@ -130,7 +130,7 @@ export const Photos = () => {
             <i {...stylex.props(styles.divider, styles.wideOnly)} />
             <button
               type="button"
-              aria-label={selected && fav.has(selected.id) ? 'Unfavorite' : 'Favorite'}
+              aria-label={selected && fav.has(selected.id) ? 'Bỏ yêu thích' : 'Yêu thích'}
               disabled={!selected}
               onClick={() => selected && act(selected, 'fav')}
               {...stylex.props(styles.tool, shared.press)}
@@ -139,7 +139,7 @@ export const Photos = () => {
             </button>
             <button
               type="button"
-              aria-label={place === 'deleted' ? 'Recover' : 'Delete'}
+              aria-label={place === 'deleted' ? 'Khôi phục' : 'Xóa'}
               disabled={!selected}
               onClick={() => selected && act(selected, 'del')}
               {...stylex.props(styles.tool, shared.press)}
@@ -149,7 +149,7 @@ export const Photos = () => {
             <i {...stylex.props(styles.divider, styles.wideOnly)} />
             <button
               type="button"
-              aria-label="Search"
+              aria-label="Tìm kiếm"
               aria-pressed={q !== null}
               onClick={() => setQ(q === null ? '' : null)}
               {...stylex.props(styles.tool, shared.press)}
@@ -166,18 +166,18 @@ export const Photos = () => {
                 // biome-ignore lint/a11y/noAutofocus: the row exists only to be typed into
                 autoFocus
                 {...stylex.props(styles.searchIn)}
-                placeholder="Search"
-                aria-label="Search photos"
+                placeholder="Tìm kiếm"
+                aria-label="Tìm ảnh"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
               />
             </label>
             <button type="button" onClick={() => setQ(null)} {...stylex.props(styles.cancel, shared.press)}>
-              Cancel
+              Hủy
             </button>
           </div>
         )}
-        <div role="tablist" aria-label="View" {...stylex.props(styles.segments, styles.narrowOnly)}>
+        <div role="tablist" aria-label="Kiểu xem" {...stylex.props(styles.segments, styles.narrowOnly)}>
           {VIEWS.map(([id, name]) => (
             <button
               key={id}
@@ -200,7 +200,7 @@ export const Photos = () => {
                   <button
                     key={p.id}
                     type="button"
-                    aria-label={`Photo, ${month(p.takenAt)}`}
+                    aria-label={`Ảnh, ${month(p.takenAt)}`}
                     aria-pressed={p.id === sel}
                     onClick={() => (p.id === sel ? setOpen(p.id) : setSel(p.id))}
                     {...stylex.props(styles.cell, p.id === sel && styles.cellOn)}
@@ -225,11 +225,7 @@ export const Photos = () => {
             </section>
           ))}
           <div {...stylex.props(styles.count)}>
-            {loading
-              ? 'Loading'
-              : pics.length
-                ? `${pics.length} ${pics.length === 1 ? 'Photo' : 'Photos'}`
-                : 'No Photos'}
+            {loading ? 'Đang tải' : pics.length ? `${pics.length} ảnh` : 'Không có ảnh'}
           </div>
         </div>
       </div>
@@ -281,12 +277,12 @@ const Viewer = ({
     return () => window.removeEventListener('keydown', key)
   }, [close])
   return (
-    <div role="dialog" aria-label="Photo" {...stylex.props(styles.viewer, animations.fade)}>
+    <div role="dialog" aria-label="Ảnh" {...stylex.props(styles.viewer, animations.fade)}>
       <div {...stylex.props(styles.viewerBar)}>
         <button
           ref={first}
           type="button"
-          aria-label="Close"
+          aria-label="Đóng"
           onClick={close}
           {...stylex.props(styles.tool, shared.press)}
         >
@@ -295,13 +291,13 @@ const Viewer = ({
         <span {...stylex.props(styles.viewerTitle)}>{month(pic.takenAt)}</span>
         <button
           type="button"
-          aria-label={fav ? 'Unfavorite' : 'Favorite'}
+          aria-label={fav ? 'Bỏ yêu thích' : 'Yêu thích'}
           onClick={onFav}
           {...stylex.props(styles.tool, shared.press)}
         >
           <Sym name={fav ? 'heartFill' : 'heart'} size={15} />
         </button>
-        <button type="button" aria-label="Delete" onClick={onDel} {...stylex.props(styles.tool, shared.press)}>
+        <button type="button" aria-label="Xóa" onClick={onDel} {...stylex.props(styles.tool, shared.press)}>
           <Sym name="trashOutline" size={15} />
         </button>
       </div>

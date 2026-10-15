@@ -10,16 +10,16 @@ import { styles } from './styles.ts'
 type Acc = { name: string; room: string; on: boolean; glow: string; kind?: 'fan' }
 
 const ACCS: Acc[] = [
-  { name: 'Desk Lamp', room: 'Studio', on: true, glow: appAppearance.homeGlow },
-  { name: 'Key Light', room: 'Studio', on: true, glow: appAppearance.homeGlow2 },
-  { name: 'Rim Lights', room: 'Studio', on: false, glow: appAppearance.homeGlow3 },
-  { name: 'Front Door', room: 'Entry', on: false, glow: appAppearance.homeGlow4 },
-  { name: 'Fan', room: 'Studio', on: false, glow: appAppearance.homeGlow5, kind: 'fan' },
-  { name: 'Speaker', room: 'Living', on: true, glow: appAppearance.homeGlow6 }
+  { name: 'Đèn bàn', room: 'Studio', on: true, glow: appAppearance.homeGlow },
+  { name: 'Đèn chính', room: 'Studio', on: true, glow: appAppearance.homeGlow2 },
+  { name: 'Đèn viền', room: 'Studio', on: false, glow: appAppearance.homeGlow3 },
+  { name: 'Cửa trước', room: 'Lối vào', on: false, glow: appAppearance.homeGlow4 },
+  { name: 'Quạt', room: 'Studio', on: false, glow: appAppearance.homeGlow5, kind: 'fan' },
+  { name: 'Loa', room: 'Phòng khách', on: true, glow: appAppearance.homeGlow6 }
 ]
 
 const glyph = (a: Acc) =>
-  a.kind === 'fan' ? '✳︎' : a.name.includes('Door') ? '🚪' : a.name.includes('Speaker') ? '🔊' : '💡'
+  a.kind === 'fan' ? '✳︎' : a.name.includes('Cửa') ? '🚪' : a.name.includes('Loa') ? '🔊' : '💡'
 
 const Tile = ({ a }: { a: Acc }) => {
   const [on, setOn] = useState(a.on)
@@ -34,7 +34,7 @@ const Tile = ({ a }: { a: Acc }) => {
       </div>
       <div>
         <div {...stylex.props(styles.t)}>{a.name}</div>
-        <div {...stylex.props(styles.st)}>{on ? 'On' : 'Off'}</div>
+        <div {...stylex.props(styles.st)}>{on ? 'Bật' : 'Tắt'}</div>
       </div>
     </div>
   )
@@ -102,14 +102,14 @@ export const Home = () => {
   const [temp, setTemp] = useState(21)
   return (
     <Screen>
-      <LargeTitle>My Home</LargeTitle>
+      <LargeTitle>Nhà của tôi</LargeTitle>
       <div {...stylex.props(styles.center)}>
         <Thermostat temp={temp} onChange={setTemp} />
         <Text as="div" size="caption" xstyle={[styles.caption]}>
-          Thermostat · Heating to {temp}°
+          Bộ điều nhiệt · Đang sưởi tới {temp}°
         </Text>
       </div>
-      <Title xstyle={[styles.hdr18]}>Favourites</Title>
+      <Title xstyle={[styles.hdr18]}>Yêu thích</Title>
       <div {...stylex.props(styles.accs)}>
         {ACCS.map((a) => (
           <Tile key={a.name} a={a} />

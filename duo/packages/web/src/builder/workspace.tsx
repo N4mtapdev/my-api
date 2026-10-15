@@ -182,7 +182,11 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
         .catch(() => {
           if (control.signal.aborted) return
           setModelList([])
-          setModelNote(key.trim() ? 'Không lấy được danh sách model. Hãy gõ một ID.' : 'Thêm key để lấy danh sách model, hoặc gõ một ID.')
+          setModelNote(
+            key.trim()
+              ? 'Không lấy được danh sách model. Hãy gõ một ID.'
+              : 'Thêm key để lấy danh sách model, hoặc gõ một ID.'
+          )
         })
     }, 500)
     return () => {
@@ -441,7 +445,8 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                 <span {...stylex.props(styles.spark)}>✳</span>
                 <h1 {...stylex.props(styles.headline)}>
                   Một ý tưởng.
-                  <br />Một app chạy được.
+                  <br />
+                  Một app chạy được.
                 </h1>
                 <p {...stylex.props(styles.description)}>
                   {upcoming
@@ -472,7 +477,9 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
           </div>
           {upcoming && (
             <div {...stylex.props(styles.composer)}>
-              <p {...stylex.props(styles.hint)}>Chat và tính năng tạo app bằng AI đang trong quá trình phát triển. Còn chiếc máy là thật: thử đi.</p>
+              <p {...stylex.props(styles.hint)}>
+                Chat và tính năng tạo app bằng AI đang trong quá trình phát triển. Còn chiếc máy là thật: thử đi.
+              </p>
             </div>
           )}
           {!upcoming && (
@@ -527,7 +534,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                         type="password"
                         autoComplete="off"
                         data-private
-                        placeholder={provider ? `${provider.name} key` : 'Bearer token'}
+                        placeholder={provider ? `Khóa ${provider.name}` : 'Bearer token'}
                         value={connection.key}
                         disabled={busy}
                         onChange={(e) => setConnection({ ...connection, key: e.target.value })}
@@ -557,7 +564,7 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                         list="builder-models"
                         autoComplete="off"
                         spellCheck={false}
-                        placeholder="Model ID"
+                        placeholder="Mã model"
                         value={connection.model}
                         disabled={busy}
                         onChange={(e) => updateConnection({ ...connection, model: e.target.value })}
@@ -588,7 +595,8 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                       Xóa key
                     </button>
                     <span {...stylex.props(styles.hint)}>
-                      Nút kiểm tra gửi một request nhỏ, có tính phí. Endpoint tùy chỉnh phải cho phép truy cập từ trình duyệt.
+                      Nút kiểm tra gửi một request nhỏ, có tính phí. Endpoint tùy chỉnh phải cho phép truy cập từ trình
+                      duyệt.
                     </span>
                   </div>
                 </div>
@@ -618,10 +626,12 @@ export function Workspace({ upcoming = false, app }: { upcoming?: boolean; app?:
                     }
                   }}
                   placeholder={
-                    upcoming                      ? 'Chat sẽ mở khi Build phát hành'
+                    upcoming
+                      ? 'Chat sẽ mở khi Build phát hành'
                       : project?.messages.length
                         ? 'Yêu cầu thay đổi…'
-                        : 'Mô tả app của bạn…'}
+                        : 'Mô tả app của bạn…'
+                  }
                   rows={1}
                   {...stylex.props(styles.textarea)}
                 />

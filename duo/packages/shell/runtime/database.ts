@@ -60,7 +60,7 @@ export function database(): Promise<IDBDatabase> {
     }
     request.onblocked = () => {
       opening = undefined
-      reject(new PlatformError('E_STORAGE', 'Close the older shell tab to upgrade storage.'))
+      reject(new PlatformError('E_STORAGE', 'Đóng tab shell đang mở cũ hơn để nâng cấp bộ nhớ.'))
     }
     request.onsuccess = () => {
       const db = request.result

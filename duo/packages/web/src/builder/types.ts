@@ -32,7 +32,8 @@ export function parseSource(value: unknown): Source {
     if (!/^[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)*\.(?:tsx?|json)$/.test(path) || typeof content !== 'string')
       throw new Error('Chỉ hỗ trợ tệp nguồn TS, TSX và JSON đặt tên kebab-case')
   }
-  if (new TextEncoder().encode(JSON.stringify(source)).length > SOURCE_LIMIT) throw new Error('Mã nguồn vượt quá 180 KB')
+  if (new TextEncoder().encode(JSON.stringify(source)).length > SOURCE_LIMIT)
+    throw new Error('Mã nguồn vượt quá 180 KB')
   return { name: source.name.trim(), summary: source.summary, files: Object.fromEntries(entries) }
 }
 export function parseResponse(text: string) {

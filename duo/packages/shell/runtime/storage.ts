@@ -9,7 +9,7 @@ export function page(data: [string, string][], rev: number, cursor?: unknown): S
   if (cursor !== undefined) {
     if (typeof cursor !== 'string' || !/^\d+:\d+$/.test(cursor)) throw new PlatformError('E_ARGS')
     const [version, start] = cursor.split(':').map(Number)
-    if (version !== rev) throw new PlatformError('E_STALE', 'Snapshot changed; start again.')
+    if (version !== rev) throw new PlatformError('E_STALE', 'Bản chụp đã thay đổi, hãy thử lại.')
     offset = start!
     if (!Number.isSafeInteger(offset) || offset > data.length) throw new PlatformError('E_ARGS')
   }
@@ -61,7 +61,7 @@ export async function storage(id: string, generation: number, action: string, p:
         req.onerror = () => reject(req.error)
       })) >= LIMITS.keys
     )
-      throw new PlatformError('E_ARGS', 'Too many keys')
+      throw new PlatformError('E_ARGS', 'Quá nhiều khóa')
     if (v === null) tx.objectStore('appdata').delete([id, k])
     else await put(tx, 'appdata', [id, k], v)
     await put(tx, 'meta', id, { ...meta, used, rev: meta.rev + 1 })

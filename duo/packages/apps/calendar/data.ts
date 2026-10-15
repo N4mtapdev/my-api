@@ -14,14 +14,14 @@ export type Event = {
   notes?: string
 }
 
-export type View = 'Day' | 'Week' | 'Month' | 'Year'
-export const VIEWS: readonly View[] = ['Day', 'Week', 'Month', 'Year']
+export type View = 'Ngày' | 'Tuần' | 'Tháng' | 'Năm'
+export const VIEWS: readonly View[] = ['Ngày', 'Tuần', 'Tháng', 'Năm']
 
 /** The calendars a fresh account has before the user adds any of their own. */
 export const DEFAULT_CALENDARS: Cal[] = [
-  { id: 'home', name: 'Home', color: colors.blueDark, group: 'iCloud' },
+  { id: 'home', name: 'Nhà', color: colors.blueDark, group: 'iCloud' },
   // Not red: the day Apple marks in red is today, and a month of red bars fights it.
-  { id: 'work', name: 'Work', color: colors.orangeDark, group: 'iCloud' },
-  { id: 'birthdays', name: 'Birthdays', color: colors.grey, group: 'Other' },
-  { id: 'siri', name: 'Siri Suggestions', color: colors.yellowDark, group: 'Other' }
+  { id: 'work', name: 'Công việc', color: colors.orangeDark, group: 'iCloud' },
+  { id: 'birthdays', name: 'Sinh nhật', color: colors.grey, group: 'Khác' },
+  { id: 'siri', name: 'Đề xuất của Siri', color: colors.yellowDark, group: 'Khác' }
 ]

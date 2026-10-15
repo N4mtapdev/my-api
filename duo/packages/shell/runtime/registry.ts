@@ -84,7 +84,7 @@ export function bootRegistry() {
     await reconcile()
     // The bundled source is also the desktop's offline reinstall source.
     const response = await fetch('/preinstalled/index.json')
-    if (!response.ok) throw new Error('Preinstalled catalog unavailable')
+    if (!response.ok) throw new Error('Không tải được danh mục đã cài sẵn')
     const catalog: Catalog = await response.json()
     for (const [id, app] of Object.entries(catalog.apps)) {
       const release = app.releases.find((r) => supports(r.sdk))
@@ -93,7 +93,7 @@ export function bootRegistry() {
     const dev = new URLSearchParams(location.search).get('dev')
     if (dev) {
       if (!PREVIEW_FEATURES.developmentLoader)
-        throw new Error('Live development loading is deferred. Install the separate app catalog from App Store instead')
+        throw new Error('Chạy trực tiếp đang tạm dừng. Hãy cài danh mục app riêng từ App Store.')
       await loadDevelopment(dev)
     }
     await refreshRegistry()

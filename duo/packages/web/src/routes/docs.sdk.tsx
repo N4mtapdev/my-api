@@ -76,8 +76,8 @@ const note = useKV(os.storage, 'note')   // { value, status, set, del }`}</Pre>
         <Reveal>
           <h2 {...stylex.props(styles.h2)}>Tham chiếu</h2>
           <p {...stylex.props(styles.p)}>
-            Mọi export của gói, sinh từ mã nguồn và TSDoc của nó. Phiên bản{' '}
-            <Code>{versions.sdk?.version}</Code>, protocol 1.
+            Mọi export của gói, sinh từ mã nguồn và TSDoc của nó. Phiên bản <Code>{versions.sdk?.version}</Code>,
+            protocol 1.
           </p>
           {/* Every card is an anchor already; this is the way back up to them from the middle of the page. */}
           <nav aria-label="Danh sách export" {...stylex.props(styles.jump)}>

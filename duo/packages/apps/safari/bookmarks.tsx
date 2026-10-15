@@ -9,9 +9,9 @@ type Section = 'bookmarks' | 'reading-list' | 'history'
 type Folder = 'recently-saved' | 'favorites' | 'tab-group-favorites'
 
 const sections: [Section, string, 'bookOutline' | 'eye' | 'clockSym'][] = [
-  ['bookmarks', 'Bookmarks', 'bookOutline'],
-  ['reading-list', 'Reading List', 'eye'],
-  ['history', 'History', 'clockSym']
+  ['bookmarks', 'Dấu trang', 'bookOutline'],
+  ['reading-list', 'Danh sách đọc', 'eye'],
+  ['history', 'Lịch sử', 'clockSym']
 ]
 
 const favorites = [
@@ -35,7 +35,11 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
   const [folder, setFolder] = useState<Folder | null>(null)
 
   const title =
-    folder === 'favorites' ? 'Favorites' : folder === 'tab-group-favorites' ? 'Tab Group Favorites' : 'Recently Saved'
+    folder === 'favorites'
+      ? 'Yêu thích'
+      : folder === 'tab-group-favorites'
+        ? 'Yêu thích của nhóm thẻ'
+        : 'Đã lưu gần đây'
   const selectSection = (next: Section) => {
     setSection(next)
     setFolder(null)
@@ -52,7 +56,7 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
           <button
             type="button"
             {...stylex.props(styles.bookmarkHeaderBack)}
-            aria-label="Back to bookmarks"
+            aria-label="Quay lại dấu trang"
             onClick={() => setFolder(null)}
           >
             <Sym name="back" size={18} />
@@ -67,12 +71,12 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
           {!showBack && <Sym name="forward" size={15} />}
         </button>
         {onClose && (
-          <button type="button" {...stylex.props(styles.bookmarkClose)} aria-label="Close bookmarks" onClick={onClose}>
+          <button type="button" {...stylex.props(styles.bookmarkClose)} aria-label="Đóng dấu trang" onClick={onClose}>
             <Sym name="close" size={13} />
           </button>
         )}
       </div>
-      <div {...stylex.props(styles.bookmarkSegments)} role="tablist" aria-label="Bookmarks sections">
+      <div {...stylex.props(styles.bookmarkSegments)} role="tablist" aria-label="Các mục dấu trang">
         {sections.map(([id, label, icon]) => (
           <button
             type="button"
@@ -89,13 +93,13 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
       </div>
       {showRoot ? (
         <>
-          <div {...stylex.props(styles.bookmarkSection)}>Folders</div>
+          <div {...stylex.props(styles.bookmarkSection)}>Thư mục</div>
           <div {...stylex.props(styles.bookmarkGroup)}>
             <button type="button" {...stylex.props(styles.bookmarkRow)} onClick={() => openFolder('favorites')}>
               <span {...stylex.props(styles.bookmarkIcon, styles.bookmarkIconStar)}>
                 <Sym name="star" size={17} />
               </span>
-              <span>Favorites</span>
+              <span>Yêu thích</span>
               <span {...stylex.props(styles.bookmarkCount)}>4</span>
               <Sym name="forward" size={15} />
             </button>
@@ -107,11 +111,11 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
               <span {...stylex.props(styles.bookmarkIcon, styles.bookmarkIconFolder)}>
                 <Sym name="folder" size={17} />
               </span>
-              <span>Tab Group Favorites</span>
+              <span>Yêu thích của nhóm thẻ</span>
               <Sym name="forward" size={15} />
             </button>
           </div>
-          <div {...stylex.props(styles.bookmarkSection)}>Bookmarks</div>
+          <div {...stylex.props(styles.bookmarkSection)}>Dấu trang</div>
           <div {...stylex.props(styles.bookmarkGroup)}>
             <button
               type="button"
@@ -124,13 +128,13 @@ export const Bookmarks = ({ onNavigate, onClose }: Props) => {
           </div>
         </>
       ) : folder === 'tab-group-favorites' ? (
-        <BookmarkList title="Tab Group Favorites" rows={recent} onNavigate={onNavigate} />
+        <BookmarkList title="Yêu thích của nhóm thẻ" rows={recent} onNavigate={onNavigate} />
       ) : folderRows.length ? (
         <BookmarkList title={title} rows={folderRows} onNavigate={onNavigate} />
       ) : section === 'reading-list' ? (
-        <BookmarkList title="Reading List" rows={recent} onNavigate={onNavigate} />
+        <BookmarkList title="Danh sách đọc" rows={recent} onNavigate={onNavigate} />
       ) : (
-        <BookmarkList title="History" rows={favorites.slice(0, 2)} onNavigate={onNavigate} />
+        <BookmarkList title="Lịch sử" rows={favorites.slice(0, 2)} onNavigate={onNavigate} />
       )}
     </div>
   )

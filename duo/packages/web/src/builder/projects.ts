@@ -47,7 +47,7 @@ export function downloadProject(project: Project) {
   const content = {
     format: 'duo-builder-source-v1',
     project,
-    instructions: 'Source export only. No API key or published release is included.'
+    instructions: 'Chỉ xuất mã nguồn. Không kèm khóa API hay bản phát hành nào.'
   }
   const url = URL.createObjectURL(new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' }))
   const a = document.createElement('a')

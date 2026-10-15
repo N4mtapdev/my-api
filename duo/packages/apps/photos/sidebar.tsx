@@ -13,9 +13,9 @@ export const Sidebar = ({
   pick: (id: string) => void
   close: () => void
 }) => (
-  <nav aria-label="Photos sidebar" {...stylex.props(styles.side)}>
+  <nav aria-label="Thanh bên Ảnh" {...stylex.props(styles.side)}>
     <div {...stylex.props(styles.sideTop)}>
-      <button type="button" aria-label="Hide sidebar" onClick={close} {...stylex.props(styles.tool, shared.press)}>
+      <button type="button" aria-label="Ẩn thanh bên" onClick={close} {...stylex.props(styles.tool, shared.press)}>
         <Sym name="sidebar" size={16} />
       </button>
     </div>

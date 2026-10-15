@@ -27,13 +27,20 @@ const PERM_GLYPH: Record<string, Parameters<typeof Sym>[0]['name']> = {
   'Read clipboard': 'note',
   'Write clipboard': 'compose'
 }
+/** The runtime's permission names, shown to the reader in Vietnamese. */
+const PERM_LABEL: Record<string, string> = {
+  Location: 'Vị trí',
+  Photos: 'Ảnh',
+  'Read clipboard': 'Đọc bộ nhớ tạm',
+  'Write clipboard': 'Ghi bộ nhớ tạm'
+}
 const size = (bytes?: number) =>
   bytes === undefined
     ? '—'
     : bytes < 1e6
       ? `${Math.max(1, Math.round(bytes / 1e3))} KB`
       : `${(bytes / 1e6).toFixed(1)} MB`
-const version = (row: StoreRow) => (row.installed ?? row.version)?.split('+')[0] ?? 'Unavailable'
+const version = (row: StoreRow) => (row.installed ?? row.version)?.split('+')[0] ?? 'Không có'
 const hasUpdate = (row: StoreRow) =>
   PREVIEW_FEATURES.stageUpdates && !!row.installed && !row.development && !!row.version && row.version !== row.installed
 const needsRetry = (row: StoreRow) =>
@@ -45,27 +52,32 @@ export function AppStore({ os, openExternal }: { os: Os; openExternal: External 
       <Shelf store={os.store} open={os.open} openExternal={openExternal} />
     </Nav>
   ) : (
-    <Placeholder>Store unavailable</Placeholder>
+    <Placeholder>Không dùng được cửa hàng</Placeholder>
   )
 }
 
 /** What a row says under its name: who made it, and what it reaches for. */
 const tagline = (row: StoreRow) =>
-  row.permissions.length ? `Uses ${row.permissions.join(', ').toLowerCase()}` : 'Sandboxed, no device access'
+  row.permissions.length
+    ? `Dùng ${row.permissions
+        .map((p) => PERM_LABEL[p] ?? p)
+        .join(', ')
+        .toLowerCase()}`
+    : 'Trong sandbox, không truy cập thiết bị'
 
 function Shelf({ store, open, openExternal }: { store: Store; open: Open; openExternal: External }) {
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const { push } = useNav()
   // Wide gets two carousel pages side by side and a hero with room for its icon.
   const [head, wide] = useWide()
-  const [tab, setTab] = useState('Apps')
+  const [tab, setTab] = useState('Ứng dụng')
   const [lane, setLane] = useState('all')
   const [query, setQuery] = useState('')
   const q = query.trim().toLowerCase()
   const rows = state.rows.filter(
     (row) =>
       (row.name.toLowerCase().includes(q) || row.author.toLowerCase().includes(q)) &&
-      (tab !== 'Updates' || (row.installed && (row.version !== row.installed || row.failed || row.candidate)))
+      (tab !== 'Cập nhật' || (row.installed && (row.version !== row.installed || row.failed || row.candidate)))
   )
   const official = rows.filter((r) => r.lane === 'official')
   const community = rows.filter((r) => r.lane === 'community')
@@ -74,16 +86,18 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
   const day = Math.floor(Date.now() / 864e5)
   const pool = state.rows.filter((r) => r.lane === 'official' && r.compatible)
   const featured =
-    !q && tab === 'Apps' && (lane === 'all' || lane === 'official') && pool.length ? pool[day % pool.length] : undefined
+    !q && tab === 'Ứng dụng' && (lane === 'all' || lane === 'official') && pool.length
+      ? pool[day % pool.length]
+      : undefined
   const lanes = [
-    { key: 'all', label: 'All', n: rows.length },
-    { key: 'official', label: 'Official', n: official.length },
-    { key: 'community', label: 'Community', n: community.length },
-    ...(development.length ? [{ key: 'development', label: 'Local previews', n: development.length }] : [])
+    { key: 'all', label: 'Tất cả', n: rows.length },
+    { key: 'official', label: 'Chính thức', n: official.length },
+    { key: 'community', label: 'Cộng đồng', n: community.length },
+    ...(development.length ? [{ key: 'development', label: 'Xem trước tại máy', n: development.length }] : [])
   ]
   const show = (row: StoreRow) =>
     push((back) => <Detail id={row.id} store={store} open={open} openExternal={openExternal} back={back} />)
-  const tabs = PREVIEW_FEATURES.stageUpdates ? ['Apps', 'Updates'] : ['Apps']
+  const tabs = PREVIEW_FEATURES.stageUpdates ? ['Ứng dụng', 'Cập nhật'] : ['Ứng dụng']
   const group = (key: string, title: string, blurb: string, list: StoreRow[]) =>
     (lane === 'all' || lane === key) && (
       <Group title={title} blurb={blurb} rows={list} wide={wide} store={store} open={open} onShow={show} />
@@ -97,8 +111,8 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
         <label {...stylex.props(styles.search)}>
           <Sym name="search" size={15} />
           <input
-            aria-label="Search apps"
-            placeholder="Apps, games and more"
+            aria-label="Tìm ứng dụng"
+            placeholder="Ứng dụng, trò chơi và hơn thế nữa"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             {...stylex.props(styles.searchInput)}
@@ -106,7 +120,7 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
         </label>
         <button
           type="button"
-          aria-label="Refresh catalog"
+          aria-label="Làm mới danh mục"
           title={state.source}
           {...stylex.props(styles.iconBtn, state.developer && styles.iconBtnDev, shared.press)}
           onClick={() => {
@@ -119,7 +133,7 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
       <Screen>
         <div {...stylex.props(styles.filters)}>
           {tabs.length > 1 && (
-            <nav aria-label="Store sections" {...stylex.props(styles.seg)}>
+            <nav aria-label="Các mục của cửa hàng" {...stylex.props(styles.seg)}>
               {tabs.map((name) => (
                 <button
                   key={name}
@@ -133,7 +147,7 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
               ))}
             </nav>
           )}
-          <nav aria-label="Lane" {...stylex.props(styles.chips)}>
+          <nav aria-label="Nhóm" {...stylex.props(styles.chips)}>
             {lanes.map((l) => (
               <button
                 key={l.key}
@@ -151,30 +165,32 @@ function Shelf({ store, open, openExternal }: { store: Store; open: Open; openEx
         {state.error && (
           <div role="status" {...stylex.props(styles.banner)}>
             <Sym name="antenna" size={14} />
-            Catalog offline. Showing the last available releases.
+            Danh mục đang offline. Đang hiện các bản phát hành có sẵn gần nhất.
           </div>
         )}
         {state.developer && (
           <div role="status" {...stylex.props(styles.banner, styles.bannerDev)}>
             <Sym name="tabs" size={14} />
-            Developer catalog: {new URL(state.source).host}
+            Danh mục nhà phát triển: {new URL(state.source).host}
           </div>
         )}
         {state.loading && !state.rows.length ? (
           <div role="status" {...stylex.props(styles.center)}>
             <i {...stylex.props(styles.spinner, animations.spin)} />
-            Loading catalog…
+            Đang tải danh mục…
           </div>
         ) : (
           <>
             {featured && (
               <Featured row={featured} wide={wide} store={store} open={open} onShow={() => show(featured)} />
             )}
-            {group('official', 'From Doan Labs', 'Official releases, built for both displays.', official)}
-            {group('community', 'Community', 'Submitted as pull requests, reviewed and published.', community)}
-            {group('development', 'Local previews', 'From your developer catalog.', development)}
+            {group('official', 'Từ Doan Labs', 'Bản phát hành chính thức, dựng cho cả hai màn hình.', official)}
+            {group('community', 'Cộng đồng', 'Gửi bằng pull request, được rà soát rồi phát hành.', community)}
+            {group('development', 'Xem trước tại máy', 'Từ danh mục nhà phát triển của bạn.', development)}
             {!rows.length && (
-              <Placeholder xstyle={[styles.center]}>No {tab === 'Updates' ? 'updates' : 'apps'} found.</Placeholder>
+              <Placeholder xstyle={[styles.center]}>
+                Không có {tab === 'Cập nhật' ? 'bản cập nhật' : 'app'} nào.
+              </Placeholder>
             )}
           </>
         )}
@@ -204,10 +220,10 @@ function Featured({
       <div {...stylex.props(styles.heroShade)} />
       <button type="button" onClick={onShow} {...stylex.props(styles.bare, styles.heroTop, wide && styles.heroTopWide)}>
         <div {...stylex.props(styles.heroText)}>
-          <div {...stylex.props(styles.kicker)}>{row.installed ? 'On your Duo' : 'Featured today'}</div>
+          <div {...stylex.props(styles.kicker)}>{row.installed ? 'Trên máy Duo của bạn' : 'Nổi bật hôm nay'}</div>
           <div {...stylex.props(styles.heroName)}>{row.name}</div>
           <div {...stylex.props(styles.heroBlurb)}>
-            {tagline(row)}. Open source, MIT licensed{row.note ? `. ${row.note}` : '.'}
+            {tagline(row)}. Mã nguồn mở, giấy phép MIT{row.note ? `. ${row.note}` : '.'}
           </div>
         </div>
         {wide && <Icon row={row} xstyle={styles.heroBig} />}
@@ -252,9 +268,7 @@ function Group({
           <div {...stylex.props(styles.hTitle)}>{title}</div>
           <div {...stylex.props(styles.hBlurb)}>{blurb}</div>
         </div>
-        <span {...stylex.props(styles.hCount)}>
-          {rows.length} {rows.length === 1 ? 'app' : 'apps'}
-        </span>
+        <span {...stylex.props(styles.hCount)}>{rows.length} app</span>
       </div>
       <div {...stylex.props(styles.grid, wide && styles.gridWide)}>
         {rows.map((row) => (
@@ -273,7 +287,7 @@ function Item({ row, store, open, onShow }: { row: StoreRow; store: Store; open:
         <button
           type="button"
           onClick={onShow}
-          aria-label={`${row.name} details`}
+          aria-label={`Chi tiết ${row.name}`}
           {...stylex.props(styles.bare, shared.press)}
         >
           <Icon row={row} />
@@ -289,15 +303,15 @@ function Item({ row, store, open, onShow }: { row: StoreRow; store: Store; open:
             ) : row.lane === 'official' ? (
               <span {...stylex.props(styles.tag, styles.tagOfficial)}>
                 <Sym name="check" size={10} />
-                Official
+                Chính thức
               </span>
             ) : (
-              <span {...stylex.props(styles.tag)}>Community</span>
+              <span {...stylex.props(styles.tag)}>Cộng đồng</span>
             )}
             {row.permissions.map((p) => (
-              <span key={p} title={p} {...stylex.props(styles.tag)}>
+              <span key={p} title={PERM_LABEL[p] ?? p} {...stylex.props(styles.tag)}>
                 <Sym name={PERM_GLYPH[p] ?? 'lock'} size={10} />
-                {p}
+                {PERM_LABEL[p] ?? p}
               </span>
             ))}
           </span>
@@ -321,7 +335,7 @@ function Notices(row: StoreRow): ReactNode {
   if (row.candidate && !row.development)
     parts.push(
       <span key="c" {...stylex.props(styles.note)}>
-        Updates when {row.name} closes
+        Cập nhật khi {row.name} đóng
       </span>
     )
   return parts.length ? parts : null
@@ -341,8 +355,8 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
   if (!row.compatible)
     return (
       <div {...stylex.props(styles.action)}>
-        {pill('Reload platform', () => location.reload())}
-        <span {...stylex.props(styles.pct)}>Needs a newer Duo</span>
+        {pill('Tải lại nền tảng', () => location.reload())}
+        <span {...stylex.props(styles.pct)}>Cần Duo mới hơn</span>
       </div>
     )
   if (row.progress !== undefined)
@@ -350,7 +364,7 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
       <div {...stylex.props(styles.action)}>
         <div
           role="progressbar"
-          aria-label={`Downloading ${row.name}`}
+          aria-label={`Đang tải ${row.name}`}
           aria-valuenow={Math.round(row.progress * 100)}
           {...stylex.props(styles.ring(row.progress))}
         >
@@ -363,7 +377,7 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
   if (!row.installed)
     return (
       <div {...stylex.props(styles.action)}>
-        {pill('GET', () => {
+        {pill('LẤY', () => {
           void store.install(row.id)
         })}
         <span {...stylex.props(styles.pct)}>{size(row.bytes)}</span>
@@ -372,7 +386,7 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
   if (PREVIEW_FEATURES.stageUpdates && !row.development && needsRetry(row))
     return (
       <div {...stylex.props(styles.action)}>
-        {pill('Retry update', () => {
+        {pill('Thử lại', () => {
           void store.retry(row.id)
         })}
       </div>
@@ -381,7 +395,7 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
     return (
       <div {...stylex.props(styles.action)}>
         {pill(
-          'UPDATE',
+          'CẬP NHẬT',
           () => {
             void store.install(row.id)
           },
@@ -390,7 +404,7 @@ function Action({ row, store, open, light }: { row: StoreRow; store: Store; open
         <span {...stylex.props(styles.pct)}>{row.version?.split('+')[0]}</span>
       </div>
     )
-  return <div {...stylex.props(styles.action)}>{pill('OPEN', () => open(row.id))}</div>
+  return <div {...stylex.props(styles.action)}>{pill('MỞ', () => open(row.id))}</div>
 }
 
 function Icon({ row, xstyle }: { row: StoreRow; xstyle?: stylex.StyleXStyles }) {
@@ -421,22 +435,22 @@ function Detail({
   if (!row)
     return (
       <Page title="App" back={back}>
-        <Placeholder>This app is no longer listed.</Placeholder>
+        <Placeholder>App này không còn được liệt kê.</Placeholder>
       </Page>
     )
   const facts: [string, ReactNode, string?][] = [
     [
-      'Version',
+      'Phiên bản',
       version(row),
-      row.installed && row.version !== row.installed ? `${row.version?.split('+')[0]} available` : 'Current'
+      row.installed && row.version !== row.installed ? `Đã có ${row.version?.split('+')[0]}` : 'Hiện tại'
     ],
-    ['Size', size(row.bytes), 'Download'],
-    ['Lane', row.lane === 'official' ? 'Official' : row.lane === 'community' ? 'Community' : 'Preview', row.author],
-    ['Licence', 'MIT', 'Open source'],
+    ['Dung lượng', size(row.bytes), 'Tải về'],
+    ['Nhóm', row.lane === 'official' ? 'Chính thức' : row.lane === 'community' ? 'Cộng đồng' : 'Xem trước', row.author],
+    ['Giấy phép', 'MIT', 'Mã nguồn mở'],
     [
-      'Access',
+      'Quyền truy cập',
       row.permissions.length ? String(row.permissions.length) : <Sym key="lock" name="lock" size={16} />,
-      row.permissions.length ? 'permissions' : 'Sandboxed'
+      row.permissions.length ? 'quyền' : 'Trong sandbox'
     ]
   ]
   const notes = Notices(row)
@@ -453,7 +467,7 @@ function Detail({
               {row.repo && (
                 <button
                   type="button"
-                  aria-label="View source"
+                  aria-label="Xem mã nguồn"
                   {...stylex.props(styles.iconBtn, shared.press)}
                   onClick={() => openExternal(row.repo!)}
                 >
@@ -475,11 +489,11 @@ function Detail({
         </div>
         {row.note && (
           <>
-            <div {...stylex.props(styles.h, styles.hTitle)}>What’s new</div>
+            <div {...stylex.props(styles.h, styles.hTitle)}>Có gì mới</div>
             <p {...stylex.props(styles.para)}>{row.note}</p>
           </>
         )}
-        <div {...stylex.props(styles.h, styles.hTitle)}>Privacy</div>
+        <div {...stylex.props(styles.h, styles.hTitle)}>Quyền riêng tư</div>
         <Section>
           {row.permissions.length ? (
             row.permissions.map((p) => (
@@ -487,7 +501,7 @@ function Detail({
                 <span {...stylex.props(styles.permGlyph)}>
                   <Sym name={PERM_GLYPH[p] ?? 'lock'} size={16} />
                 </span>
-                <span {...stylex.props(styles.permText)}>{p}</span>
+                <span {...stylex.props(styles.permText)}>{PERM_LABEL[p] ?? p}</span>
               </div>
             ))
           ) : (
@@ -495,15 +509,15 @@ function Detail({
               <span {...stylex.props(styles.permGlyph)}>
                 <Sym name="lock" size={16} />
               </span>
-              <span {...stylex.props(styles.permText)}>No device access</span>
+              <span {...stylex.props(styles.permText)}>Không truy cập thiết bị</span>
             </div>
           )}
         </Section>
         <p {...stylex.props(styles.footnote)}>
           {row.development
-            ? 'Local preview. Remove App clears this preview’s private data.'
-            : 'Runs in its own sandbox: no camera, microphone or embedded pages. Storage stays on this device.'}
-          {row.recovery && ' Restore keeps newer edits aside; those edits may be missing in the previous version.'}
+            ? 'Xem trước tại máy. Xóa app sẽ xóa luôn dữ liệu riêng của bản xem trước này.'
+            : 'Chạy trong sandbox riêng: không camera, micro hay trang nhúng. Dữ liệu lưu ngay trên máy này.'}
+          {row.recovery && ' Khôi phục để riêng các bản sửa mới hơn; bản sửa đó có thể thiếu trong phiên bản trước.'}
         </p>
         {row.installed && (row.recovery || !row.preinstalled) && (
           <Section>
@@ -516,7 +530,7 @@ function Detail({
                 }}
               >
                 <Sym name="undo" size={16} />
-                Restore previous version
+                Khôi phục phiên bản trước
               </button>
             )}
             {/* A preinstalled app reinstalls itself at the next start; removing it would undo itself. */}
@@ -530,7 +544,7 @@ function Detail({
                 }}
               >
                 <Sym name="trash" size={16} />
-                Remove App
+                Xóa app
               </button>
             )}
           </Section>
@@ -555,7 +569,7 @@ function Developer({
   const [error, setError] = useState('')
   return (
     <>
-      <div {...stylex.props(styles.h, styles.hTitle)}>For developers</div>
+      <div {...stylex.props(styles.h, styles.hTitle)}>Dành cho nhà phát triển</div>
       <Section aria-labelledby="for-developers" xstyle={styles.card}>
         <button
           type="button"
@@ -567,7 +581,7 @@ function Developer({
             <Sym name="plus" size={16} />
           </span>
           <span id="for-developers" {...stylex.props(styles.permText)}>
-            Submit your app
+            Gửi app của bạn
           </span>
           <span {...stylex.props(shared.rowR)}>›</span>
         </button>
@@ -579,11 +593,11 @@ function Developer({
             void store.loadCatalog(url).catch((e) => setError(String(e.message)))
           }}
         >
-          <span {...stylex.props(styles.permText)}>Developer catalog</span>
+          <span {...stylex.props(styles.permText)}>Danh mục nhà phát triển</span>
           <label {...stylex.props(styles.field)}>
             <Sym name="tabs" size={14} />
             <input
-              aria-label="Developer catalog URL"
+              aria-label="URL danh mục nhà phát triển"
               type="url"
               placeholder="http://localhost:5173/index.json"
               value={url}
@@ -594,7 +608,7 @@ function Developer({
           </label>
           <div {...stylex.props(styles.dActions, styles.noTop)}>
             <button type="submit" {...stylex.props(styles.pill, styles.pillFilled)}>
-              Load catalog
+              Tải danh mục
             </button>
             {developer && (
               <button
@@ -604,7 +618,7 @@ function Developer({
                   void store.resetCatalog()
                 }}
               >
-                Back to Duo catalog
+                Quay lại danh mục Duo
               </button>
             )}
           </div>
@@ -616,8 +630,8 @@ function Developer({
         </form>
       </Section>
       <p {...stylex.props(styles.footnote)}>
-        Catalog: {source}. Install a separately built app. Catalog hashes check downloads; they do not verify the
-        publisher.
+        Danh mục: {source}. Hãy cài app được đóng gói riêng. Hash danh mục kiểm tra bản tải xuống; hash không xác minh
+        người phát hành.
       </p>
     </>
   )

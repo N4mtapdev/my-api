@@ -25,8 +25,8 @@ export function Sidebar({ calendars, hidden, toggle, date, today, setDate, hide 
   return (
     <aside {...stylex.props(styles.side)}>
       <div {...stylex.props(styles.sideBar)}>
-        <IconButton name="sidebar" variant="tinted" aria-label="Hide sidebar" onClick={hide} />
-        <IconButton name="imports" aria-label="Inbox" onClick={() => setInbox(true)} />
+        <IconButton name="sidebar" variant="tinted" aria-label="Ẩn thanh bên" onClick={hide} />
+        <IconButton name="imports" aria-label="Hộp thư" onClick={() => setInbox(true)} />
       </div>
       <div {...stylex.props(styles.sideList)}>
         {groups.map((g) => (
@@ -49,19 +49,14 @@ export function Sidebar({ calendars, hidden, toggle, date, today, setDate, hide 
       </div>
       <div {...stylex.props(styles.mini)}>
         <div {...stylex.props(styles.miniHdr)}>
-          <IconButton
-            name="back"
-            size={13}
-            aria-label="Previous month"
-            onClick={() => setMonth(addMonths(month, -1))}
-          />
+          <IconButton name="back" size={13} aria-label="Tháng trước" onClick={() => setMonth(addMonths(month, -1))} />
           <span {...stylex.props(styles.miniTitle)}>{monthYear(month)}</span>
-          <IconButton name="forward" size={13} aria-label="Next month" onClick={() => setMonth(addMonths(month, 1))} />
+          <IconButton name="forward" size={13} aria-label="Tháng sau" onClick={() => setMonth(addMonths(month, 1))} />
         </div>
         <div {...stylex.props(styles.miniGrid)}>
           {WEEKDAYS.map((d) => (
             <span key={d} {...stylex.props(styles.miniWd)}>
-              {d[0]}
+              {d}
             </span>
           ))}
           {weeks(month, 6).map((d) => (
@@ -83,10 +78,10 @@ export function Sidebar({ calendars, hidden, toggle, date, today, setDate, hide 
       </div>
       <Sheet open={inbox} onClose={() => setInbox(false)} xstyle={[styles.inbox]}>
         <Text as="div" size="headline">
-          Inbox
+          Hộp thư
         </Text>
         <Text as="div" size="subheadline" xstyle={[styles.dim]}>
-          No Invitations
+          Chưa có lời mời
         </Text>
       </Sheet>
     </aside>

@@ -56,7 +56,7 @@ export function Nav() {
         animate={{ opacity: lifted ? 1 : 0 }}
         transition={still ? NOW : FADE}
       />
-      <nav {...stylex.props(styles.inner)} aria-label="Global">
+      <nav {...stylex.props(styles.inner)} aria-label="Điều hướng chính">
         <Link to="/" {...stylex.props(styles.logo)} aria-label="Trang chủ Duo">
           <img src="/icon.svg" alt="" width="22" height="22" {...stylex.props(styles.glyph)} />
           Duo
@@ -319,7 +319,7 @@ function Icon({ d, fill = false }: { d: string; fill?: boolean }) {
 }
 
 const NEXT: Record<Theme, Theme> = { system: 'light', light: 'dark', dark: 'system' }
-const SAYS: Record<Theme, string> = { system: 'following the system', light: 'light', dark: 'dark' }
+const SAYS: Record<Theme, string> = { system: 'theo hệ thống', light: 'sáng', dark: 'tối' }
 const GLYPH: Record<Theme, ReactNode> = {
   light: (
     <>
@@ -356,7 +356,7 @@ function ThemeToggle() {
     <motion.button
       type="button"
       onClick={() => setTheme(NEXT[theme])}
-      aria-label={`Theme: ${SAYS[theme]}. Switch to ${SAYS[NEXT[theme]]}.`}
+      aria-label={`Chủ đề: ${SAYS[theme]}. Chuyển sang ${SAYS[NEXT[theme]]}.`}
       tabIndex={KEEP}
       {...stylex.props(styles.icon)}
       whileTap={still ? undefined : { scale: 0.92 }}

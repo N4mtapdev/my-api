@@ -11,7 +11,7 @@ import { boundedFetch } from './releases.ts'
 let catalog: Catalog = { apps: {} }
 // The hosted site serves the curated catalog at /catalog; a local shell only has the bundled /cdn output.
 const DEFAULT_SOURCES = ['/catalog', '/cdn', '/preinstalled']
-const DUO_CATALOG = 'Duo catalog'
+const DUO_CATALOG = 'Danh mục Duo'
 let source = '/cdn'
 let selectedCatalog: string | undefined
 let state: StoreState = { rows: [], loading: true, source: DUO_CATALOG, developer: false }
@@ -161,11 +161,11 @@ export const store: Store = {
       url.hash ||
       !url.pathname.endsWith('/index.json')
     )
-      throw new Error('Use an HTTPS or loopback catalog URL ending in /index.json')
+      throw new Error('Phải dùng URL danh mục HTTPS hoặc loopback kết thúc bằng /index.json')
     const data: unknown = JSON.parse(new TextDecoder().decode(await boundedFetch(url.href, 1024 * 1024)))
-    if (!valid(data)) throw new Error('Invalid catalog')
+    if (!valid(data)) throw new Error('Danh mục không hợp lệ')
     if (Object.values(data.apps).some((app) => app.permissions?.length))
-      throw new Error('External developer catalogs currently support apps without device permissions')
+      throw new Error('Danh mục nhà phát triển ngoài hiện chỉ hỗ trợ app không xin quyền thiết bị')
     catalog = data
     selectedCatalog = url.href
     source = new URL('.', url).href.replace(/\/$/, '')
@@ -207,9 +207,9 @@ export const store: Store = {
           /* Try the next bundled location. */
         }
       }
-      if (!bytes) throw new Error('No default catalog is available')
+      if (!bytes) throw new Error('Không có danh mục mặc định')
       const value: unknown = JSON.parse(new TextDecoder().decode(bytes))
-      if (!valid(value)) throw new Error('Invalid catalog')
+      if (!valid(value)) throw new Error('Danh mục không hợp lệ')
       catalog = value
       state = { ...state, loading: false, error: undefined }
       localStorage.setItem('os.catalog.cache', JSON.stringify({ source, catalog }))
@@ -230,9 +230,9 @@ export const store: Store = {
   install: (id) =>
     action(id, async () => {
       if (!PREVIEW_FEATURES.stageUpdates && (await allInstalled()).some((app) => app.id === id))
-        throw new Error('New update staging is deferred at the MVP gate')
+        throw new Error('Tính năng chờ cập nhật tạm dừng ở bản MVP')
       const release = catalog.apps[id]?.releases.find((r) => supports(r.sdk))
-      if (!release) throw new Error('Requires a newer platform version')
+      if (!release) throw new Error('Cần phiên bản nền tảng mới hơn')
       progress.set(id, 0)
       await sync()
       await install(id, `${source}/apps/${id}/${release.release}/`, release, {
@@ -245,7 +245,7 @@ export const store: Store = {
   remove: (id) => action(id, () => (development.has(id) ? removeDevelopment(id) : uninstall(id))),
   retry: (id) =>
     action(id, async () => {
-      if (!PREVIEW_FEATURES.stageUpdates) throw new Error('Update retry is deferred at the MVP gate')
+      if (!PREVIEW_FEATURES.stageUpdates) throw new Error('Chức năng thử lại cập nhật tạm dừng ở bản MVP')
       await retry(id)
     }),
   restore: (id) => action(id, () => restore(id))

@@ -122,7 +122,7 @@ export function stack(app: string, target: Slot) {
   const next = { ...cur }
   for (const h of HALVES)
     next[h] = without(cur[h], app).map((s) =>
-      s !== target ? s : isFolder(s) ? { ...s, apps: [...s.apps, app] } : { name: 'Folder', apps: [s, app] }
+      s !== target ? s : isFolder(s) ? { ...s, apps: [...s.apps, app] } : { name: 'Thư mục', apps: [s, app] }
     )
   save(next)
 }

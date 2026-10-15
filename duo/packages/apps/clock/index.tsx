@@ -11,11 +11,12 @@ const ZONES: [string, string][] = [
   ['Cupertino', 'America/Los_Angeles'],
   ['New York', 'America/New_York'],
   ['London', 'Europe/London'],
-  ['Ho Chi Minh City', 'Asia/Ho_Chi_Minh'],
+  ['TP. Hồ Chí Minh', 'Asia/Ho_Chi_Minh'],
   ['Tokyo', 'Asia/Tokyo'],
   ['Sydney', 'Australia/Sydney']
 ]
-const fmt = (d: Date, tz?: string) => d.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit', timeZone: tz })
+const fmt = (d: Date, tz?: string) =>
+  d.toLocaleTimeString('vi-VN', { hour: 'numeric', minute: '2-digit', timeZone: tz })
 
 export const Clock = (_: { os: Os }) => {
   const [now, setNow] = useState(() => new Date())
@@ -25,7 +26,7 @@ export const Clock = (_: { os: Os }) => {
   }, [])
   return (
     <Screen>
-      <Title>World Clock</Title>
+      <Title>Đồng hồ thế giới</Title>
       <div {...stylex.props(shared.big)}>{fmt(now)}</div>
       <Section>
         {ZONES.map(([n, tz]) => (

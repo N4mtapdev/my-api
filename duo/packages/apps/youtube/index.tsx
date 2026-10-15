@@ -31,7 +31,7 @@ export const YouTube = ({ os }: { os: Os }) => {
       {playing && (
         <div {...stylex.props(styles.player)}>
           <iframe
-            title="Player"
+            title="Trình phát"
             src={`https://www.youtube-nocookie.com/embed/${playing}?autoplay=${os.mirror ? 0 : 1}&playsinline=1`}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen

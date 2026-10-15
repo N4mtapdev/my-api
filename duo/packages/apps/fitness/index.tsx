@@ -8,14 +8,14 @@ import * as stylex from '@stylexjs/stylex'
 import { styles } from './styles.ts'
 
 const WORKOUTS = [
-  ['🏃', 'Outdoor Run', '5.02 KM · 24:18'],
-  ['🚴', 'Cycling', '18.4 KM · 41:02'],
-  ['🏊', 'Pool Swim', '1,200 M · 28:44']
+  ['🏃', 'Chạy ngoài trời', '5.02 KM · 24:18'],
+  ['🚴', 'Đạp xe', '18.4 KM · 41:02'],
+  ['🏊', 'Bơi bể', '1,200 M · 28:44']
 ] as const
 
 export const Fitness = (_: { os: Os }) => (
   <Screen>
-    <LargeTitle>Summary</LargeTitle>
+    <LargeTitle>Tóm tắt</LargeTitle>
     <Rings />
     <div {...stylex.props(styles.legend)}>
       {RINGS.map(([label, c, done, goal, unit]) => (
@@ -30,21 +30,21 @@ export const Fitness = (_: { os: Os }) => (
     </div>
     <div {...stylex.props(card.cols)}>
       <div {...stylex.props(card.hcard, card.hcardDark, delay.ms(100))}>
-        <div {...stylex.props(card.cap, card.capTint(appAppearance.fitnessExercise))}>Move · this week</div>
+        <div {...stylex.props(card.cap, card.capTint(appAppearance.fitnessExercise))}>Di chuyển · tuần này</div>
         <div {...stylex.props(card.val)}>
           3,411<s {...stylex.props(card.unit)}>KCAL</s>
         </div>
         <Bars values={walk('fitness-move', 7)} colour={appAppearance.fitnessMove} />
       </div>
       <div {...stylex.props(card.hcard, card.hcardDark, delay.ms(150))}>
-        <div {...stylex.props(card.cap, card.capTint(appAppearance.fitnessStand))}>Stand · this week</div>
+        <div {...stylex.props(card.cap, card.capTint(appAppearance.fitnessStand))}>Đứng · tuần này</div>
         <div {...stylex.props(card.val)}>
           68<s {...stylex.props(card.unit)}>HRS</s>
         </div>
         <Bars values={walk('fitness-stand', 7)} colour={appAppearance.fitnessStand} />
       </div>
     </div>
-    <Title xstyle={[styles.hdrSm]}>Workouts</Title>
+    <Title xstyle={[styles.hdrSm]}>Bài tập</Title>
     <div {...stylex.props(card.cols)}>
       {WORKOUTS.map(([e, n, sub], i) => (
         <div key={n} {...stylex.props(card.hcard, card.hcardDark, styles.workout, delay.ms(200 + i * 50))}>

@@ -40,11 +40,12 @@ export function FolderView({
       <input
         key={folder.name}
         {...stylex.props(styles.name)}
-        defaultValue={folder.name}
+        defaultValue={byName(folder.name)?.label ?? folder.name}
         onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
         onBlur={(e) => {
           const name = e.target.value.trim()
-          if (name && name !== folder.name) onRename(name)
+          const shown = byName(folder.name)?.label ?? folder.name
+          if (name && name !== shown) onRename(name)
         }}
       />
       <div data-folder-well {...stylex.props(shared.glass, styles.well)}>

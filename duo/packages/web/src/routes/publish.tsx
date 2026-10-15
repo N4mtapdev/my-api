@@ -56,7 +56,9 @@ bun run check                            # import boundaries, strict TypeScript,
           </p>
         </Step>
         <Step n={2} title="Kiểm tra yêu cầu">
-          <p {...stylex.props(styles.p)}>Đây là các điều kiện cho đợt phát hành tuyển chọn đầu tiên. Tất cả đều được máy kiểm tra.</p>
+          <p {...stylex.props(styles.p)}>
+            Đây là các điều kiện cho đợt phát hành tuyển chọn đầu tiên. Tất cả đều được máy kiểm tra.
+          </p>
           <Table>
             <thead>
               <tr>
@@ -67,7 +69,9 @@ bun run check                            # import boundaries, strict TypeScript,
             <tbody>
               <Tr>
                 <Td nowrap>Cả hai màn hình</Td>
-                <Td>Chạy được trên màn hình trong lẫn màn hình ngoài khi gập. Hỗ trợ cover là bắt buộc, không tùy chọn.</Td>
+                <Td>
+                  Chạy được trên màn hình trong lẫn màn hình ngoài khi gập. Hỗ trợ cover là bắt buộc, không tùy chọn.
+                </Td>
               </Tr>
               <Tr>
                 <Td nowrap>Chỉ dùng API công khai</Td>
@@ -259,7 +263,7 @@ bun run check                            # import boundaries, strict TypeScript,
         Tăng version, tải thư mục phát hành mới lên, rồi thay <Code>index.json</Code> mới; đừng bao giờ sửa một thư mục
         phát hành đã công bố.{' '}
         <Link to="/docs/$" params={{ _splat: 'catalogs' }} {...stylex.props(styles.link)}>
-          Catalog
+          Danh mục
         </Link>{' '}
         có định dạng và cách store dùng nó.
       </p>

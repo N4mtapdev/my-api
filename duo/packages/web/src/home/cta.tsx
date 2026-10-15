@@ -31,7 +31,9 @@ export function Cta() {
           ))}
         </div>
         <Rise>
-          <p {...stylex.props(styles.line)}>Duo là một thí nghiệm mở, khám phá xem phần mềm trên màn hình gập có thể làm được những gì.</p>
+          <p {...stylex.props(styles.line)}>
+            Duo là một thí nghiệm mở, khám phá xem phần mềm trên màn hình gập có thể làm được những gì.
+          </p>
         </Rise>
       </Stagger>
     </Block>

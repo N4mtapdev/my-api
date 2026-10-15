@@ -11,7 +11,7 @@ export type Folder = { id: string; name: string }
 /** The line under the toolbar in the real editor: "September 18, 2026 at 3:38 PM". */
 export const longStamp = (note: Note) => {
   const d = new Date(note.when)
-  return `${d.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })} at ${d.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit' })}`
+  return `${d.toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' })} lúc ${d.toLocaleTimeString('vi-VN', { hour: 'numeric', minute: '2-digit' })}`
 }
 
 const sameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString()
@@ -20,17 +20,17 @@ const sameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString()
 export const stamp = (note: Note) => {
   const d = new Date(note.when)
   return sameDay(d, new Date())
-    ? d.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit' })
-    : d.toLocaleDateString('en', { month: 'numeric', day: 'numeric', year: '2-digit' })
+    ? d.toLocaleTimeString('vi-VN', { hour: 'numeric', minute: '2-digit' })
+    : d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: '2-digit' })
 }
 
 /** Section header a note files under: Today, Yesterday, then the month. */
 export const groupOf = (note: Note) => {
   const d = new Date(note.when)
   const now = new Date()
-  if (sameDay(d, now)) return 'Today'
-  if (sameDay(d, new Date(now.getTime() - 864e5))) return 'Yesterday'
-  return d.toLocaleDateString('en', {
+  if (sameDay(d, now)) return 'Hôm nay'
+  if (sameDay(d, new Date(now.getTime() - 864e5))) return 'Hôm qua'
+  return d.toLocaleDateString('vi-VN', {
     month: 'long',
     year: d.getFullYear() === now.getFullYear() ? undefined : 'numeric'
   })

@@ -46,7 +46,7 @@ let seq = 0
 // A tab with no history shows the start page: favourites and a focused address bar.
 const tab = (url?: string, priv = false): Tab => ({ id: seq++, hist: url ? [url] : [], at: 0, priv })
 const at = (x: Tab) => x.hist[x.at]
-const name = (x: Tab) => (at(x) ? host(at(x)!) : 'Start Page')
+const name = (x: Tab) => (at(x) ? host(at(x)!) : 'Trang khởi đầu')
 
 export const Safari = ({ os }: { os: Os }) => {
   const home = typeof window !== 'undefined' && isDev(window.location.hostname) ? DEV_HOME : HOME
@@ -185,24 +185,24 @@ export const Safari = ({ os }: { os: Os }) => {
   }
   const none = () => {}
   const actions: MenuEntry[] = [
-    { icon: 'eyeSlash', label: 'Hide Distracting Items', disabled: true, onSelect: none },
-    { icon: 'translate', label: 'Translate to English', disabled: true, onSelect: none },
+    { icon: 'eyeSlash', label: 'Ẩn phần gây xao nhãng', disabled: true, onSelect: none },
+    { icon: 'translate', label: 'Dịch sang tiếng Anh', disabled: true, onSelect: none },
     'separator',
-    { icon: 'extension', label: 'Manage Extensions', disabled: true, onSelect: none }
+    { icon: 'extension', label: 'Quản lý tiện ích', disabled: true, onSelect: none }
   ]
   const actionsFoot: MenuItem[] = [
-    { icon: 'findOnPage', label: 'Find', name: 'Find on Page', disabled: true, onSelect: none },
+    { icon: 'findOnPage', label: 'Tìm', name: 'Tìm trong trang', disabled: true, onSelect: none },
     {
       icon: 'textSmaller',
-      label: 'Smaller',
-      name: 'Smaller text',
+      label: 'Thu nhỏ',
+      name: 'Chữ nhỏ hơn',
       disabled: zoom === ZOOM[0],
       onSelect: () => zoomBy(-1)
     },
     {
       icon: 'textLarger',
-      label: 'Larger',
-      name: 'Larger text',
+      label: 'Phóng to',
+      name: 'Chữ lớn hơn',
       disabled: zoom === ZOOM.at(-1),
       onSelect: () => zoomBy(1)
     }
@@ -212,16 +212,21 @@ export const Safari = ({ os }: { os: Os }) => {
   // to begin with.
   const share = () => url && (navigator.share?.({ url }) ?? navigator.clipboard?.writeText(url))
   const more: MenuEntry[] = [
-    { icon: 'share', label: 'Share', onSelect: share },
-    { icon: 'bookmark', label: 'Add to Bookmarks', disabled: !url, onSelect: () => recent.push([key, url!, key]) },
-    { icon: 'bookOutline', label: 'Add Bookmark to…', onSelect: () => setBookmarks(true) },
+    { icon: 'share', label: 'Chia sẻ', onSelect: share },
+    {
+      icon: 'bookmark',
+      label: 'Thêm vào dấu trang',
+      disabled: !url,
+      onSelect: () => recent.push([key, url!, key])
+    },
+    { icon: 'bookOutline', label: 'Thêm dấu trang vào…', onSelect: () => setBookmarks(true) },
     'separator',
-    { icon: 'plus', label: 'New Tab', onSelect: () => open() },
-    { icon: 'privacy', label: 'New Private Tab', onSelect: () => open(true) }
+    { icon: 'plus', label: 'Thẻ mới', onSelect: () => open() },
+    { icon: 'privacy', label: 'Thẻ riêng tư mới', onSelect: () => open(true) }
   ]
   const moreFoot: MenuItem[] = [
-    { icon: 'book', label: 'Bookmarks', onSelect: () => setBookmarks(true) },
-    { icon: 'tabs', label: 'All Tabs', onSelect: overview }
+    { icon: 'book', label: 'Dấu trang', onSelect: () => setBookmarks(true) },
+    { icon: 'tabs', label: 'Tất cả thẻ', onSelect: overview }
   ]
   // The cover's camera column: Apple runs Safari's buttons down beside the status
   // stack there, and the page keeps the rest. The row bar is the inner display's.
@@ -238,14 +243,14 @@ export const Safari = ({ os }: { os: Os }) => {
           {url ? (
             <iframe
               ref={frame}
-              title="Page"
+              title="Trang"
               src={url}
               referrerPolicy="no-referrer"
               {...stylex.props(styles.frame, zoom !== 1 && styles.zoom(zoom))}
             />
           ) : (
             <div {...stylex.props(styles.start, animations.fade)}>
-              <div {...stylex.props(styles.startTitle)}>Favourites</div>
+              <div {...stylex.props(styles.startTitle)}>Yêu thích</div>
               <div {...stylex.props(styles.favs)}>
                 {MARKS.map(([n, u]) => (
                   <button type="button" key={u} {...stylex.props(styles.fav)} onClick={() => go(u)}>
@@ -285,7 +290,7 @@ export const Safari = ({ os }: { os: Os }) => {
                       type="button"
                       {...stylex.props(styles.cardClose)}
                       onClick={() => close(x)}
-                      aria-label="Close tab"
+                      aria-label="Đóng thẻ"
                     >
                       <Sym name="close" size={10} />
                     </button>
@@ -295,8 +300,8 @@ export const Safari = ({ os }: { os: Os }) => {
               })}
               {!list.length && (
                 <div {...stylex.props(styles.privateEmpty)}>
-                  <div {...stylex.props(styles.privateTitle)}>Private Browsing</div>
-                  Safari won't remember the pages you visit in these tabs.
+                  <div {...stylex.props(styles.privateTitle)}>Duyệt riêng tư</div>
+                  Safari sẽ không ghi nhớ các trang bạn xem trong những thẻ này.
                 </div>
               )}
             </div>
@@ -308,8 +313,8 @@ export const Safari = ({ os }: { os: Os }) => {
               xstyle={styles.moreMenu}
               itemStyle={styles.moreItem}
               items={[
-                { label: 'New Tab', onSelect: () => open() },
-                { label: 'Close Bookmarks', onSelect: () => setBookmarks(false) }
+                { label: 'Thẻ mới', onSelect: () => open() },
+                { label: 'Đóng dấu trang', onSelect: () => setBookmarks(false) }
               ]}
             />
           )}
@@ -318,7 +323,7 @@ export const Safari = ({ os }: { os: Os }) => {
           <button
             type="button"
             {...stylex.props(styles.pageScrim)}
-            aria-label="Close menu"
+            aria-label="Đóng menu"
             onClick={() => {
               setPageMenu(false)
               setMoreOpen(false)
@@ -351,12 +356,12 @@ export const Safari = ({ os }: { os: Os }) => {
                   <button
                     type="button"
                     {...stylex.props(styles.footBtn)}
-                    aria-label={priv ? 'New private tab' : 'New tab'}
+                    aria-label={priv ? 'Thẻ riêng tư mới' : 'Thẻ mới'}
                     onClick={() => open()}
                   >
                     <Sym name="plus" size={20} />
                   </button>
-                  <div {...stylex.props(styles.tabSegs)} role="tablist" aria-label="Tab lists">
+                  <div {...stylex.props(styles.tabSegs)} role="tablist" aria-label="Danh sách thẻ">
                     <button
                       type="button"
                       role="tab"
@@ -364,7 +369,7 @@ export const Safari = ({ os }: { os: Os }) => {
                       {...stylex.props(styles.tabSeg, priv && styles.tabSegOn)}
                       onClick={() => setPriv(true)}
                     >
-                      Private
+                      Riêng tư
                     </button>
                     <button
                       type="button"
@@ -373,10 +378,10 @@ export const Safari = ({ os }: { os: Os }) => {
                       {...stylex.props(styles.tabSeg, !priv && styles.tabSegOn)}
                       onClick={() => setPriv(false)}
                     >
-                      {count} {count === 1 ? 'Tab' : 'Tabs'}
+                      {count} thẻ
                     </button>
                   </div>
-                  <button type="button" {...stylex.props(styles.footBtn, styles.done)} aria-label="Done" onClick={done}>
+                  <button type="button" {...stylex.props(styles.footBtn, styles.done)} aria-label="Xong" onClick={done}>
                     <Sym name="tick" size={20} />
                   </button>
                 </>
@@ -385,7 +390,7 @@ export const Safari = ({ os }: { os: Os }) => {
                   <button
                     type="button"
                     {...stylex.props(styles.footBtn, urlCompact && styles.footBtnOff)}
-                    aria-label="Back"
+                    aria-label="Quay lại"
                     disabled={t.at === 0}
                     tabIndex={urlCompact ? -1 : undefined}
                     onClick={() => step(-1)}
@@ -398,7 +403,7 @@ export const Safari = ({ os }: { os: Os }) => {
                     <button
                       type="button"
                       {...stylex.props(styles.urlSide, urlCompact && styles.urlSideOff)}
-                      aria-label="Page actions"
+                      aria-label="Thao tác trang"
                       aria-expanded={pageMenu}
                       tabIndex={urlCompact ? -1 : undefined}
                       onClick={() => setPageMenu((o) => !o)}
@@ -408,7 +413,7 @@ export const Safari = ({ os }: { os: Os }) => {
                     <input
                       ref={field}
                       {...stylex.props(styles.input, rail && styles.inputRail)}
-                      placeholder="Search or enter website name"
+                      placeholder="Tìm kiếm hoặc nhập tên trang web"
                       value={text}
                       spellCheck={false}
                       // A tap on the compact pill only brings the bar back, as on the
@@ -428,7 +433,7 @@ export const Safari = ({ os }: { os: Os }) => {
                     <button
                       type="button"
                       {...stylex.props(styles.urlSide, urlCompact && styles.urlSideOff)}
-                      aria-label="Reload page"
+                      aria-label="Tải lại trang"
                       tabIndex={urlCompact ? -1 : undefined}
                       onClick={reload}
                     >
@@ -438,7 +443,7 @@ export const Safari = ({ os }: { os: Os }) => {
                   <button
                     type="button"
                     {...stylex.props(styles.footBtn, urlCompact && styles.footBtnOff)}
-                    aria-label="More"
+                    aria-label="Thêm"
                     aria-expanded={moreOpen}
                     tabIndex={urlCompact ? -1 : undefined}
                     onClick={() => setMoreOpen((o) => !o)}

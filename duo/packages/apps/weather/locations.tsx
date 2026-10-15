@@ -30,17 +30,17 @@ export function Locations({ onClose, temp }: Props) {
   useEffect(() => {
     const controller = new AbortController()
     setResults([])
-    setSearchState(query.trim().length < 2 ? '' : 'Searching…')
+    setSearchState(query.trim().length < 2 ? '' : 'Đang tìm…')
     const timer = setTimeout(async () => {
       if (query.trim().length < 2) return
       try {
         const matches = await search(query.trim(), controller.signal)
         if (!controller.signal.aborted) {
           setResults(matches)
-          setSearchState(matches.length ? '' : 'No cities found. Try a nearby city.')
+          setSearchState(matches.length ? '' : 'Không tìm thấy thành phố nào. Thử thành phố lân cận.')
         }
       } catch {
-        if (!controller.signal.aborted) setSearchState('Search unavailable. Check your connection or try again.')
+        if (!controller.signal.aborted) setSearchState('Không tìm kiếm được. Kiểm tra kết nối hoặc thử lại.')
       }
     }, 350)
     return () => {
@@ -54,16 +54,16 @@ export function Locations({ onClose, temp }: Props) {
   }
   function locate() {
     if (!navigator.geolocation) {
-      setLocationState('Location is unavailable in this browser. Search for a city instead.')
+      setLocationState('Trình duyệt này không cho phép lấy vị trí. Hãy tìm thành phố thủ công.')
       return
     }
-    setLocationState('Finding your location…')
+    setLocationState('Đang tìm vị trí của bạn…')
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords
         const p = {
           id: `local:${latitude.toFixed(4)},${longitude.toFixed(4)}`,
-          name: 'My Location',
+          name: 'Vị trí của tôi',
           region: `${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°`,
           latitude,
           longitude
@@ -72,22 +72,25 @@ export function Locations({ onClose, temp }: Props) {
         void refresh(p, true)
         onClose()
       },
-      () => setLocationState('Location access failed. Allow location in your browser, or search for a city.'),
+      () =>
+        setLocationState(
+          'Không lấy được quyền vị trí. Cho phép vị trí trong trình duyệt, hoặc tìm thành phố thủ công.'
+        ),
       { timeout: 10000, maximumAge: 300000 }
     )
   }
   const units = [
-    ['C', 'Celsius', '°C'],
-    ['F', 'Fahrenheit', '°F']
+    ['C', 'Độ C', '°C'],
+    ['F', 'Độ F', '°F']
   ] as const
   return (
     <div {...stylex.props(styles.scroll, styles.scrollbar)}>
       <div {...stylex.props(styles.listHead)}>
-        <h1 {...stylex.props(styles.listTitle)}>Weather</h1>
+        <h1 {...stylex.props(styles.listTitle)}>Thời tiết</h1>
         <div {...stylex.props(styles.menuWrap)}>
           <button
             type="button"
-            aria-label="More options"
+            aria-label="Thêm tùy chọn"
             aria-expanded={menu}
             onClick={() => setMenu(!menu)}
             {...stylex.props(styles.control)}
@@ -107,14 +110,14 @@ export function Locations({ onClose, temp }: Props) {
                     {name} <span {...stylex.props(styles.muted)}>{sign}</span>
                   </span>
                 ),
-                name: `Switch to degrees ${name}`,
+                name: `Chuyển sang ${name}`,
                 checked: preferences.unit === unit,
                 onSelect: () => update({ unit })
               })),
               {
-                label: <span>Use Current Location</span>,
+                label: <span>Dùng vị trí hiện tại</span>,
                 icon: 'location' as const,
-                disabled: locationState === 'Finding your location…',
+                disabled: locationState === 'Đang tìm vị trí của bạn…',
                 onSelect: locate
               }
             ]}
@@ -127,8 +130,8 @@ export function Locations({ onClose, temp }: Props) {
         </span>
         <input
           type="search"
-          aria-label="Search cities"
-          placeholder="Search for a city or airport"
+          aria-label="Tìm thành phố"
+          placeholder="Tìm thành phố hoặc sân bay"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           {...stylex.props(styles.search)}
@@ -159,7 +162,7 @@ export function Locations({ onClose, temp }: Props) {
               temp={temp}
             />
           ))}
-      <p {...stylex.props(styles.footnote)}>Locations and units are shared across both displays.</p>
+      <p {...stylex.props(styles.footnote)}>Địa điểm và đơn vị dùng chung cho cả hai màn hình.</p>
     </div>
   )
 }
@@ -194,18 +197,18 @@ function Location({
         <span {...stylex.props(styles.locationTemp)}>{temp(current?.temperature_2m)}</span>
         <span {...stylex.props(styles.locationTime)}>
           {place.id.startsWith('local:')
-            ? 'My Location'
+            ? 'Vị trí của tôi'
             : data
               ? clock(Date.now() / 1000, data.timezone)
               : place.region}
         </span>
         <span {...stylex.props(styles.locationCondition)}>
-          {current ? condition(current.weather_code!, current.is_day)[1] : error ? 'Weather unavailable' : 'Loading…'}
+          {current ? condition(current.weather_code!, current.is_day)[1] : error ? 'Không có dữ liệu' : 'Đang tải…'}
         </span>
         <span {...stylex.props(styles.locationRange)}>
           {data && (
             <>
-              H:{temp(data.daily.temperature_2m_max?.[0])} L:{temp(data.daily.temperature_2m_min?.[0])}
+              Cao:{temp(data.daily.temperature_2m_max?.[0])} Thấp:{temp(data.daily.temperature_2m_min?.[0])}
             </>
           )}
         </span>
@@ -213,7 +216,7 @@ function Location({
       {canRemove && (
         <button
           type="button"
-          aria-label={`Remove ${place.name}`}
+          aria-label={`Xóa ${place.name}`}
           onClick={() => remove(place.id)}
           {...stylex.props(styles.control, styles.plain, styles.remove)}
         >

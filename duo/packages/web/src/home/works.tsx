@@ -17,7 +17,11 @@ const CURVE = [0.32, 0.72, 0, 1] as const
 
 type Step = { cap?: string; text: string[]; note: string; app?: string; cue?: Cue }
 const STEPS: Step[] = [
-  { text: ['Thử gập máy lại xem.'], note: 'Khi bản lề khép lại, màn hình trong bàn giao phiên cho màn hình ngoài.', app: 'Maps' },
+  {
+    text: ['Thử gập máy lại xem.'],
+    note: 'Khi bản lề khép lại, màn hình trong bàn giao phiên cho màn hình ngoài.',
+    app: 'Maps'
+  },
   {
     text: ['Đang nghe nhạc mà vẫn gập được máy.'],
     note: 'Nhạc chạy tiếp trên màn hình ngoài, chẳng cần tải lại gì cả.',
@@ -203,9 +207,7 @@ function Intro() {
         <Headline id="works-title" lines={['Trông như một bản concept.', 'Chạy như một chiếc máy thật.']} />
       </Rise>
       <Rise>
-        <Lede>
-          Mọi tư thế, nút bấm và cử chỉ dưới đây đều là shell thật, chạy bằng chính mã nguồn của app desktop.
-        </Lede>
+        <Lede>Mọi tư thế, nút bấm và cử chỉ dưới đây đều là shell thật, chạy bằng chính mã nguồn của app desktop.</Lede>
       </Rise>
     </Stagger>
   )

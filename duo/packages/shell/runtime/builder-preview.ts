@@ -45,20 +45,21 @@ async function verify(bundle: PreviewBundle): Promise<StoredRelease> {
     bundle.release.manifest.permissions?.length ||
     bundle.release.manifest.widgets?.length
   )
-    throw new Error('Invalid builder document or permissions')
+    throw new Error('Tài liệu dựng hoặc quyền không hợp lệ')
   const bytes = new TextEncoder().encode(bundle.html)
-  if (bytes.length > PREVIEW_LIMIT) throw new Error('App exceeds 4 MiB')
+  if (bytes.length > PREVIEW_LIMIT) throw new Error('App vượt 4 MiB')
   const icon = Uint8Array.from(atob(bundle.icon), (c) => c.charCodeAt(0))
   const files = bundle.release.files
   if (files.length !== 2 || files[0]?.path !== 'app.html' || files[1]?.path !== 'icon-builder.png')
-    throw new Error('Invalid preview files')
+    throw new Error('Tệp xem trước không hợp lệ')
   for (const [index, data] of [bytes, icon].entries())
     if (files[index]!.bytes !== data.length || files[index]!.sha256 !== (await digest(data)))
-      throw new Error('Preview integrity mismatch')
+      throw new Error('Tính toàn vẹn bản xem trước không khớp')
   const joined = new Uint8Array(bytes.length + icon.length)
   joined.set(bytes)
   joined.set(icon, bytes.length)
-  if ((await digest(joined)).slice(0, 8) !== bundle.release.build.hash) throw new Error('Preview identity mismatch')
+  if ((await digest(joined)).slice(0, 8) !== bundle.release.build.hash)
+    throw new Error('Danh tính bản xem trước không khớp')
   await verifyDocument(bundle.html, bundle.release)
   return {
     html: bundle.html,
@@ -83,7 +84,7 @@ function waitForApp(id: string, hash: string) {
         resolve()
       } else if (detail.state === 'revoked') {
         stop()
-        reject(new Error('App failed to start'))
+        reject(new Error('App không khởi động được'))
       }
     }
     stop = () => {
@@ -120,7 +121,7 @@ export function startBuilderPreview() {
       void navigator.locks
         .request(`duo-builder:${project}`, { ifAvailable: true }, async (lock) => {
           if (!lock) {
-            reject(new Error('This project is open in another builder tab'))
+            reject(new Error('Dự án này đang mở ở tab dựng khác'))
             return
           }
           await new Promise<void>((release) => {
@@ -145,7 +146,7 @@ export function startBuilderPreview() {
           read<Checkpoint>(tx, 'checkpoints', [id, request.revision])
         )
       : undefined
-    if (request.restore && !restoreData) throw new Error('This revision has no saved data checkpoint')
+    if (request.restore && !restoreData) throw new Error('Phiên bản này không có điểm lưu dữ liệu')
     // Flush removal before revocation so React cannot attach an old view after the checkpoint.
     flushSync(goHome)
     await closeSession(id)
@@ -263,7 +264,7 @@ export function startBuilderPreview() {
       return
     latest = request.sequence
     if (busy) {
-      reply(request.sequence, 'error', 'Another revision is starting')
+      reply(request.sequence, 'error', 'Một phiên bản khác đang bắt đầu')
       return
     }
     busy = true

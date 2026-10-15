@@ -51,21 +51,21 @@ const Line = ({ seed, colour }: { seed: string; colour: string }) => (
 
 export const Health = (_: { os: Os }) => (
   <Screen>
-    <LargeTitle>Summary</LargeTitle>
+    <LargeTitle>Tóm tắt</LargeTitle>
     <Text as="div" size="caption" xstyle={[styles.date]}>
-      {new Date().toLocaleDateString('en', { weekday: 'long', day: 'numeric', month: 'long' })}
+      {new Date().toLocaleDateString('vi', { weekday: 'long', day: 'numeric', month: 'long' })}
     </Text>
     <div {...stylex.props(card.cols)}>
-      <Card cap="👟 Steps" colour={colors.orange} val="8,412" unit="steps" i={0}>
+      <Card cap="👟 Bước chân" colour={colors.orange} val="8,412" unit="bước" i={0}>
         <Bars values={walk('health-steps', 7)} colour={colors.orange} />
       </Card>
-      <Card cap="❤️ Heart Rate" colour={colors.pink} val="62" unit="BPM" i={1}>
+      <Card cap="❤️ Nhịp tim" colour={colors.pink} val="62" unit="BPM" i={1}>
         <Line seed="health-hr" colour={colors.pink} />
       </Card>
-      <Card cap="🛏 Sleep" colour={colors.indigo} val="7h 12m" unit="last night" i={2}>
+      <Card cap="🛏 Giấc ngủ" colour={colors.indigo} val="7h 12m" unit="đêm qua" i={2}>
         <Bars values={walk('health-sleep', 7)} colour={colors.indigo} />
       </Card>
-      <Card cap="🫁 Respiratory" colour={colors.teal} val="14" unit="br/min" i={3}>
+      <Card cap="🫁 Hô hấp" colour={colors.teal} val="14" unit="br/min" i={3}>
         <Line seed="health-resp" colour={colors.teal} />
       </Card>
     </div>

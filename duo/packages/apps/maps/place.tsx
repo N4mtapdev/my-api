@@ -11,7 +11,7 @@ export function PlaceCard({ place, onClose }: { place: Place; onClose: () => voi
   return (
     <>
       <div {...stylex.props(styles.cardTop)}>
-        <button type="button" aria-label="Close" onClick={onClose} {...stylex.props(styles.round, styles.cardClose)}>
+        <button type="button" aria-label="Đóng" onClick={onClose} {...stylex.props(styles.round, styles.cardClose)}>
           <Sym name="close" size={11} />
         </button>
       </div>
@@ -20,13 +20,13 @@ export function PlaceCard({ place, onClose }: { place: Place; onClose: () => voi
         <div {...stylex.props(styles.kind)}>{place.kind}</div>
         <button type="button" {...stylex.props(styles.go)}>
           <Sym name="walk" size={15} />
-          {place.walk} min
+          {place.walk} phút
         </button>
-        <div {...stylex.props(styles.hdr)}>Details</div>
-        <Field label="Phone" value={place.phone} />
-        <Field label="Website" value={place.site} />
+        <div {...stylex.props(styles.hdr)}>Chi tiết</div>
+        <Field label="Điện thoại" value={place.phone} />
+        <Field label="Trang web" value={place.site} />
         <div {...stylex.props(styles.detail)}>
-          <span {...stylex.props(styles.label)}>Address</span>
+          <span {...stylex.props(styles.label)}>Địa chỉ</span>
           <span {...stylex.props(styles.value)}>
             {place.address.map((line) => (
               <span key={line}>{line}</span>
@@ -37,14 +37,14 @@ export function PlaceCard({ place, onClose }: { place: Place; onClose: () => voi
           <i {...stylex.props(styles.actionGlyph)}>
             <Sym name="pin" size={15} />
           </i>
-          {pinned ? 'Pinned' : 'Pin'}
+          {pinned ? 'Đã ghim' : 'Ghim'}
         </button>
         <div {...stylex.props(styles.gap)} />
       </div>
       <div {...stylex.props(styles.tray)}>
         <button
           type="button"
-          aria-label="Favourite"
+          aria-label="Yêu thích"
           aria-pressed={starred}
           onClick={() => setStarred(!starred)}
           {...stylex.props(styles.ghost, starred && styles.starred)}

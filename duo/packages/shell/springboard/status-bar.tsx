@@ -78,14 +78,14 @@ export const StatusBar = ({
           <Ring inner={CHARGE} dots={false} />
           <span {...stylex.props(styles.read)}>{BATTERY}%</span>
           <Sym name="wifi" size={17} />
-          <span {...stylex.props(styles.read)}>{t.wifi ? NETWORK : 'Off'}</span>
+          <span {...stylex.props(styles.read)}>{t.wifi ? NETWORK : 'Tắt'}</span>
         </>
       ) : (
         <>
           <button
             type="button"
             {...stylex.props(styles.tap, open && styles.tapOn)}
-            aria-label="Clock"
+            aria-label="Đồng hồ"
             onClick={() => open?.('Clock')}
           >
             <Time />
@@ -94,7 +94,7 @@ export const StatusBar = ({
             <button
               type="button"
               {...stylex.props(styles.tap, open && styles.tapOn)}
-              aria-label="Wi‑Fi settings"
+              aria-label="Cài đặt Wi‑Fi"
               onClick={() => open?.('Settings', 'wifi')}
             >
               <Ring inner={t.wifi ? WIFI : null} dots={t.cell} />

@@ -47,6 +47,13 @@ export const PERM_GLYPH: Record<string, SymProps['name']> = {
   'Read clipboard': 'note',
   'Write clipboard': 'compose'
 }
+/** The same runtime names, shown to the reader in Vietnamese. */
+export const PERM_LABEL: Record<string, string> = {
+  Location: 'Vị trí',
+  Photos: 'Ảnh',
+  'Read clipboard': 'Đọc bộ nhớ tạm',
+  'Write clipboard': 'Ghi bộ nhớ tạm'
+}
 
 /** The kit's grouped row at the 44 px iPadOS gives it, whatever it carries. */
 export function Row<T extends ElementType = 'div'>({ xstyle, ...rest }: RowProps<T>) {
@@ -139,7 +146,7 @@ export const size = (bytes?: number) =>
         : `${(bytes / 1e9).toFixed(1)} GB`
 
 /** Build metadata is the release identity, not the version a reader wants. */
-export const version = (value?: string) => value?.split('+')[0] ?? 'Unavailable'
+export const version = (value?: string) => value?.split('+')[0] ?? 'Không có'
 
 /** The device switches, re-rendering the caller on every flip from either display. */
 export function useSwitches(host: SettingsHost) {

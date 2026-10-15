@@ -34,8 +34,8 @@ export function EventSheet({ draft, isNew, calendars, onSave, onDelete, onClose 
       {e && (
         <div {...stylex.props(styles.form)}>
           <TextField
-            aria-label="Title"
-            placeholder="New Event"
+            aria-label="Tiêu đề"
+            placeholder="Sự kiện mới"
             value={e.title}
             onChange={(ev) => put({ title: ev.target.value })}
             autoFocus
@@ -43,18 +43,18 @@ export function EventSheet({ draft, isNew, calendars, onSave, onDelete, onClose 
             xstyle={[styles.titleField]}
           />
           <TextField
-            aria-label="Location"
-            placeholder="Add Location"
+            aria-label="Địa điểm"
+            placeholder="Thêm địa điểm"
             value={e.location ?? ''}
             onChange={(ev) => put({ location: ev.target.value })}
           />
           <HStack justify="between" as="label">
-            <Text size="callout">all-day</Text>
+            <Text size="callout">cả ngày</Text>
             <Toggle checked={!!e.allDay} onChange={(ev) => setAllDay(ev.target.checked)} />
           </HStack>
           <HStack gap={8} as="label">
             <Text size="callout" xstyle={[styles.fieldLabel]}>
-              starts
+              bắt đầu
             </Text>
             <TextField
               type={dateOnly ? 'date' : 'datetime-local'}
@@ -66,7 +66,7 @@ export function EventSheet({ draft, isNew, calendars, onSave, onDelete, onClose 
           </HStack>
           <HStack gap={8} as="label">
             <Text size="callout" xstyle={[styles.fieldLabel]}>
-              ends
+              kết thúc
             </Text>
             <TextField
               type={dateOnly ? 'date' : 'datetime-local'}
@@ -79,7 +79,7 @@ export function EventSheet({ draft, isNew, calendars, onSave, onDelete, onClose 
           </HStack>
           <HStack gap={8} as="label">
             <Text size="callout" xstyle={[styles.fieldLabel]}>
-              calendar
+              lịch
             </Text>
             <Select value={e.calendar} onChange={(ev) => put({ calendar: ev.target.value })} xstyle={[styles.grow]}>
               {calendars.map((c) => (
@@ -91,21 +91,21 @@ export function EventSheet({ draft, isNew, calendars, onSave, onDelete, onClose 
           </HStack>
           <TextField
             multiline
-            aria-label="Notes"
-            placeholder="Add Notes"
+            aria-label="Ghi chú"
+            placeholder="Thêm ghi chú"
             value={e.notes ?? ''}
             onChange={(ev) => put({ notes: ev.target.value })}
           />
           <HStack gap={8} justify="end">
             {!isNew && (
               <Button variant="plain" onClick={() => onDelete(e.id)} xstyle={[styles.red]}>
-                Delete
+                Xóa
               </Button>
             )}
             <VStack xstyle={[styles.grow]} />
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>Hủy</Button>
             <Button variant="filled" onClick={submit}>
-              {isNew ? 'Add' : 'Done'}
+              {isNew ? 'Thêm' : 'Xong'}
             </Button>
           </HStack>
         </div>

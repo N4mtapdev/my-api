@@ -1,6 +1,6 @@
 import type { Event } from './data.ts'
 
-export const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+export const WEEKDAYS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']
 /** Pixels per hour in the time grid; styles.ts repeats the number because StyleX cannot import it. */
 export const HOUR = 44
 
@@ -14,8 +14,8 @@ export const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMo
 export const addMonths = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth() + n, 1)
 export const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1)
 export const startOfWeek = (d: Date) => addDays(d, -((d.getDay() + 6) % 7))
-export const time = (s: string) => new Date(s).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-export const monthYear = (d: Date) => `${d.toLocaleDateString('en', { month: 'long' })} ${d.getFullYear()}`
+export const time = (s: string) => new Date(s).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+export const monthYear = (d: Date) => `${d.toLocaleDateString('vi-VN', { month: 'long' })} ${d.getFullYear()}`
 
 /**
  * The Monday-first weeks a month actually spans, five or six, so the sheet gives

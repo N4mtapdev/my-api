@@ -27,7 +27,10 @@ export function Easing() {
   const duration = PRESS.get('pressDuration') ?? '0s'
   return (
     <div>
-      <Group title="Đường chuyển động" note="Những đường easing duy nhất của hệ thống. Rê chuột vào một hàng để chạy thử, hoặc chạm vào.">
+      <Group
+        title="Đường chuyển động"
+        note="Những đường easing duy nhất của hệ thống. Rê chuột vào một hàng để chạy thử, hoặc chạm vào."
+      >
         <div {...stylex.props(styles.rows)}>
           {easing.map((t) => (
             <Curve key={t.name} name={t.name} value={t.value} doc={t.doc} still={still} />

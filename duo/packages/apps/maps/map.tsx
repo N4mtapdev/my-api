@@ -137,7 +137,7 @@ export function MapCanvas({ view, onView, kind, onKind, sel, onSelect, padX, pad
         <div {...stylex.props(styles.controls)} onPointerDown={stop}>
           <button
             type="button"
-            aria-label="Map type"
+            aria-label="Kiểu bản đồ"
             aria-expanded={menu}
             onClick={() => setMenu(!menu)}
             {...stylex.props(styles.control, styles.alone, menu && styles.on)}
@@ -146,7 +146,7 @@ export function MapCanvas({ view, onView, kind, onKind, sel, onSelect, padX, pad
           </button>
           <button
             type="button"
-            aria-label="Centre on my location"
+            aria-label="Về vị trí của tôi"
             onClick={() => onView({ ...view, ...ME })}
             {...stylex.props(styles.control, styles.alone)}
           >
@@ -155,7 +155,7 @@ export function MapCanvas({ view, onView, kind, onKind, sel, onSelect, padX, pad
           <div {...stylex.props(styles.stack)}>
             <button
               type="button"
-              aria-label="Zoom in"
+              aria-label="Phóng to"
               disabled={view.z >= MAX_Z}
               onClick={() => zoom(1)}
               {...stylex.props(styles.control)}
@@ -165,7 +165,7 @@ export function MapCanvas({ view, onView, kind, onKind, sel, onSelect, padX, pad
             <span {...stylex.props(styles.divider)} />
             <button
               type="button"
-              aria-label="Zoom out"
+              aria-label="Thu nhỏ"
               disabled={view.z <= MIN_Z}
               onClick={() => zoom(-1)}
               {...stylex.props(styles.control)}
@@ -186,7 +186,7 @@ export function MapCanvas({ view, onView, kind, onKind, sel, onSelect, padX, pad
             label: (
               <>
                 <Sym name={k === 'explore' ? 'map' : 'globe'} size={14} />
-                {k === 'explore' ? 'Explore' : 'Satellite'}
+                {k === 'explore' ? 'Khám phá' : 'Vệ tinh'}
               </>
             ),
             checked: kind === k,

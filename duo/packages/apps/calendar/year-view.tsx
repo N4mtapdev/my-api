@@ -17,12 +17,12 @@ export function YearView({ year, today, dir, onMonth, onDay }: Props) {
               month.getMonth() === today.getMonth() && year === today.getFullYear() && styles.red
             )}
           >
-            {month.toLocaleDateString('en', { month: 'long' })}
+            {month.toLocaleDateString('vi-VN', { month: 'long' })}
           </button>
           <div {...stylex.props(styles.miniGrid)}>
             {WEEKDAYS.map((d) => (
               <span key={d} {...stylex.props(styles.miniWd)}>
-                {d[0]}
+                {d}
               </span>
             ))}
             {weeks(month, 6).map((d) =>

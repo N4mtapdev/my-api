@@ -24,43 +24,43 @@ export function Tiles({ f, start, temp }: Props) {
   const aqi = f.aqi
   return (
     <div {...stylex.props(styles.tiles)}>
-      <Tile icon="sunOutline" label="UV index">
+      <Tile icon="sunOutline" label="Chỉ số UV">
         <div {...stylex.props(styles.tileValue)}>
           <Num value={uv} />
         </div>
         <div {...stylex.props(styles.tileSub)}>{level(uv, [3, 6, 8, 11], UV)}</div>
         <div {...stylex.props(styles.spectrum(appAppearance.weatherUvSpectrum, (Math.min(uv, 11) / 11) * 100))} />
         <p {...stylex.props(styles.tileNote)}>
-          Peak <Num value={f.daily.uv_index_max?.[0]} /> today.
+          Cực đại <Num value={f.daily.uv_index_max?.[0]} /> hôm nay.
         </p>
       </Tile>
-      <Tile icon="sunset" label={now < sunrise || now > sunset ? 'Sunrise' : 'Sunset'}>
+      <Tile icon="sunset" label={now < sunrise || now > sunset ? 'Bình minh' : 'Hoàng hôn'}>
         <div {...stylex.props(styles.tileValue)}>
           {clock(now < sunrise || now > sunset ? sunrise : sunset, f.timezone)}
         </div>
         <SunArc t={(now - sunrise) / Math.max(1, sunset - sunrise)} />
         <p {...stylex.props(styles.tileNote)}>
-          {now < sunrise || now > sunset ? 'Sunset' : 'Sunrise'}:{' '}
+          {now < sunrise || now > sunset ? 'Hoàng hôn' : 'Bình minh'}:{' '}
           {clock(now < sunrise || now > sunset ? sunset : sunrise, f.timezone)}
         </p>
       </Tile>
-      <Tile icon="wind" label="Wind">
+      <Tile icon="wind" label="Gió">
         <Compass direction={c.wind_direction_10m ?? 0} speed={c.wind_speed_10m} />
         <p {...stylex.props(styles.tileNote)}>
-          Gusts up to <Num value={c.wind_gusts_10m} suffix=" km/h" />.
+          Gió giật tới <Num value={c.wind_gusts_10m} suffix=" km/h" />.
         </p>
       </Tile>
-      <Tile icon="thermometer" label="Feels like">
+      <Tile icon="thermometer" label="Nhiệt độ cảm nhận">
         <div {...stylex.props(styles.tileValue)}>{temp(c.apparent_temperature)}</div>
         <p {...stylex.props(styles.tileNote)}>
           {feel > 2
-            ? 'Humidity is making it feel warmer.'
+            ? 'Độ ẩm khiến cảm giác nóng hơn thực đo.'
             : feel < -2
-              ? 'Wind is making it feel colder.'
-              : 'Similar to the actual temperature.'}
+              ? 'Gió khiến cảm giác lạnh hơn thực đo.'
+              : 'Gần bằng nhiệt độ thực đo.'}
         </p>
       </Tile>
-      <Tile icon="umbrella" label="Precipitation">
+      <Tile icon="umbrella" label="Lượng mưa">
         <div {...stylex.props(styles.tileValue)}>
           <Num
             value={f.daily.precipitation_sum?.[0]}
@@ -68,7 +68,7 @@ export function Tiles({ f, start, temp }: Props) {
             suffix=" mm"
           />
         </div>
-        <div {...stylex.props(styles.tileSub)}>Today</div>
+        <div {...stylex.props(styles.tileSub)}>Hôm nay</div>
         <div aria-hidden="true" {...stylex.props(styles.bars)}>
           {rain.map((v, i) => (
             <span key={f.hourly.time![start + i] ?? i} {...stylex.props(styles.bar((v / peak) * 100))} />
@@ -80,50 +80,50 @@ export function Tiles({ f, start, temp }: Props) {
             format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }}
             suffix=" mm"
           />{' '}
-          expected in the next 24h.
+          dự kiến trong 24 giờ tới.
         </p>
       </Tile>
-      <Tile icon="humidity" label="Humidity">
+      <Tile icon="humidity" label="Độ ẩm">
         <div {...stylex.props(styles.tileValue)}>
           <Num value={c.relative_humidity_2m} suffix="%" />
         </div>
-        <p {...stylex.props(styles.tileNote)}>The dew point is {temp(dew)} right now.</p>
+        <p {...stylex.props(styles.tileNote)}>Điểm sương lúc này là {temp(dew)}.</p>
       </Tile>
-      <Tile icon="eye" label="Visibility">
+      <Tile icon="eye" label="Tầm nhìn">
         <div {...stylex.props(styles.tileValue)}>
           <Num value={km} suffix=" km" />
         </div>
         <p {...stylex.props(styles.tileNote)}>
           {km == null
-            ? 'Visibility unavailable.'
+            ? 'Không có dữ liệu tầm nhìn.'
             : km >= 20
-              ? 'Perfectly clear view.'
+              ? 'Tầm nhìn rất rõ.'
               : km >= 10
-                ? 'Clear view.'
+                ? 'Tầm nhìn rõ.'
                 : km >= 4
-                  ? 'Fairly clear view.'
-                  : 'Reduced visibility.'}
+                  ? 'Tầm nhìn tương đối rõ.'
+                  : 'Tầm nhìn bị giảm.'}
         </p>
       </Tile>
-      <Tile icon="gauge" label="Pressure">
+      <Tile icon="gauge" label="Áp suất">
         <Gauge value={c.pressure_msl ?? 1013} />
       </Tile>
       {aqi != null && (
-        <Tile icon="aqi" label="Air quality" wide>
+        <Tile icon="aqi" label="Chất lượng không khí" wide>
           <div {...stylex.props(styles.tileValue)}>
             <Num value={aqi} />
           </div>
           <div {...stylex.props(styles.tileSub)}>{level(aqi, [51, 101, 151, 201, 301], AQI)}</div>
           <div {...stylex.props(styles.spectrum(appAppearance.weatherAqiSpectrum, (Math.min(aqi, 300) / 300) * 100))} />
-          <p {...stylex.props(styles.tileNote)}>US Air Quality Index right now.</p>
+          <p {...stylex.props(styles.tileNote)}>Chỉ số chất lượng không khí Hoa Kỳ lúc này.</p>
         </Tile>
       )}
     </div>
   )
 }
 
-const UV = ['Low', 'Moderate', 'High', 'Very High', 'Extreme']
-const AQI = ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous']
+const UV = ['Thấp', 'Trung bình', 'Cao', 'Rất cao', 'Cực độ']
+const AQI = ['Tốt', 'Trung bình', 'Không tốt cho nhóm nhạy cảm', 'Không tốt', 'Rất không tốt', 'Nguy hiểm']
 const level = (value: number, cuts: number[], names: string[]) => names[cuts.filter((c) => value >= c).length]!
 
 function Tile({ icon, label, wide, children }: { icon: SymName; label: string; wide?: boolean; children: ReactNode }) {
@@ -158,7 +158,7 @@ function Compass({ direction, speed }: { direction: number; speed: number | unde
     <svg
       viewBox="0 0 100 100"
       role="img"
-      aria-label={`Wind from ${Math.round(direction)} degrees`}
+      aria-label={`Gió thổi từ hướng ${Math.round(direction)} độ`}
       {...stylex.props(styles.gauge)}
     >
       <circle
@@ -216,18 +216,18 @@ function Gauge({ value }: { value: number }) {
           hPa
         </text>
         <text x="22" y="110" textAnchor="middle" {...stylex.props(styles.svgText)}>
-          Low
+          Thấp
         </text>
         <text x="178" y="110" textAnchor="middle" {...stylex.props(styles.svgText)}>
-          High
+          Cao
         </text>
       </svg>
       <p {...stylex.props(styles.tileNote)}>
         {value < 1005
-          ? 'Low pressure, unsettled air.'
+          ? 'Áp suất thấp, không khí bất ổn.'
           : value > 1022
-            ? 'High pressure, settled air.'
-            : 'Steady pressure.'}
+            ? 'Áp suất cao, không khí ổn định.'
+            : 'Áp suất ổn định.'}
       </p>
     </>
   )

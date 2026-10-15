@@ -118,7 +118,7 @@ export const FaceTime = ({ os }: { os: Os }) => {
           FaceTime
           <Title as="span" variant="accessory" xstyle={[styles.newBtn]}>
             <Sym name="plus" size={18} />
-            New
+            Mới
           </Title>
         </Title>
         <Section>
@@ -128,7 +128,7 @@ export const FaceTime = ({ os }: { os: Os }) => {
               <div>
                 <div {...stylex.props(styles.name)}>{name}</div>
                 <Text as="div" size="caption">
-                  Video · yesterday
+                  Video · hôm qua
                 </Text>
               </div>
               <span {...stylex.props(shared.rowR, styles.blue)}>

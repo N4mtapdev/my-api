@@ -94,7 +94,7 @@ export function Weather(_: { os: Os }) {
         }
   }
   const dots = (
-    <div role="tablist" aria-label="Saved locations" {...stylex.props(styles.dots)}>
+    <div role="tablist" aria-label="Địa điểm đã lưu" {...stylex.props(styles.dots)}>
       {preferences.places.map((p) => (
         <button
           key={p.id}
@@ -117,7 +117,7 @@ export function Weather(_: { os: Os }) {
   const list = (
     <button
       type="button"
-      aria-label={locations ? 'Close locations' : 'Manage locations'}
+      aria-label={locations ? 'Đóng địa điểm' : 'Quản lý địa điểm'}
       aria-expanded={locations}
       onClick={() => {
         setLocations(!locations)
@@ -139,7 +139,7 @@ export function Weather(_: { os: Os }) {
         <div {...stylex.props(styles.topRight)}>
           <button
             type="button"
-            aria-label="Refresh weather"
+            aria-label="Làm mới thời tiết"
             disabled={loading}
             onClick={() => void refresh(place, true)}
             {...stylex.props(styles.control)}
@@ -156,7 +156,7 @@ export function Weather(_: { os: Os }) {
         <div ref={content} inert={detail !== null} {...stylex.props(styles.scroll, styles.scrollbar)}>
           <header {...stylex.props(styles.hero)}>
             <div {...stylex.props(styles.eyebrow)}>
-              {place.id.startsWith('local:') ? 'MY LOCATION' : place.region.toUpperCase()}
+              {place.id.startsWith('local:') ? 'VỊ TRÍ CỦA TÔI' : place.region.toUpperCase()}
             </div>
             <h1 {...stylex.props(styles.city)}>{place.name}</h1>
             <div {...stylex.props(styles.temperature)}>{temp(current?.temperature_2m)}</div>
@@ -164,39 +164,39 @@ export function Weather(_: { os: Os }) {
               {current
                 ? condition(current.weather_code!, current.is_day)[1]
                 : loading
-                  ? 'Loading forecast…'
-                  : 'Weather unavailable'}
+                  ? 'Đang tải dự báo…'
+                  : 'Không có dữ liệu thời tiết'}
             </div>
             {f && (
               <div {...stylex.props(styles.highLow)}>
-                <span>H:{temp(f.daily.temperature_2m_max?.[0])}</span>
-                <span>L:{temp(f.daily.temperature_2m_min?.[0])}</span>
+                <span>Cao:{temp(f.daily.temperature_2m_max?.[0])}</span>
+                <span>Thấp:{temp(f.daily.temperature_2m_min?.[0])}</span>
               </div>
             )}
-            {f && <div {...stylex.props(styles.localTime)}>{clock(f.current.time!, f.timezone)} local time</div>}
+            {f && <div {...stylex.props(styles.localTime)}>{clock(f.current.time!, f.timezone)} giờ địa phương</div>}
           </header>
           {error && (
             <div role="alert" {...stylex.props(styles.card, styles.notice)}>
-              {f && 'Showing the last successful forecast. '}
+              {f && 'Đang hiện dự báo gần nhất thành công. '}
               {error}{' '}
               <button
                 type="button"
                 onClick={() => void refresh(place, true)}
                 {...stylex.props(styles.control, styles.pill)}
               >
-                Retry
+                Thử lại
               </button>
             </div>
           )}
           {f && (
             <>
-              <section {...stylex.props(styles.card)} aria-label="Hourly forecast">
+              <section {...stylex.props(styles.card)} aria-label="Dự báo theo giờ">
                 <div {...stylex.props(styles.summary)}>
-                  {condition(current!.weather_code!, current!.is_day)[1]} conditions
+                  Tiết trời {condition(current!.weather_code!, current!.is_day)[1]}
                   {(f.daily.precipitation_probability_max?.[0] ?? 0) > 30
-                    ? ' with a chance of precipitation later today'
-                    : ' will continue for the rest of the day'}
-                  . Wind gusts are up to <Num value={current!.wind_gusts_10m} suffix=" km/h" />.
+                    ? ', khả năng có mưa vào cuối ngày hôm nay'
+                    : ', dự kiến ổn định đến hết ngày'}
+                  . Gió giật lên tới <Num value={current!.wind_gusts_10m} suffix=" km/h" />.
                 </div>
                 <div {...stylex.props(styles.hourly)}>
                   {strip.map((s) =>
@@ -204,7 +204,7 @@ export function Weather(_: { os: Os }) {
                       <button
                         key={hours[s.i]}
                         type="button"
-                        aria-label={`View forecast for ${clock(hours[s.i]!, f.timezone)}`}
+                        aria-label={`Xem dự báo ${clock(hours[s.i]!, f.timezone)}`}
                         onClick={() =>
                           setDetail(
                             Math.max(
@@ -215,7 +215,7 @@ export function Weather(_: { os: Os }) {
                         }
                         {...stylex.props(styles.hour)}
                       >
-                        <span>{s.i === start ? 'Now' : hour(hours[s.i]!, f.timezone)}</span>
+                        <span>{s.i === start ? 'Bây giờ' : hour(hours[s.i]!, f.timezone)}</span>
                         <Glyph name={condition(f.hourly.weather_code![s.i]!, f.hourly.is_day![s.i])[0]} size={26} />
                         {(f.hourly.precipitation_probability?.[s.i] ?? 0) >= 20 ? (
                           <span {...stylex.props(styles.chance)}>
@@ -228,17 +228,19 @@ export function Weather(_: { os: Os }) {
                       <div key={s.kind + s.time} {...stylex.props(styles.hour)}>
                         <span>{clock(s.time, f.timezone).replace(' ', '')}</span>
                         <Glyph name={s.kind} size={26} />
-                        <span {...stylex.props(styles.hourEvent)}>{s.kind === 'sunrise' ? 'Sunrise' : 'Sunset'}</span>
+                        <span {...stylex.props(styles.hourEvent)}>
+                          {s.kind === 'sunrise' ? 'Bình minh' : 'Hoàng hôn'}
+                        </span>
                       </div>
                     )
                   )}
                 </div>
               </section>
               <div {...stylex.props(styles.grid)}>
-                <section {...stylex.props(styles.card, styles.forecast)} aria-label="10-day forecast">
+                <section {...stylex.props(styles.card, styles.forecast)} aria-label="Dự báo 10 ngày">
                   <h2 {...stylex.props(styles.label)}>
                     <Sym name="calendarSym" size={12} />
-                    10-day forecast
+                    Dự báo 10 ngày
                   </h2>
                   {f.daily.time!.map((time, i) => {
                     const min = f.daily.temperature_2m_min![i]!
@@ -249,11 +251,11 @@ export function Weather(_: { os: Os }) {
                       <button
                         key={time}
                         type="button"
-                        aria-label={`View ${i === 0 ? 'today' : clock(time, f.timezone, { weekday: 'long' })} forecast`}
+                        aria-label={`Xem dự báo ${i === 0 ? 'hôm nay' : clock(time, f.timezone, { weekday: 'long' })}`}
                         onClick={() => setDetail(i)}
                         {...stylex.props(styles.daily)}
                       >
-                        <span>{i === 0 ? 'Today' : clock(time, f.timezone, { weekday: 'short' })}</span>
+                        <span>{i === 0 ? 'Hôm nay' : clock(time, f.timezone, { weekday: 'short' })}</span>
                         <span {...stylex.props(styles.dailyIcon)}>
                           <Glyph name={condition(f.daily.weather_code![i]!)[0]} size={24} />
                           {(f.daily.precipitation_probability_max?.[i] ?? 0) >= 20 && (
@@ -284,13 +286,13 @@ export function Weather(_: { os: Os }) {
                 <Tiles f={f} start={start} temp={temp} />
               </div>
               <footer {...stylex.props(styles.footnote)}>
-                Updated{' '}
-                {fetched ? new Date(fetched).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '—'}{' '}
-                · Forecast times are local to {place.name}.<br />
+                Cập nhật{' '}
+                {fetched ? new Date(fetched).toLocaleTimeString('vi-VN', { hour: 'numeric', minute: '2-digit' }) : '—'}{' '}
+                · Giờ dự báo tính theo giờ địa phương của {place.name}.<br />
                 <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" {...stylex.props(styles.link)}>
-                  Weather data by Open-Meteo
+                  Dữ liệu thời tiết bởi Open-Meteo
                 </a>{' '}
-                · Model estimates, not a live station.
+                · Ước tính từ mô hình, không phải trạm quan sát trực tiếp.
               </footer>
             </>
           )}
@@ -316,14 +318,14 @@ export function Weather(_: { os: Os }) {
           role="dialog"
           tabIndex={-1}
           aria-modal="true"
-          aria-label="Daily weather details"
+          aria-label="Chi tiết thời tiết theo ngày"
           {...stylex.props(styles.sheet)}
         >
           <div {...stylex.props(styles.top)}>
             <div {...stylex.props(styles.topLeft)}>
               <button type="button" onClick={() => setDetail(null)} {...stylex.props(styles.control, styles.pill)}>
                 <Sym name="back" size={14} />
-                Back
+                Quay lại
               </button>
             </div>
             <strong {...stylex.props(styles.sheetTitle)}>
@@ -338,9 +340,9 @@ export function Weather(_: { os: Os }) {
             </h2>
             <TemperatureChart forecast={f} day={detail} unit={preferences.unit} />
             <p {...stylex.props(styles.detailSummary)}>
-              High {temp(f.daily.temperature_2m_max?.[detail])} · Low {temp(f.daily.temperature_2m_min?.[detail])}
+              Cao {temp(f.daily.temperature_2m_max?.[detail])} · Thấp {temp(f.daily.temperature_2m_min?.[detail])}
               <br />
-              Rain chance <Num value={f.daily.precipitation_probability_max?.[detail]} suffix="%" /> · UV peak{' '}
+              Khả năng mưa <Num value={f.daily.precipitation_probability_max?.[detail]} suffix="%" /> · UV cực đại{' '}
               <Num value={f.daily.uv_index_max?.[detail]} />
             </p>
             <div {...stylex.props(styles.dayControls)}>
@@ -351,7 +353,7 @@ export function Weather(_: { os: Os }) {
                 {...stylex.props(styles.control, styles.pill)}
               >
                 <Sym name="back" size={14} />
-                Previous
+                Hôm trước
               </button>
               <button
                 type="button"
@@ -359,12 +361,12 @@ export function Weather(_: { os: Os }) {
                 onClick={() => setDetail(detail + 1)}
                 {...stylex.props(styles.control, styles.pill)}
               >
-                Next
+                Hôm sau
                 <Sym name="forward" size={14} />
               </button>
             </div>
             <div {...stylex.props(styles.card)}>
-              <h3 {...stylex.props(styles.label)}>Hour · Conditions · Temperature · Rain · Wind</h3>
+              <h3 {...stylex.props(styles.label)}>Giờ · Điều kiện · Nhiệt độ · Mưa · Gió</h3>
               {hours
                 .filter((time) => sameDay(time, f.daily.time![detail]!))
                 .map((time) => {
@@ -461,13 +463,13 @@ export function WeatherWidget({ onOpen }: { onOpen: (from: HTMLElement) => void 
         <Temp value={data?.current.temperature_2m} unit={preferences.unit} />
       </div>
       <WidgetLabel xstyle={[styles.widgetFoot]}>
-        {data ? condition(data.current.weather_code!, data.current.is_day)[1] : error ? 'Unavailable' : 'Loading…'}
+        {data ? condition(data.current.weather_code!, data.current.is_day)[1] : error ? 'Không khả dụng' : 'Đang tải…'}
       </WidgetLabel>
       <WidgetLabel>
         {data && (
           <>
-            H:
-            <Temp value={data.daily.temperature_2m_max?.[0]} unit={preferences.unit} /> L:
+            Cao:
+            <Temp value={data.daily.temperature_2m_max?.[0]} unit={preferences.unit} /> Thấp:
             <Temp value={data.daily.temperature_2m_min?.[0]} unit={preferences.unit} />
           </>
         )}

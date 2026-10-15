@@ -15,50 +15,50 @@ import { emptyStore, Glyph, Head, Hero, Link, Note, noStore, Row, Section, size 
 import { styles } from './styles.ts'
 
 export const SOFTWARE = 'iOS 27.0'
-const MODEL = 'iPhone Duo'
-const STUDIO = 'https://doan-labs.com'
-const SOURCE = 'https://github.com/doan-labs/iphoneduo'
+const MODEL = 'N4mtapdev'
+const STUDIO = 'https://n4mtapdev.com'
+const SOURCE = 'https://github.com/N4mtapdev/iphoneduo'
 /** One colour per app in the storage bar, reused round the list. */
 const SEGMENTS = [colors.blue, colors.green, colors.orange, colors.purple, colors.teal, colors.pink]
 
 export function GeneralPage({ os, host }: { os: Os; host: SettingsHost }) {
   return (
     <>
-      <Hero name="gear" bg={colors.grey} title="General">
-        Manage your overall setup and preferences for this Duo, such as what it is running, how much room it has left,
-        and what it takes to put it back the way it shipped.
+      <Hero name="gear" bg={colors.grey} title="Cài đặt chung">
+        Quản lý thiết lập và tuỳ chọn chung của máy Duo này: đang chạy gì, còn bao nhiêu dung lượng, và cần gì để đưa
+        máy về như lúc xuất xưởng.
       </Hero>
       <Section>
         <Link
-          title="About"
+          title="Giới thiệu"
           icon={<Glyph name="iphone" bg={colors.grey} />}
-          label="About"
+          label="Giới thiệu"
           page={() => <AboutPage os={os} host={host} />}
         />
         <Link
-          title="Software Update"
+          title="Cập nhật phần mềm"
           icon={<Glyph name="gear" bg={colors.grey} />}
-          label="Software Update"
+          label="Cập nhật phần mềm"
           page={() => <UpdatePage />}
         />
         <Link
-          title="Duo Storage"
+          title="Bộ nhớ Duo"
           icon={<Glyph name="folder" bg={colors.grey} />}
-          label="Duo Storage"
+          label="Bộ nhớ Duo"
           page={() => <StoragePage store={os.store} />}
         />
       </Section>
       <Section>
         <Link
-          title="Transfer or Reset iPhone"
+          title="Chuyển hoặc Đặt lại iPhone"
           icon={<Glyph name="undo" bg={colors.grey} />}
-          label="Transfer or Reset iPhone"
+          label="Chuyển hoặc Đặt lại iPhone"
           page={() => <ResetPage host={host} />}
         />
       </Section>
       <Note>
-        Transfer or Reset holds the only destructive action on this device. Everything it clears lives in this browser;
-        nothing is sent anywhere.
+        Chuyển hoặc Đặt lại giữ hành động phá hủy duy nhất trên máy. Mọi thứ nó dọn nằm trong trình duyệt này; không có
+        gì được gửi đi đâu cả.
       </Note>
     </>
   )
@@ -75,21 +75,21 @@ function AboutPage({ os, host }: { os: Os; host: SettingsHost }) {
   return (
     <>
       <Section>
-        <Row label="Name" detail={MODEL} />
-        <Row label="Software Version" detail={SOFTWARE} />
-        <Row label="Model Name" detail={MODEL} />
-        <Row label="Platform SDK" detail={HOST_SDK} />
+        <Row label="Tên" detail={MODEL} />
+        <Row label="Phiên bản phần mềm" detail={SOFTWARE} />
+        <Row label="Kiểu máy" detail={MODEL} />
+        <Row label="SDK nền tảng" detail={HOST_SDK} />
       </Section>
       <Section>
-        <Row label="Apps" detail={String(installed.length)} />
-        <Row label="Used" detail={estimate ? size(estimate.usage) : 'Measuring…'} />
-        <Row label="Available" detail={estimate ? size(estimate.free) : 'Measuring…'} />
+        <Row label="Ứng dụng" detail={String(installed.length)} />
+        <Row label="Đã dùng" detail={estimate ? size(estimate.usage) : 'Đang đo…'} />
+        <Row label="Khả dụng" detail={estimate ? size(estimate.free) : 'Đang đo…'} />
       </Section>
       <Note>
-        Capacity is whatever this browser is willing to give the origin, not a fixed disk. It moves as the browser
-        recalculates its quota.
+        Dung lượng là mức trình duyệt sẵn sàng cấp cho origin này, không phải một đĩa cố định. Nó dịch chuyển khi trình
+        duyệt tính lại hạn ngạch.
       </Note>
-      <Head>Made by</Head>
+      <Head>Sản phẩm của</Head>
       <Section>
         <button
           type="button"
@@ -97,7 +97,7 @@ function AboutPage({ os, host }: { os: Os; host: SettingsHost }) {
           onClick={() => host.openExternal(STUDIO)}
         >
           <Sym name="globe" size={15} />
-          Doan Labs
+          N4mtapdev
         </button>
         <button
           type="button"
@@ -105,12 +105,12 @@ function AboutPage({ os, host }: { os: Os; host: SettingsHost }) {
           onClick={() => host.openExternal(SOURCE)}
         >
           <Sym name="document" size={15} />
-          Source on GitHub
+          Mã nguồn trên GitHub
         </button>
       </Section>
       <Note>
-        A study of Apple’s folding iPhone, built from the published model and the hands-on footage. Not an Apple product
-        and not affiliated with Apple.
+        Một bản dựng thử nghiệm về chiếc iPhone gập của Apple, làm từ mô hình đã công bố và quay thực tế. Không phải sản
+        phẩm của Apple và không liên kết với Apple.
       </Note>
     </>
   )
@@ -120,11 +120,11 @@ function UpdatePage() {
   return (
     <>
       <Hero name="gear" bg={colors.grey} title={SOFTWARE}>
-        {MODEL} is up to date.
+        {MODEL} đã là bản mới nhất.
       </Hero>
       <Note>
-        This device ships with the shell it was built from; there is no update server behind it. A new build arrives by
-        reloading the page. Installed apps update from the App Store instead.
+        Máy có shell đúng như lúc dựng; không có máy chủ cập nhật phía sau. Bản mới đến bằng cách tải lại trang. App đã
+        cài thì cập nhật qua App Store.
       </Note>
     </>
   )
@@ -150,7 +150,7 @@ function StoragePage({ store }: { store?: Store }) {
       <div {...stylex.props(shared.grp, styles.card, styles.measure)}>
         <div {...stylex.props(typography.title1)}>{estimate ? size(estimate.usage) : '—'}</div>
         <div {...stylex.props(typography.body, styles.heroText)}>
-          used of {estimate ? size(estimate.quota) : '—'} this browser allows
+          đã dùng, trên tổng {estimate ? size(estimate.quota) : '—'} mà trình duyệt cho phép
         </div>
         <div {...stylex.props(styles.bar)}>
           {used > 0 && (
@@ -178,17 +178,17 @@ function StoragePage({ store }: { store?: Store }) {
           </span>
         </div>
       </div>
-      <Head>Installed apps · {size(apps)}</Head>
+      <Head>App đã cài · {size(apps)}</Head>
       <Section>
         {rows.length ? (
           rows.map((row) => <Row key={row.id} label={row.name} subtitle={row.author} detail={size(row.bytes)} />)
         ) : (
-          <Row label="No installed apps" />
+          <Row label="Chưa cài app nào" />
         )}
       </Section>
       <Note>
-        App sizes are the release bytes this device downloaded. The rest of the measured total is the shell’s own cache
-        and the data each app has written since.
+        Kích thước app là số byte của bản phát hành máy đã tải về. Phần còn lại của tổng số đo được là cache của shell
+        và dữ liệu mỗi app đã ghi kể từ đó.
       </Note>
     </>
   )
@@ -208,13 +208,12 @@ function ResetPage({ host }: { host: SettingsHost }) {
           disabled={erasing || confirming}
         >
           <Sym name="trash" size={15} />
-          Erase All Content and Settings
+          Xóa mọi nội dung và cài đặt
         </button>
       </Section>
       <Note>
-        This removes every installed app and its data, the home screen you arranged, the wallpaper you chose and the
-        notes, places and settings each app saved. The device restarts and reinstalls the apps it ships with, exactly as
-        a first visit does.
+        Thao tác này gỡ mọi app đã cài cùng dữ liệu, màn hình chính bạn đã sắp, hình nền bạn đã chọn và các ghi chú, địa
+        điểm, cài đặt mỗi app đã lưu. Máy khởi động lại và cài lại các app có sẵn, đúng như lần truy cập đầu tiên.
       </Note>
       {confirming && (
         <>
@@ -232,7 +231,7 @@ function ResetPage({ host }: { host: SettingsHost }) {
                 })
               }}
             >
-              {erasing ? 'Erasing…' : `Erase ${MODEL}`}
+              {erasing ? 'Đang xóa…' : `Xóa ${MODEL}`}
             </button>
             <button
               type="button"
@@ -240,13 +239,13 @@ function ResetPage({ host }: { host: SettingsHost }) {
               disabled={erasing}
               onClick={() => setConfirming(false)}
             >
-              Cancel
+              Hủy
             </button>
           </Section>
-          <Note>This cannot be undone. The page reloads as soon as the device is empty.</Note>
+          <Note>Không thể hoàn tác. Trang sẽ tải lại ngay khi máy trống rỗng.</Note>
         </>
       )}
-      {error && <Note>Erase failed: {error}</Note>}
+      {error && <Note>Xóa thất bại: {error}</Note>}
     </>
   )
 }

@@ -12,11 +12,11 @@ import { styles } from './styles.ts'
 type Task = { t: string; done: boolean }
 
 const DEFAULTS: Task[] = [
-  { t: 'Re-render the macro shot at 400 samples', done: false },
-  { t: 'Measure the spine radius against the mock', done: false },
-  { t: 'Ship the WebGL studio port', done: true },
-  { t: 'Ask about the CSS3D panel tone mapping', done: false },
-  { t: 'Polish the titanium', done: false }
+  { t: 'Render lại cảnh macro với 400 mẫu', done: false },
+  { t: 'Đo bán kính sống máy với bản mô phỏng', done: false },
+  { t: 'Phát hành bản port WebGL studio', done: true },
+  { t: 'Hỏi về tone mapping bảng CSS3D', done: false },
+  { t: 'Đánh bóng phần titan', done: false }
 ]
 
 export const Reminders = () => {
@@ -37,9 +37,9 @@ export const Reminders = () => {
   return (
     <Screen>
       <Title xstyle={[styles.blue]}>
-        Reminders
+        Nhắc việc
         <Title as="span" variant="accessory">
-          {items.filter((i) => !i.done).length} open
+          {items.filter((i) => !i.done).length} cần làm
         </Title>
       </Title>
       <Section xstyle={[styles.white]}>
@@ -54,7 +54,7 @@ export const Reminders = () => {
           <span {...stylex.props(styles.chk, styles.dim)} />
           <input
             {...stylex.props(styles.input)}
-            placeholder="New Reminder"
+            placeholder="Nhắc việc mới"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={add}

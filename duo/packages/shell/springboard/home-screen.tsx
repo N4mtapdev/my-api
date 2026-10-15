@@ -162,7 +162,7 @@ export function HomeScreen({
 
   const left = (
     <div key="left" {...stylex.props(styles.half)}>
-      <WidgetTile i={0} name="Weather">
+      <WidgetTile i={0} name="Thời tiết">
         <WeatherSnapshot
           onOpen={(el) => {
             const app = byName('Weather')
@@ -170,7 +170,7 @@ export function HomeScreen({
           }}
         />
       </WidgetTile>
-      <WidgetTile i={1} name="Calendar">
+      <WidgetTile i={1} name="Lịch">
         <CalendarWidget onOpen={(el) => onOpen(byName('Calendar')!, el)} />
       </WidgetTile>
       {tiles('left', 2)}

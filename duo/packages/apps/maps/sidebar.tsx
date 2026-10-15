@@ -44,13 +44,13 @@ export function Sidebar({ sel, onSelect, query, onQuery, recents, onClear, sheet
             type="search"
             value={query}
             placeholder="Duo Maps"
-            aria-label="Search Maps"
+            aria-label="Tìm trên Bản đồ"
             onChange={(e) => onQuery(e.target.value)}
             {...stylex.props(styles.input)}
           />
         </label>
         {!sheet && (
-          <button type="button" aria-label="Hide sidebar" onClick={onCollapse} {...stylex.props(styles.ghost)}>
+          <button type="button" aria-label="Ẩn thanh bên" onClick={onCollapse} {...stylex.props(styles.ghost)}>
             <Sym name="sidebar" size={15} />
           </button>
         )}
@@ -60,24 +60,24 @@ export function Sidebar({ sel, onSelect, query, onQuery, recents, onClear, sheet
           found.length ? (
             found.map((p) => row(p, p.kind))
           ) : (
-            <div {...stylex.props(styles.empty)}>No results for “{query.trim()}”</div>
+            <div {...stylex.props(styles.empty)}>Không có kết quả cho “{query.trim()}”</div>
           )
         ) : (
           <>
             {suggestion && (
               <>
-                <div {...stylex.props(styles.section)}>Siri Suggestions</div>
-                {row(suggestion, 'Recently viewed')}
+                <div {...stylex.props(styles.section)}>Đề xuất của Siri</div>
+                {row(suggestion, 'Xem gần đây')}
               </>
             )}
-            <div {...stylex.props(styles.section)}>Recents</div>
+            <div {...stylex.props(styles.section)}>Gần đây</div>
             {recents.map(([id, note]) => {
               const p = byId(id)
               return p ? row(p, note) : null
             })}
             {recents.length > 0 && (
               <button type="button" onClick={onClear} {...stylex.props(styles.link)}>
-                Clear Recents
+                Xóa lịch sử
               </button>
             )}
           </>

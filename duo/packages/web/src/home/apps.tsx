@@ -118,8 +118,8 @@ export function Apps() {
       <Cap>06 · Các app</Cap>
       <Headline id="apps-title" lines={['Viết một lần cho cả hai màn hình', 'và cả dáng gập ở giữa.']} />
       <Lede>
-        App chính thức đi kèm simulator và phát hành lên catalog Duo; app cộng đồng thì đến từ pull request. Tất cả
-        đều dùng giấy phép MIT và cài qua Store.
+        App chính thức đi kèm simulator và phát hành lên catalog Duo; app cộng đồng thì đến từ pull request. Tất cả đều
+        dùng giấy phép MIT và cài qua Store.
       </Lede>
       <Shelf apps={OFFICIAL.filter((a) => a.status !== 'mockup').slice(0, 6)} layout="grid" />
     </Block>

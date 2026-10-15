@@ -44,12 +44,12 @@ export function TimeGrid({ days, today, events, colors, dir, stamp, onSlot, onEv
         {days.map((d, i) => (
           <div key={d.getTime()} {...stylex.props(styles.tgDay, styles.colAt(i + 1), wash(d) && styles.weekend)}>
             <span {...stylex.props(wash(d) ? styles.off : styles.dim)}>
-              {d.toLocaleDateString('en', { weekday: 'short' })}
+              {d.toLocaleDateString('vi-VN', { weekday: 'short' })}
             </span>
             <span {...stylex.props(styles.tgNum, sameDay(d, today) && styles.today)}>{d.getDate()}</span>
           </div>
         ))}
-        <span {...stylex.props(styles.allDayLabel)}>all-day</span>
+        <span {...stylex.props(styles.allDayLabel)}>cả ngày</span>
         {/* The empty days carry the rules; the lanes span them so one bar covers its whole run. */}
         {days.map((d, i) => (
           <span
@@ -73,7 +73,7 @@ export function TimeGrid({ days, today, events, colors, dir, stamp, onSlot, onEv
                 styles.tint(colors.get(p.e.calendar))
               )}
             >
-              <span {...stylex.props(styles.chipTitle)}>{p.e.title || 'New Event'}</span>
+              <span {...stylex.props(styles.chipTitle)}>{p.e.title || 'Sự kiện mới'}</span>
             </button>
           ))}
         </div>
@@ -94,7 +94,12 @@ export function TimeGrid({ days, today, events, colors, dir, stamp, onSlot, onEv
               onKeyDown={(e) => e.key === 'Enter' && onSlot(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9))}
               role="button"
               tabIndex={0}
-              aria-label={d.toDateString()}
+              aria-label={d.toLocaleDateString('vi-VN', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}
               {...stylex.props(styles.col, wash(d) && styles.weekend)}
             >
               {eventsOn(events, d)
@@ -112,7 +117,7 @@ export function TimeGrid({ days, today, events, colors, dir, stamp, onSlot, onEv
                       }}
                       {...stylex.props(styles.block, styles.soft(colors.get(e.calendar)), styles.span(from, to - from))}
                     >
-                      <b>{e.title || 'New Event'}</b>
+                      <b>{e.title || 'Sự kiện mới'}</b>
                       <span>{time(e.start)}</span>
                     </button>
                   )
@@ -125,7 +130,7 @@ export function TimeGrid({ days, today, events, colors, dir, stamp, onSlot, onEv
             <>
               <i {...stylex.props(styles.nowFaint, styles.at(now))} />
               <span {...stylex.props(styles.nowPill, styles.at(now))}>
-                {today.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+                {today.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
               </span>
             </>
           )}
